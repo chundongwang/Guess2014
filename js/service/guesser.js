@@ -1,24 +1,33 @@
 'use strict';
 
-WorldCupApp.getModule().factory("Guesser", [ '$resource', function($resouce) {
-  var Guesser = $resource('/list', {}, {
-    listAll : {
-      method : 'GET',
-      intercepter : {
-        responseError : function(err) {
-          // do nothing for now
+WorldCupApp.getModule().factory("Guesser", ['$resource', function($resource) {
+  var Guesser = $resource(WorldCupApp.getRoot() + '/list', {}, {
+    listAll: {
+      method: 'GET',
+      isArray: true,
+      intercepter: {
+        responseError: function(resp) {
+          errorHandler(resp);
         }
       }
     }
   });
-  
-  var listAll = function(callback) {
-    var data = Guesser.$listAll({}, function() {
-      callback(data);
-    });
-  };
-  
+
+  function errorHandler(resp) {
+    console.debug(resp)
+    if (resp.status === 302) {
+      $location.url(resp.location)
+    } else {
+      // TODO: Show error message
+      console.error('gw-error:' + resp);
+    }
+  }
+
   return {
-    listAll: listAll
+    listAll: function(callback) {
+      var data = Guesser.listAll({}, function() {
+        callback(data);
+      });
+    }
   };
-} ]);
+}]);

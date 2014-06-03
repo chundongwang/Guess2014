@@ -32,8 +32,9 @@
   <script src="js/directive/navbar.js"></script>
   <script src="js/directive/footer.js"></script>
   <script src="js/directive/groupdiv.js"></script>
+  <script src="js/service/guesser.js"></script>
   <script src="js/view/home.js"></script>
   <script src="js/view/group.js"></script>
-  <script>{% if user_nickname %}WorldCupApp.user_nickname = {{ user_nickname }};{% endif %}{% if login_url %}WorldCupApp.login_url = {{ login_url }};{% endif %}</script>
+  <script>{% if user_nickname %}WorldCupApp.user_nickname = '{{ user_nickname }}';{% endif %}{% if login_url %}WorldCupApp.login_url = '{{ login_url }}';{% endif %}</script>
 </body>
 </html>

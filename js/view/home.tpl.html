@@ -14,9 +14,9 @@
 </div>
 
 <div class="container">
-  <div class="row" ng-repeat="row in [0, 1, 2, 3]">
-    <div class="col-md-6" ng-repeat="group in [0, 1]">
-      <gw-groupdiv gw-gid="group * 2"></gw-groupdiv>
+  <div class="row" ng-repeat="i in [0, 1]">
+    <div class="col-md-3" ng-repeat="j in [0, 1, 2, 3]">
+      <gw-groupdiv gw-matches="groups[j+i*2]"></gw-groupdiv>
     </div>
   </div>
   <gw-footer></gw-footer>

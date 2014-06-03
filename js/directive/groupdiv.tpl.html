@@ -1,9 +1,7 @@
-<h2>Heading</h2>
-<p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus,
-  tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum
-  massa justo sit amet risus. Etiam porta sem malesuada magna mollis
-  euismod. Donec sed odio dui.</p>
+<h2>{{matches[0].stage}}</h2>
+<ul>
+<li ng-repeat="m in matches">{{m.date | date:'M月d日'}} {{m.team_a}} vs {{m.team_b}} </li>
+</ul>
 <p>
-  <a class="btn btn-default" href="#" role="button">View details
-    &raquo;</a>
+  <a class="btn btn-default" href="#" role="button">查看详情    &raquo;</a>
 </p>
