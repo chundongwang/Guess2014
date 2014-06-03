@@ -33,22 +33,17 @@ def main():
 @app.route('/list/<stage_name>')
 def list_matches(stage_name=None):
     """Return a list of match according to the stage name"""
-    user = users.get_current_user()
-    if not user:
-        abort(401)
-        #return redirect(users.create_login_url(url_for('main')))
+    matches = []
+    if stage_name != None:
+            matches.append([match.to_dict() for match in Match.query(Match.stage==stage_name).fetch()])
     else:
-        matches = []
-        if stage_name != None:
-                matches.append([match.to_dict() for match in Match.query(Match.stage==stage_name).fetch()])
-        else:
-            match_stages=Match.query(projection=[Match.stage],distinct=True).fetch()
-            for match_stage in match_stages:
-                matches.append([match.to_dict() for match in Match.query(Match.stage==match_stage.stage).fetch()])
-        response = make_response(json.dumps(matches, cls=DateTimeEncoder))
-        response.headers['Content-Type'] = 'application/json'
-        response.headers['mimetype'] = 'application/json'
-        return response
+        match_stages=Match.query(projection=[Match.stage],distinct=True).fetch()
+        for match_stage in match_stages:
+            matches.append([match.to_dict() for match in Match.query(Match.stage==match_stage.stage).fetch()])
+    response = make_response(json.dumps(matches, cls=DateTimeEncoder))
+    response.headers['Content-Type'] = 'application/json'
+    response.headers['mimetype'] = 'application/json'
+    return response
 
 @app.route('/bet/<match_id>', methods=['GET'])
 @app.route('/bet/<match_id>/<bet_amount>', methods=['GET'])
