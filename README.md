@@ -10,13 +10,13 @@ See the README file for directions. You'll need python 2.7 and [pip 1.4 or later
 2. Clone this repo with
 
    ```
-   git clone https://github.com/GoogleCloudPlatform/appengine-python-flask-skeleton.git
+   git clone https://github.com/chundongwang/Guess2014.git
    ```
 3. Install dependencies in the project's lib directory.
    Note: App Engine can only import libraries from inside your project directory.
 
    ```
-   cd appengine-python-flask-skeleton
+   cd guess2014
    pip install -r requirements.txt -t lib
    ```
 4. Run this project locally from the command line:
@@ -42,10 +42,6 @@ To deploy the application:
    appcfg.py -A <your-project-id> --oauth2 update .
    ```
 1. Congratulations!  Your application is now live at your-app-id.appspot.com
-
-## Next Steps
-This skeleton includes `TODO` markers to help you find basic areas you will want
-to customize.
 
 ### Relational Databases and Datastore
 To add persistence to your models, use
