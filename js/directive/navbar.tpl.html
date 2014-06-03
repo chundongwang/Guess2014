@@ -10,11 +10,8 @@
       <a class="navbar-brand" href="#">我的2014世界杯</a>
     </div>
     <div class="navbar-collapse collapse">
-      <p>{{loginInfo.nickName}}</p>
-      <p>{{loginInfo.loginUrl}}</p>
-      <p ng-if="angular.isDefined(loginInfo.nickName)">{{loginInfo.nickName}}</p>
-      <p ng-if="angular.isDefined(loginInfo.loginUrl)">{{loginInfo.loginUrl}}</p>
-      <!--<button ng-if="loginInfo.loginUrl" ng-href="{{loginInfo.loginUrl}}" type="submit" class="btn btn-success">登录</button>-->
+      <p ng-if="!!loginInfo.nickName">{{loginInfo.nickName}}</p>
+      <a ng-if="!!loginInfo.loginUrl" ng-href="{{loginInfo.loginUrl}}" class="btn btn-success">登录</a>
     </div>
   </div>
 </div>
