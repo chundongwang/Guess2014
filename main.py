@@ -25,7 +25,7 @@ def main():
     login_url = None
     user_nickname = None
     if not user:
-        login_url = create_login_url(url_for('/'))
+        login_url = users.create_login_url(url_for('/'))
     else:
         user_nickname = user.nickname()
     return render_template('index.html', user_nickname=user_nickname, login_url=login_url)
