@@ -5,7 +5,11 @@ api_version: 1
 threadsafe: yes
 
 handlers:
+
 - url: /
+  script: main.app
+
+- url: /index\.html.*
   script: main.app
 
 - url: /list.*
@@ -26,8 +30,13 @@ handlers:
 - url: /fonts
   static_dir: fonts
 
-- url: /js
-  static_dir: js
+- url: /js/(.*)/(.*)
+  static_files: js/\1/\2
+  upload: js/(.*)/(.*)
+
+- url: /js/(.*)
+  static_files: js/\1
+  upload: js/(.*)
 
 libraries:
 - name: jinja2

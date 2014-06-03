@@ -1,30 +1,39 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="zh_cn">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<link rel="shortcut icon" href="../../assets/ico/favicon.ico">
 
-{% block content %}
-{% if matches %}
+<title>Guess 2014</title>
 
-{% for stage in matches %}
+<!-- Bootstrap core CSS -->
+<link href="css/bootstrap.min.css" rel="stylesheet">
 
-{% for match in stage %}
-{% if loop.first %}
-<div class="panel panel-primary">
-<div class="panel-heading">
-<h3 class="panel-title">{{match.stage}}</h3>
-</div>
-<div class="panel-body">            
-<ul class="list-group">
-{% endif %}
-<li class="list-group-item">{{ match.team_a|e }} vs {{ match.team_b|e }} on {{ match.date|e }}</li>
-{% if loop.last %}
-</ul>
-</div>
-</div>
-{% endif %}
-{% endfor %}
+<!-- Custom styles for this template -->
+<link href="css/main.css" rel="stylesheet">
+</head>
 
-{% endfor %}
+<body>
+  <div ng-view ng-app="WorldCupApp"></div>
 
-{% else %}
-  <h1>Hello World!</h1>
-{% endif %}
-{% endblock %}
+  <!-- Bootstrap core JavaScript
+    ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="js/third-party/jquery.min.js"></script>
+  <script src="js/third-party/bootstrap.min.js"></script>
+  <script src="js/third-party/angular.min.js"></script>
+  <script src="js/third-party/angular-resource.min.js"></script>
+  <script src="js/third-party/angular-route.min.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/directive/navbar.js"></script>
+  <script src="js/directive/footer.js"></script>
+  <script src="js/directive/groupdiv.js"></script>
+  <script src="js/view/home.js"></script>
+  <script src="js/view/group.js"></script>
+  <script>{% if user_nickname %}WorldCupApp.user_nickname = {{ user_nickname }};{% endif %}{% if login_url %}WorldCupApp.login_url = {{ login_url }};{% endif %}</script>
+</body>
+</html>

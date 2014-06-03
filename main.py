@@ -19,7 +19,7 @@ app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 # the App Engine WSGI application server.
 
 @app.route('/')
-def hello():
+def main():
     """Return a friendly HTTP greeting."""
     user = users.get_current_user()
     login_url = None
@@ -28,12 +28,7 @@ def hello():
         login_url = create_login_url(url_for('/'))
     else:
         user_nickname = user.nickname()
-        
-    match_stages=Match.query(projection=[Match.stage],distinct=True).fetch()
-    matches = []
-    for match_stage in match_stages:
-        matches.append(Match.query(Match.stage==match_stage.stage).fetch())
-    return render_template('index.html', matches=matches, user_nickname=user_nickname, login_url=login_url)
+    return render_template('index.html', user_nickname=user_nickname, login_url=login_url)
 
 @app.errorhandler(404)
 def page_not_found(e):
