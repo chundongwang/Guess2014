@@ -13,12 +13,10 @@ handlers:
   script: main.app
 
 - url: /list.*
-  script: match_list.app
-  login: required
+  script: main.app
 
 - url: /bet.*
-  script: user_bet.app
-  login: required
+  script: main.app
 
 - url: /admin.*
   script: admin.app

@@ -20,7 +20,6 @@ app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 
 @app.route('/')
 def main():
-    """Return a friendly HTTP greeting."""
     user = users.get_current_user()
     login_url = None
     user_nickname = None
@@ -29,6 +28,55 @@ def main():
     else:
         user_nickname = user.nickname()
     return render_template('index.html', user_nickname=user_nickname, login_url=login_url)
+
+@app.route('/list')
+@app.route('/list/<stage_name>')
+def list_matches(stage_name=None):
+    """Return a list of match according to the stage name"""
+    user = users.get_current_user()
+    if not user:
+        return redirect(users.create_login_url(url_for('main')))
+    else:
+        matches = []
+        if stage_name != None:
+                matches.append([match.to_dict() for match in Match.query(Match.stage==stage_name).fetch()])
+        else:
+            match_stages=Match.query(projection=[Match.stage],distinct=True).fetch()
+            for match_stage in match_stages:
+                matches.append([match.to_dict() for match in Match.query(Match.stage==match_stage.stage).fetch()])
+        response = make_response(json.dumps(matches, cls=DateTimeEncoder))
+        response.headers['Content-Type'] = 'application/json'
+        response.headers['mimetype'] = 'application/json'
+        return response
+
+@app.route('/bet/<match_id>', methods=['GET'])
+@app.route('/bet/<match_id>/<bet_amount>', methods=['GET'])
+def bet(match_id, bet_amount=1):
+    user = users.get_current_user()
+    if not user:
+        return redirect(users.create_login_url(url_for('main')))
+    else:
+        bets = Bet.query(ndb.AND(Bet.userid==user.user_id(), Bet.bet_match.matchid==int(match_id))).fetch()
+        if len(bets)==0:
+            match = Match.query(Match.matchid==int(match_id)).fetch(1)[0]
+            logging.info('betting on %s' % str(match))
+            bet = Bet(userid=user.user_id(),
+                      useremail=user.email(),
+                      bet_match=match,
+                      bet_amount=int(bet_amount)
+                      )
+            logging.info('betting on %s' % str(bet))
+            bet.put()
+            response = make_response(json.dumps(bet.to_dict(), cls=DateTimeEncoder))
+        else:
+            bet = bets[0]
+            bet.useremail=user.email()
+            bet.bet_amount=int(bet_amount)
+            bet.put()
+            response = make_response(json.dumps(bet.to_dict(), cls=DateTimeEncoder))
+        response.headers['Content-Type'] = 'application/json'
+        response.headers['mimetype'] = 'application/json'
+        return response
 
 @app.errorhandler(404)
 def page_not_found(e):
