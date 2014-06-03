@@ -82,7 +82,7 @@ def bet(match_id, bet_amount=1):
 
 @app.errorhandler(401)
 def custom_401(error):
-    return Response('Ajax APIs requires user to login first.', 401, {'WWWAuthenticate':'Basic realm="Login Required"'})
+    return Response('Ajax APIs requires user to login first.', 401, {'WWWAuthenticate':'Basic realm="Login Required"','LoginUrl':users.create_login_url(url_for('main'))})
 
 @app.errorhandler(404)
 def page_not_found(e):
