@@ -26,7 +26,7 @@ def admin():
     method = request.args.get('m','')
     logging.info('Method name:[%s]' % method)
     if method == 'initdb':
-        with open('worldcup2014/worldcup2014-group-stage.csv', 'rb') as csvfile:
+        with open('worldcup2014-group-stage.csv', 'rb') as csvfile:
             spamreader = csv.reader(csvfile)
             for row in spamreader:
                 match = Match(matchid=int(row[0]),
