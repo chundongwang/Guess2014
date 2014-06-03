@@ -17,8 +17,8 @@ WorldCupApp.getModule().config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/home', {
     templateUrl: 'js/view/home.tpl.html',
     controller: 'HomeCtrl'
-  }).when('/groups', {
-    templateUrl: 'js/view/groups.tpl.html',
+  }).when('/group', {
+    templateUrl: 'js/view/group.tpl.html',
     controller: 'GroupCtrl'
   }).otherwise({
     redirectTo: '/home'
