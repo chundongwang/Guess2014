@@ -26,17 +26,21 @@ handlers:
 
 - url: /css
   static_dir: css
+  mime_type: text/css
 
 - url: /fonts
   static_dir: fonts
+  mime_type: font/opentype
 
 - url: /js/(.*)/(.*)
   static_files: js/\1/\2
   upload: js/(.*)/(.*)
+  mime_type: application/javascript
 
 - url: /js/(.*)
   static_files: js/\1
   upload: js/(.*)
+  mime_type: application/javascript
 
 libraries:
 - name: jinja2
