@@ -1,7 +1,7 @@
 import logging
 import json
 
-from flask import Flask,request,render_template,send_from_directory,redirect,url_for
+from flask import Flask,request,render_template,send_from_directory,redirect,url_for,abort,Response
 
 from google.appengine.ext import ndb
 from google.appengine.api import users
@@ -35,7 +35,8 @@ def list_matches(stage_name=None):
     """Return a list of match according to the stage name"""
     user = users.get_current_user()
     if not user:
-        return redirect(users.create_login_url(url_for('main')))
+        abort(401)
+        #return redirect(users.create_login_url(url_for('main')))
     else:
         matches = []
         if stage_name != None:
@@ -54,7 +55,8 @@ def list_matches(stage_name=None):
 def bet(match_id, bet_amount=1):
     user = users.get_current_user()
     if not user:
-        return redirect(users.create_login_url(url_for('main')))
+        abort(401)
+        #return redirect(users.create_login_url(url_for('main')))
     else:
         bets = Bet.query(ndb.AND(Bet.userid==user.user_id(), Bet.bet_match.matchid==int(match_id))).fetch()
         if len(bets)==0:
@@ -77,6 +79,10 @@ def bet(match_id, bet_amount=1):
         response.headers['Content-Type'] = 'application/json'
         response.headers['mimetype'] = 'application/json'
         return response
+
+@app.errorhandler(401)
+def custom_401(error):
+    return Response('Ajax APIs requires user to login first.', 401, {'WWWAuthenticate':'Basic realm="Login Required"'})
 
 @app.errorhandler(404)
 def page_not_found(e):
