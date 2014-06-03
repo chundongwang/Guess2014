@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Welcome, admin!</h1>
+{% if msg %}
+<p>{{ msg }}</p>
+{% endif %}
+<div>
+<h2>initialize db</h2>
+<p>
+    Click <a href="/admin?m=initdb">here</a> to init db.
+</p>
+<h2>insert match</h2>
+<form action="/admin" method="get">
+<input type="hidden" name="m" value="insertmatch">
+Match #:<input type="text" name="id">, like "1"<br>
+date:<input type="text" name="d">, like "12 June 2014 17:00"<br>
+stage:<input type="text" name="s">, like "Group A"<br>
+team_a:<input type="text" name="a">, like "Brazil"<br>
+team_b:<input type="text" name="b">, like "Croatia"<br>
+<button type="submit" value="submit">
+</form>
+</div>
+{% endblock %}

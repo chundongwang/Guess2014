@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form action="/admin" method="post">
+<input type="hidden" name="m" value="login">
+password:<input type="password" name="pwd"><br>
+</form>
+{% endblock %}
