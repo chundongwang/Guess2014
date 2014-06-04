@@ -1,4 +1,4 @@
-<gw-navbar></gw-navbar>
+<gw-navbar gw-login="loginInfo"></gw-navbar>
 
 <div class="jumbotron">
   <div class="container">
@@ -9,16 +9,8 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-4" ng-repeat="">
-      <h2>Heading</h2>
-      <p>Donec id elit non mi porta gravida at eget metus. Fusce
-        dapibus, tellus ac cursus commodo, tortor mauris condimentum
-        nibh, ut fermentum massa justo sit amet risus. Etiam porta sem
-        malesuada magna mollis euismod. Donec sed odio dui.</p>
-      <p>
-        <a class="btn btn-default" href="#" role="button">View
-          details &raquo;</a>
-      </p>
+    <div class="col-md-4" ng-repeat="m in matches">
+      <p>{{m.date | date:'M月d日'}} {{m.team_a}} vs {{m.team_b}}</p>
     </div>
   </div>
   <gw-footer></gw-footer>
