@@ -45,35 +45,62 @@ def list_matches(stage_name=None):
     response.headers['mimetype'] = 'application/json'
     return response
 
-@app.route('/bet/<match_id>', methods=['GET'])
-@app.route('/bet/<match_id>/<bet_amount>', methods=['GET'])
+@app.route('/bet/<match_id>')
+@app.route('/bet/<match_id>/<bet_amount>')
 def bet(match_id, bet_amount=1):
     user = users.get_current_user()
     if not user:
         abort(401)
         #return redirect(users.create_login_url(url_for('main')))
     else:
-        bets = Bet.query(ndb.AND(Bet.userid==user.user_id(), Bet.bet_match.matchid==int(match_id))).fetch()
+        match = Match.query(Match.matchid==int(match_id)).fetch(1)[0]
+        logging.info('betting on %s' % str(match))
+        bets = Bet.query(ndb.AND(Bet.userid==user.user_id(), Bet.bet_match_id==int(match_id))).fetch()
+        result = {}
         if len(bets)==0:
-            match = Match.query(Match.matchid==int(match_id)).fetch(1)[0]
-            logging.info('betting on %s' % str(match))
             bet = Bet(userid=user.user_id(),
                       useremail=user.email(),
-                      bet_match=match,
+                      bet_match_id=int(match_id),
                       bet_amount=int(bet_amount)
                       )
             logging.info('betting on %s' % str(bet))
             bet.put()
-            response = make_response(json.dumps(bet.to_dict(), cls=DateTimeEncoder))
+            result = bet.to_dict()
         else:
             bet = bets[0]
             bet.useremail=user.email()
             bet.bet_amount=int(bet_amount)
             bet.put()
-            response = make_response(json.dumps(bet.to_dict(), cls=DateTimeEncoder))
+            result = bet.to_dict()
+        result['match'] = match.to_dict()
+        response = make_response(json.dumps(result, cls=DateTimeEncoder))
         response.headers['Content-Type'] = 'application/json'
         response.headers['mimetype'] = 'application/json'
         return response
+
+@app.route('/mybet')
+@app.route('/mybet/<match_id>')
+def mybet(match_id=None):    
+    user = users.get_current_user()
+    if not user:
+        abort(401)
+    else:
+        bets = None
+        if match_id!=None:
+            bets = Bet.query(ndb.AND(Bet.userid==user.user_id(), Bet.bet_match_id==int(match_id))).fetch()
+        else:
+            bets = Bet.query(Bet.userid==user.user_id()).fetch()
+        results = []
+        for bet in bets:
+            result = bet.to_dict()
+            match = Match.query(Match.matchid==int(bet.bet_match_id)).fetch(1)[0]
+            result['match'] = match.to_dict()
+            results.append(result)
+        response = make_response(json.dumps(results, cls=DateTimeEncoder))
+        response.headers['Content-Type'] = 'application/json'
+        response.headers['mimetype'] = 'application/json'
+        return response
+
 
 @app.errorhandler(401)
 def custom_401(error):

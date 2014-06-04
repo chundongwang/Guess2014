@@ -18,6 +18,9 @@ handlers:
 - url: /bet.*
   script: main.app
 
+- url: /mybet.*
+  script: main.app
+
 - url: /admin.*
   script: admin.app
   login: admin

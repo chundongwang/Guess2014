@@ -19,7 +19,12 @@ class Match(ndb.Model):
     stage = ndb.StringProperty()
     team_a = ndb.StringProperty()
     team_b = ndb.StringProperty()
-    result = ndb.StringProperty()
+    score_a = ndb.IntegerProperty()
+    score_b = ndb.IntegerProperty()
+    extra_a = ndb.IntegerProperty()
+    extra_b = ndb.IntegerProperty()
+    penalty_a = ndb.IntegerProperty()
+    penalty_b = ndb.IntegerProperty()
 
     @classmethod
     def query_all(cls):
@@ -29,5 +34,11 @@ class Bet(ndb.Model):
     """People's bet"""
     userid = ndb.StringProperty()
     useremail = ndb.StringProperty()
-    bet_match = ndb.StructuredProperty(Match)
+    bet_match_id = ndb.IntegerProperty()
+    score_a = ndb.IntegerProperty()
+    score_b = ndb.IntegerProperty()
+    extra_a = ndb.IntegerProperty()
+    extra_b = ndb.IntegerProperty()
+    penalty_a = ndb.IntegerProperty()
+    penalty_b = ndb.IntegerProperty()
     bet_amount = ndb.IntegerProperty()

@@ -34,7 +34,12 @@ def admin():
                               stage=row[5],
                               team_a=row[2],
                               team_b=row[3],
-                              result=None
+                              score_a=None,
+                              score_b=None,
+                              extra_a=None,
+                              extra_b=None,
+                              penalty_a=None,
+                              penalty_b=None
                               )
                 match.put()
         return render_template('admin.html', msg='Matches imported!')
@@ -43,8 +48,13 @@ def admin():
         team_a = request.args.get('a',None)
         team_b = request.args.get('b',None)
         match_stage = request.args.get('s',None)
-        match_result = request.args.get('s',None)
         match_date = request.args.get('d',None)
+        score_a = request.args.get('sa',None)
+        score_b = request.args.get('sb',None)
+        extra_a = request.args.get('ea',None)
+        extra_b = request.args.get('eb',None)
+        penalty_a = request.args.get('pa',None)
+        penalty_b = request.args.get('pb',None)
 
         matches = Match.query(Match.matchid==match_id).fetch()
         if len(matches)==0:
@@ -53,7 +63,12 @@ def admin():
                           stage=match_stage,
                           team_a=team_a,
                           team_b=team_b,
-                          result=None
+                          score_a=None,
+                          score_b=None,
+                          extra_a=None,
+                          extra_b=None,
+                          penalty_a=None,
+                          penalty_b=None
                           )
             logging.info('insert attempt:%s' % str(match))
             match.put()
@@ -70,8 +85,18 @@ def admin():
                 match.team_a = team_a
             if team_b:
                 match.team_b = team_b
-            if match_result:
-                match.result = match_result
+            if score_a:
+                match.score_a = int(score_a)
+            if score_b:
+                match.score_b = int(score_b)
+            if extra_a:
+                match.extra_a = int(extra_a)
+            if extra_b:
+                match.extra_b = int(extra_b)
+            if penalty_a:
+                match.penalty_a = int(penalty_a)
+            if penalty_b:
+                match.penalty_b = int(penalty_b)
             logging.info('update attempt:%s' % str(match))
             match.put()
             return render_template('admin.html',
