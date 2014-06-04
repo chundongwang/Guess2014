@@ -10,7 +10,12 @@
 <div class="container">
   <div class="row">
     <div class="col-md-4" ng-repeat="m in matches">
-      <p>{{m.date | date:'M月d日'}} {{m.team_a}} vs {{m.team_b}}</p>
+      <p>{{m.date | date:'M月d日'}}</p>
+      <p>{{m.team_a}} vs {{m.team_b}}</p>
+      <p>比赛结果  <span ng-if="!!m.result">{{m.result}}</span><span ng-if="!m.result">?:?</span></p>
+      <button ng-click="bet(m.matchid)">我要预测</button>
+      <p ng-if="!!loginInfo.nickName">should display my bet</p>
+      <p></p>
     </div>
   </div>
   <gw-footer></gw-footer>
