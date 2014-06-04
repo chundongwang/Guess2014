@@ -14,8 +14,8 @@
         <p>{{m.date | date:'M月d日'}}</p>
         <p>{{m.team_a}} vs {{m.team_b}}</p>
         <p>
-          比赛结果: <span ng-if="!!m.result">{{m.result}}</span><span
-            ng-if="!m.result">? vs ?</span>
+          比赛结果: <span ng-if="!!m.score_a && !!m.score_b">{{m.score_a}} : {{m.score_b}}</span><span
+            ng-if="!m.score_a || !m.score_b">? vs ?</span>
         </p>
         <div ng-if="loggedIn">
           <p
