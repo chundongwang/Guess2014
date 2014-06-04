@@ -10,7 +10,7 @@
 <div class="container">
   <div class="row">
     <div class="col-md-4" ng-repeat="m in matches">
-      <div class="btn btn-default" ng-click="showBetModal(m.matchid)">
+      <div class="btn btn-default" ng-click="showBetModal(m)">
         <p>{{m.date | date:'M月d日'}}</p>
         <p>{{m.team_a}} vs {{m.team_b}}</p>
         <p>
@@ -18,13 +18,11 @@
             ng-if="!m.score_a || !m.score_b">? vs ?</span>
         </p>
         <div ng-if="loggedIn">
-          <p
-            ng-if="!!bets[m.matchid].score_a && !!bets[m.matchid].score_b">我的预测：{{bets[m.matchid].score_a}}
-            vs {{bets[m.matchid].score_b}}</p>
+          <p ng-if="!!m.bet">我的预测：{{m.bet.score_a}} vs {{m.bet.score_b}}</p>
         </div>
       </div>
     </div>
   </div>
   <gw-footer></gw-footer>
 </div>
-<gw-betmodal gw-match="theMatch" gw-bet="theBet" gw-betref="theBetRef"></gw-betmodal>
+<gw-betmodal gw-matchref="theMatchRef" gw-bet="theBet"></gw-betmodal>

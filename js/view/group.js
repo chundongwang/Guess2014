@@ -13,28 +13,14 @@ WorldCupApp.getModule().controller('GroupCtrl',
       };
       $scope.loggedIn = !!$scope.loginInfo.nickName;
 
-      $scope.showBetModal = function(mid) {
+      $scope.showBetModal = function(match) {
         // If loggedIn, display the modal
         if ($scope.loggedIn) {
-          var theMatch = null;
-          $scope.matches.some(function(e) {
-            if (e.matchid == mid) {
-              theMatch = e;
-            }
-            return e.matchid == mid;
-          });
-          var theBetRef = $scope.bets[mid];
-
-          $scope.theMatch = {
-            matchid: theMatch.matchid,
-            team_a: theMatch.team_a,
-            team_b: theMatch.team_b
-          };
-          $scope.theBet = {
-            score_a: theBetRef.score_a,
-            score_b: theBetRef.score_b
-          };
-          $scope.theBetRef = theBetRef;
+          $scope.theBet = match.bet ? {
+            score_a: match.bet.score_a,
+            score_b: match.bet.score_b
+          } : {};
+          $scope.theMatchRef = match;
 
           $('#betModal').modal();
         }
@@ -48,12 +34,8 @@ WorldCupApp.getModule().controller('GroupCtrl',
 
       function asyncListA() {
         var deferred = $q.defer();
-        Guesser.listA(stage, function(data) {
-          var matches = data[0];
-          matches.forEach(function(e) {
-            e.edit = false;
-          });
-          deferred.resolve(matches);
+        Guesser.listA($scope.stage, function(data) {
+          deferred.resolve(data[0]);
         });
         return deferred.promise;
       }
@@ -61,10 +43,6 @@ WorldCupApp.getModule().controller('GroupCtrl',
       function asyncBetAll() {
         var deferred = $q.defer();
         Guesser.mybets(function(data) {
-          var bets = [];
-          data.forEach(function(e) {
-            bets[e.matchid] = e;
-          });
           deferred.resolve(data);
         });
         return deferred.promise;
@@ -73,18 +51,21 @@ WorldCupApp.getModule().controller('GroupCtrl',
       function updateAll() {
         asyncListA().then(function(matches) {
           asyncBetAll().then(function(bets) {
-            // After get all the data, massage the guess data to initialize the
-            // object for unguessed matches
-            matches.forEach(function(m) {
-              if (!bets[m.matchid]) {
-                bets[m.matchid] = {
-                  matchid: m.matchid
-                };
+            // After get all the data, find the betted matches and add the bet
+            // object to the match
+            bets.forEach(function(b) {
+              var mm = null;
+              if (matches.some(function(m) {
+                if (m.matchid == b.bet_match_id) {
+                  mm = m;
+                }
+                return m.matchid == b.bet_match_id;
+              })) {
+                mm.bet = b;
               }
             });
-            // Then set them to the scope
+
             $scope.matches = matches;
-            $scope.bets = bets;
           });
         });
       }

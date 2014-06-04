@@ -10,18 +10,18 @@
       <div class="modal-body">
         <form class="form-inline" role="form">
           <div class="form-group">
-            <label for="score_a">{{match.team_a}}</label>
+            <label for="score_a">{{matchref.team_a}}</label>
             <input type="text" class="form-control" id="score_a" ng-model="bet.score_a" min="0" max="30" required="true">
             <label>:</label>
             <input type="text" class="form-control" id="score_b" ng-model="bet.score_b" min="0" max="30" required="true">
-            <label for="score_b">{{match.team_b}}</label>
+            <label for="score_b">{{matchref.team_b}}</label>
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default"
           data-dismiss="modal">关闭</button>
-        <button type="button" class="btn btn-primary" ng-click="save()">完成</button>
+        <button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="disableSave">完成</button>
       </div>
     </div>
   </div>

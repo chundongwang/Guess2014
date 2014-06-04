@@ -4,23 +4,25 @@ WorldCupApp.getModule().directive('gwBetmodal', ['Guesser', function(Guesser) {
   return {
     restrict: 'E',
     scope: {
-      match: '=gwMatch',
-      bet: '=gwBet',
-      betref: '=gwBetref'
+      matchref: '=gwMatchref',
+      bet: '=gwBet'
     },
     templateUrl: 'js/directive/betmodal.tpl.html',
     link: function(scope, elem, attrs) {
+      scope.$watchCollection('bet', function(newVal, oldVal){
+        if (angular.isUndefined(newVal)) return;
+        scope.disableSave = !$.trim(newVal.score_a) || !$.trim(newVal.score_b);
+      });
       scope.save = function() {
-        
-        Guesser.bet(scope.match.matchid, scope.bet, function(data){
-          //TODO change the button status
+        scope.disableSave = true;
+        Guesser.bet(scope.matchref.matchid, scope.bet, function(data){
+          // refresh the bets in parent scope
+          scope.matchref.bet = data;
+          // Enable the button - we will use the modal next time
+          scope.disableSave = false;
+          $('#betModal').modal('hide');
         });
         
-        // refresh the bets
-        scope.betref.score_a = scope.bet.score_a;
-        scope.betref.score_b = scope.bet.score_b;
-
-        $('#betModal').modal('hide');
       }
     }
   };
