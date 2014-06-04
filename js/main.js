@@ -1,6 +1,6 @@
 var WorldCupApp = (function() {
   var name = 'WorldCupApp';
-  var module = angular.module(name, ['ngRoute', 'ngResource']);
+  var module = angular.module(name, ['ngRoute']);
   //var root = 'http://localhost:8080';
   var root = '';
   return {
