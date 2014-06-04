@@ -10,8 +10,7 @@
 <div class="container">
   <div class="row">
     <div class="col-md-4" ng-repeat="m in matches">
-      <div class="btn btn-default" ng-click="bet(m.matchid)"
-        data-toggle="modal" data-target="#betModal">
+      <div class="btn btn-default" ng-click="showBetModal(m.matchid)">
         <p>{{m.date | date:'M月d日'}}</p>
         <p>{{m.team_a}} vs {{m.team_b}}</p>
         <p>
@@ -28,28 +27,4 @@
   </div>
   <gw-footer></gw-footer>
 </div>
-<div class="modal fade" id="betModal" tabindex="-1" role="dialog"
-  aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"
-          aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">我的预测...</h4>
-      </div>
-      <div class="modal-body">
-        <form role="form">
-          <div class="form-group">
-            <label for="guess_a">Team A</label>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default"
-          data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save
-          changes</button>
-      </div>
-    </div>
-  </div>
-</div>
+<gw-betmodal gw-match="theMatch" gw-guess="theGuess" gw-guessref="theGuessRef"></gw-betmodal>
