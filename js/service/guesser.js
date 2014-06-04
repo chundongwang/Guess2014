@@ -1,24 +1,16 @@
 'use strict';
 
-WorldCupApp.getModule().factory("Guesser", ['$resource', '$window', function($resource, $window) {
-  var Guesser = $resource(WorldCupApp.getRoot() + '/list', {}, {
-    listAll: {
-      method: 'GET',
-      isArray: true,
-      interceptor: {
-        responseError: function (resp) {
-          if (resp.status == 401)
-            $window.location.href = resp.headers().loginurl;
-        }
-      }
-    }
-  });
+WorldCupApp.getModule().factory("Guesser", ['$http', function($http) {
+  function listAll(successCallback, errorCallback) {
+    $http({url: WorldCupApp.getRoot() + '/list', method: 'GET'}).success(successCallback).error(errorCallback);
+  };
+  
+  function listA(groupName, successCallback, errorCallback) {
+    $http({url: WorldCupApp.getRoot() + '/list/'+groupName, method: 'GET'}).success(successCallback).error(errorCallback);
+  }
 
   return {
-    listAll: function(callback) {
-      var data = Guesser.listAll({}, function() {
-        callback(data);
-      });
-    }
+    listAll: listAll,
+    listA: listA
   };
 }]);

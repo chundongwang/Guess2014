@@ -13,7 +13,9 @@ var WorldCupApp = (function() {
   };
 })();
 
-WorldCupApp.getModule().config(['$routeProvider', function($routeProvider) {
+WorldCupApp.getModule()
+.config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {
+  // Config routing
   $routeProvider.when('/home', {
     templateUrl: 'js/view/home.tpl.html',
     controller: 'HomeCtrl'
@@ -22,5 +24,18 @@ WorldCupApp.getModule().config(['$routeProvider', function($routeProvider) {
     controller: 'GroupCtrl'
   }).otherwise({
     redirectTo: '/home'
+  });
+  
+  // Inject sign-in interceptor
+  $httpProvider.interceptors.push(function(){
+    return {
+      'responseError': function(rejection) {
+        if (rejection.status === 401) {
+          window.location.href = rejection.headers().loginurl;
+          return;
+        }
+        return rejection;
+      }
+    }
   });
 }]);
