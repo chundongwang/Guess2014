@@ -35,7 +35,9 @@ def list_matches(stage_name=None):
     """Return a list of match according to the stage name"""
     matches = []
     if stage_name != None:
-            matches.append([match.to_dict() for match in Match.query(Match.stage==stage_name).fetch()])
+        matches_of_this_stage = [match.to_dict() for match in Match.query(Match.stage==stage_name).fetch()]
+        matches_of_this_stage.sort(key=lambda match: match['date'])
+        matches.append(matches_of_this_stage)
     else:
         match_stages=Match.query(projection=[Match.stage],distinct=True).fetch()
         for match_stage in match_stages:
@@ -59,11 +61,23 @@ def bet(match_id, bet_amount=1):
         logging.info('betting on %s' % str(match))
         bets = Bet.query(ndb.AND(Bet.userid==user.user_id(), Bet.bet_match_id==int(match_id))).fetch()
         result = {}
+        score_a = request.args.get('sa',None)
+        score_b = request.args.get('sb',None)
+        extra_a = request.args.get('ea',None)
+        extra_b = request.args.get('eb',None)
+        penalty_a = request.args.get('pa',None)
+        penalty_b = request.args.get('pb',None)
         if len(bets)==0:
             bet = Bet(userid=user.user_id(),
                       useremail=user.email(),
                       bet_match_id=int(match_id),
-                      bet_amount=int(bet_amount)
+                      bet_amount=int(bet_amount),
+                      score_a=int(score_a or 0) if score_a else None,
+                      score_b=int(score_b or 0) if score_b else None,
+                      extra_a=int(extra_a or 0) if extra_a else None,
+                      extra_b=int(extra_b or 0) if extra_b else None,
+                      penalty_a=int(penalty_a or 0) if penalty_a else None,
+                      penalty_b=int(penalty_b or 0) if penalty_b else None
                       )
             logging.info('betting on %s' % str(bet))
             bet.put()
@@ -72,6 +86,18 @@ def bet(match_id, bet_amount=1):
             bet = bets[0]
             bet.useremail=user.email()
             bet.bet_amount=int(bet_amount)
+            if score_a:
+                bet.score_a = int(score_a)
+            if score_b:
+                bet.score_b = int(score_b)
+            if extra_a:
+                bet.extra_a = int(extra_a)
+            if extra_b:
+                bet.extra_b = int(extra_b)
+            if penalty_a:
+                bet.penalty_a = int(penalty_a)
+            if penalty_b:
+                bet.penalty_b = int(penalty_b)
             bet.put()
             result = bet.to_dict()
         result['match'] = match.to_dict()
