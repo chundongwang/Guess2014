@@ -39,7 +39,9 @@ def list_matches(stage_name=None):
     else:
         match_stages=Match.query(projection=[Match.stage],distinct=True).fetch()
         for match_stage in match_stages:
-            matches.append([match.to_dict() for match in Match.query(Match.stage==match_stage.stage).fetch()])
+            matches_of_this_stage = [match.to_dict() for match in Match.query(Match.stage==match_stage.stage).fetch()]
+            matches_of_this_stage.sort(key=lambda match: match['date'])
+            matches.append(matches_of_this_stage)
     response = make_response(json.dumps(matches, cls=DateTimeEncoder))
     response.headers['Content-Type'] = 'application/json'
     response.headers['mimetype'] = 'application/json'
