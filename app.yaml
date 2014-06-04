@@ -26,6 +26,10 @@ handlers:
   static_dir: css
   mime_type: text/css
 
+- url: /img
+  static_dir: img
+  mime_type: image
+
 - url: /fonts
   static_dir: fonts
   mime_type: font/opentype

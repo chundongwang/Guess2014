@@ -3,3 +3,19 @@ body {
   padding-top: 50px;
   padding-bottom: 20px;
 }
+
+img.flag {
+    width: 48px;
+    height: 32px;
+    border:1px solid #c7c6c6;
+}
+
+.match .nation {
+    text-transform: uppercase;
+}
+.row .vs {
+    position: absolute;
+    z-index: 1;
+    left:0;
+    right:0;
+}

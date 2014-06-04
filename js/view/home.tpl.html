@@ -14,9 +14,9 @@
 </div>
 
 <div class="container">
-  <div class="row" ng-repeat="i in [0, 1]">
-    <div class="col-md-3" ng-repeat="j in [0, 1, 2, 3]">
-      <gw-groupdiv gw-matches="groups[j+i*2]"></gw-groupdiv>
+  <div class="row" ng-repeat="i in [0, 1, 2]">
+    <div class="col-md-4" ng-repeat="j in [0, 1, 2]">
+      <gw-groupdiv ng-if="(j+i*3)<8" gw-matches="groups[j+i*3]"></gw-groupdiv>
     </div>
   </div>
   <gw-footer></gw-footer>

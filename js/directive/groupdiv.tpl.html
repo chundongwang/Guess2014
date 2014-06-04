@@ -1,5 +1,26 @@
-<h2>{{matches[0].stage}}</h2>
-<p ng-repeat="m in matches">{{m.date | date:'M月d日'}} {{m.team_a}} vs {{m.team_b}}</p>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">{{matches[0].stage}}</h3>
+  </div>
+  <div class="panel-body">
+    <div class="match" ng-repeat="m in matches">
+      <div class="">
+        <small>{{m.date | date:'M月d日'}}</small>
+      </div>
+      <div class="row text-center">
+        <div class="col-md-6 text-left">
+          <span><img class="flag" ng-alt="{{m.team_a}}" ng-src="/img/{{m.team_a.substr(0,3)}}.png"></span>
+          <abbr ng-attr-title="{{m.team_a}}"><span class="nation">{{m.team_a.substr(0,10)}}</span></abbr>
+        </div>
+        <strong class="vs">vs</strong>
+        <div class="col-md-6 text-right">
+          <abbr ng-attr-title="{{m.team_b}}"><span class="nation">{{m.team_b.substr(0,10)}}</span></abbr>
+          <span><img class="flag" ng-alt="{{m.team_b}}" ng-src="/img/{{m.team_b.substr(0,3)}}.png"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <p>
   <a class="btn btn-default" ng-href="#/group?stage={{matches[0].stage}}" role="button">查看详情    &raquo;</a>
 </p>
