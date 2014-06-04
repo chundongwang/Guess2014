@@ -5,22 +5,20 @@ WorldCupApp.getModule().directive('gwBetmodal', ['Guesser', function(Guesser) {
     restrict: 'E',
     scope: {
       match: '=gwMatch',
-      guess: '=gwGuess',
-      guessref: '=gwGuessref'
+      bet: '=gwBet',
+      betref: '=gwBetref'
     },
     templateUrl: 'js/directive/betmodal.tpl.html',
     link: function(scope, elem, attrs) {
       scope.save = function() {
-        var guess_a = scope.guess.guess_a;
-        var guess_b = scope.guess.guess_b;
-        var mid = scope.match.matchid;
         
-        // TODO: call backend to save the bet
-        console.log(mid, guess_a, guess_b);
+        Guesser.bet(scope.match.matchid, scope.bet, function(data){
+          //TODO change the button status
+        });
         
-        // refresh the guesses
-        scope.guessref.guess_a = guess_a;
-        scope.guessref.guess_b = guess_b;
+        // refresh the bets
+        scope.betref.score_a = scope.bet.score_a;
+        scope.betref.score_b = scope.bet.score_b;
 
         $('#betModal').modal('hide');
       }

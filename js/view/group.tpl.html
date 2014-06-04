@@ -19,12 +19,12 @@
         </p>
         <div ng-if="loggedIn">
           <p
-            ng-if="!!guesses[m.matchid].guess_a && !!guesses[m.matchid].guess_b">我的预测：{{guesses[m.matchid].guess_a}}
-            vs {{guesses[m.matchid].guess_b}}</p>
+            ng-if="!!bets[m.matchid].score_a && !!bets[m.matchid].score_b">我的预测：{{bets[m.matchid].score_a}}
+            vs {{bets[m.matchid].score_b}}</p>
         </div>
       </div>
     </div>
   </div>
   <gw-footer></gw-footer>
 </div>
-<gw-betmodal gw-match="theMatch" gw-guess="theGuess" gw-guessref="theGuessRef"></gw-betmodal>
+<gw-betmodal gw-match="theMatch" gw-bet="theBet" gw-betref="theBetRef"></gw-betmodal>

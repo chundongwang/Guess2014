@@ -23,18 +23,18 @@ WorldCupApp.getModule().controller('GroupCtrl',
             }
             return e.matchid == mid;
           });
-          var theGuess = $scope.guesses[mid];
+          var theBetRef = $scope.bets[mid];
 
           $scope.theMatch = {
             matchid: theMatch.matchid,
             team_a: theMatch.team_a,
             team_b: theMatch.team_b
           };
-          $scope.theGuess = {
-            guess_a: theGuess.guess_a,
-            guess_b: theGuess.guess_b
+          $scope.theBet = {
+            score_a: theBetRef.score_a,
+            score_b: theBetRef.score_b
           };
-          $scope.theGuessRef = theGuess;
+          $scope.theBetRef = theBetRef;
 
           $('#betModal').modal();
         }
@@ -61,9 +61,9 @@ WorldCupApp.getModule().controller('GroupCtrl',
       function asyncBetAll() {
         var deferred = $q.defer();
         Guesser.mybets(function(data) {
-          var guesses = [];
+          var bets = [];
           data.forEach(function(e) {
-            guesses[e.matchid] = e;
+            bets[e.matchid] = e;
           });
           deferred.resolve(data);
         });
@@ -72,19 +72,19 @@ WorldCupApp.getModule().controller('GroupCtrl',
 
       function updateAll() {
         asyncListA().then(function(matches) {
-          asyncBetAll().then(function(guesses) {
+          asyncBetAll().then(function(bets) {
             // After get all the data, massage the guess data to initialize the
             // object for unguessed matches
             matches.forEach(function(m) {
-              if (!guesses[m.matchid]) {
-                guesses[m.matchid] = {
+              if (!bets[m.matchid]) {
+                bets[m.matchid] = {
                   matchid: m.matchid
                 };
               }
             });
             // Then set them to the scope
             $scope.matches = matches;
-            $scope.guesses = guesses;
+            $scope.bets = bets;
           });
         });
       }
