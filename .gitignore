@@ -5,6 +5,9 @@ worldcup2014/
 *.sublime-project
 *.sublime-workspace
 
+############# Eclipse ##############
+.project
+
 ############# Python ###############
 # Byte-compiled / optimized / DLL files
 __pycache__/
