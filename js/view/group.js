@@ -43,12 +43,7 @@ WorldCupApp.getModule().controller('GroupCtrl',
           window.location.href = $scope.loginInfo.loginUrl;
         }
       }
-      /*
-       * $scope.save = function(mid, score_a, score_b) { console.log(mid + ' ' +
-       * score_a + ' ' + score_b);
-       * $scope.matches.forEach(function(e){if(e.matchid == mid){e.edit =
-       * false;}}); }
-       */
+
       updateAll();
 
       function asyncListA() {
@@ -65,7 +60,7 @@ WorldCupApp.getModule().controller('GroupCtrl',
 
       function asyncBetAll() {
         var deferred = $q.defer();
-        Guesser.betAll(function(data) {
+        Guesser.mybets(function(data) {
           var guesses = [];
           data.forEach(function(e) {
             guesses[e.matchid] = e;

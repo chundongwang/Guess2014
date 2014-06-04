@@ -1,6 +1,6 @@
 'use strict';
 
-WorldCupApp.getModule().directive('gwBetmodal', function() {
+WorldCupApp.getModule().directive('gwBetmodal', ['Guesser', function(Guesser) {
   return {
     restrict: 'E',
     scope: {
@@ -26,4 +26,4 @@ WorldCupApp.getModule().directive('gwBetmodal', function() {
       }
     }
   };
-});
+}]);
