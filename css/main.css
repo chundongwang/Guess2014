@@ -10,13 +10,17 @@ img.flag {
     border:1px solid #c7c6c6;
 }
 
-.match .nation {
+.match .nation,
+.vsli {
     text-transform: uppercase;
+    font-family: Menlo,Monaco,Consolas,"Courier New",monospace
 }
-.row .vs {
-    position: absolute;
-    z-index: 1;
-    left:0;
-    right:0;
-    margin-top:4px;
+
+.vsli {
+    width:10%;
+}
+
+.home,
+.away {
+    width:40%;
 }
