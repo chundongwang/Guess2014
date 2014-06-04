@@ -34,7 +34,7 @@ def main():
 def list_matches(stage_name=None):
     """Return a list of match according to the stage name"""
     matches = []
-    if stage_name != None:
+    if stage_name is not None:
         matches_of_this_stage = [match.to_dict() for match in Match.query(Match.stage==stage_name).fetch()]
         matches_of_this_stage.sort(key=lambda match: match['date'])
         matches.append(matches_of_this_stage)
@@ -67,6 +67,29 @@ def bet(match_id, bet_amount=1):
         extra_b = request.args.get('eb',None)
         penalty_a = request.args.get('pa',None)
         penalty_b = request.args.get('pb',None)
+
+        #Sanity check
+        #score_a and score_b are mandtary.
+        if score_a is None or score_b is None:
+            abort(400)
+        else:
+            #extra_a/extra_b has to appear in pair.
+            if extra_a is not None and extra_b is None:
+                abort(400)
+            elif extra_a is None and extra_b is not None:
+                abort(400)
+            #ok, as we have both extra_a/extra_b...
+            elif extra_a is not None and extra_b is not None:
+                #penalty_a/penalty_b has to appear in pair.
+                if penalty_a is not None and penalty_b is None:
+                    abort(400)
+                elif penalty_a is None and penalty_b is not None:
+                    abort(400)
+            #no extra_a/extra_b, no penalty_a/penalty_b allowed
+            else:
+                if penalty_a is not None or penalty_b is not None:
+                    abort(400)
+
         if len(bets)==0:
             bet = Bet(userid=user.user_id(),
                       useremail=user.email(),
@@ -114,7 +137,7 @@ def mybet(match_id=None):
         abort(401)
     else:
         bets = None
-        if match_id!=None:
+        if match_id is not None:
             bets = Bet.query(ndb.AND(Bet.userid==user.user_id(), Bet.bet_match_id==int(match_id))).fetch()
         else:
             bets = Bet.query(Bet.userid==user.user_id()).fetch()
@@ -129,15 +152,18 @@ def mybet(match_id=None):
         response.headers['mimetype'] = 'application/json'
         return response
 
+@app.errorhandler(400)
+def invalid_parameter(error):
+    return Response('Ajax API raises invalid parameter error.', 400)
 
 @app.errorhandler(401)
-def custom_401(error):
+def require_login(error):
     return Response('Ajax APIs requires user to login first.', 401, {'WWWAuthenticate':'Basic realm="Login Required"','LoginUrl':users.create_login_url(url_for('main'))})
 
 @app.errorhandler(404)
-def page_not_found(e):
+def page_not_found(error):
     """Return a custom 404 error."""
-    return 'Sorry, nothing at this URL.', 404
+    return Response('Sorry, nothing at this URL.', 404)
 
 if __name__ == '__main__':
     app.run()
