@@ -16,11 +16,15 @@ img.flag {
     font-family: Menlo,Monaco,Consolas,"Courier New",monospace
 }
 
-.vsli {
-    width:10%;
+.hero {
+    background:url("/img/2014-world-cup-background.jpg") center;
+    background-size:cover;
 }
 
-.home,
-.away {
-    width:40%;
+.hero .panel {
+    background:url("/img/transparent.png") repeat;
+}
+
+.match-date {
+    line-height:15px;
 }

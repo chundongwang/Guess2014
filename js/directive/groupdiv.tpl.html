@@ -2,26 +2,26 @@
   <div class="panel-heading">
     <h3 class="panel-title">{{matches[0].stage}}</h3>
   </div>
-  <div class="panel-body">
-    <div class="match" ng-repeat="m in matches">
-      <div class="">
-        <small>{{m.date | date:'M月d日'}}</small>
-      </div>
-      <div class="row text-center">
-        <div class="center-block">
-          <ul class="list-inline">
-            <li class="home">
-              <img class="flag" ng-alt="{{m.team_a}}" ng-src="/img/{{m.team_a.substr(0,3)}}.png">
-              <abbr ng-attr-title="{{m.team_a}}"><span class="nation">{{m.team_a.substr(0,3)}}</span></abbr>
-            </li>
-            <li class="vsli"><kbd>vs</kbd></li>
-            <li class="away">
-              <abbr ng-attr-title="{{m.team_b}}"><span class="nation">{{m.team_b.substr(0,3)}}</span></abbr>
-              <img class="flag" ng-alt="{{m.team_b}}" ng-src="/img/{{m.team_b.substr(0,3)}}.png">
-            </li>
-          </ul>
+  <div class="panel-body list-group">
+    <div ng-repeat="m in matches">
+      <a class="list-group-item match" ng-click="jumpToBet(m)">
+        <div class="row">
+          <div class="col-xs-2 col-md-2 match-date text-right">
+            <small>{{m.date | date:'short'}}</small>
+          </div>
+          <div class="col-xs-4 col-md-4 text-left">
+            <img class="flag" ng-alt="{{m.team_a}}" ng-src="/img/{{m.team_a.substr(0,3)}}.png">
+            <abbr ng-attr-title="{{m.team_a}}"><span class="nation">{{m.team_a.substr(0,10)}}</span></abbr>
+          </div>
+          <div class="col-xs-2 col-md-2 vs">
+            <kbd>vs</kbd>
+          </div>
+          <div class="col-xs-4 col-md-4 text-right">
+            <abbr ng-attr-title="{{m.team_b}}"><span class="nation">{{m.team_b.substr(0,10)}}</span></abbr>
+            <img class="flag" ng-alt="{{m.team_b}}" ng-src="/img/{{m.team_b.substr(0,3)}}.png">
+          </div>
         </div>
-      </div>
+      </a>
     </div>
   </div>
 </div>

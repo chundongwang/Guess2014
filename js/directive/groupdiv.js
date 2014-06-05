@@ -1,6 +1,7 @@
 'use strict';
 
-WorldCupApp.getModule().directive('gwGroupdiv', function() {
+WorldCupApp.getModule().directive('gwGroupdiv',
+  ["$location", function($location) {
   return {
     restrict: 'E',
     scope: {
@@ -8,7 +9,11 @@ WorldCupApp.getModule().directive('gwGroupdiv', function() {
     },
     templateUrl: 'js/directive/groupdiv.tpl.html',
     link: function (scope, elem, attr) {
-      //do nothing
+      scope.jumpToBet = function (m) {
+        $location.path('/group')
+                 .search('stage',m.stage)
+                 .search('bet',m.matchid);
+      }
     }
   };
-});
+}]);

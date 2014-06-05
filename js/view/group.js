@@ -7,6 +7,8 @@ WorldCupApp.getModule().controller('GroupCtrl',
       stage = stage || 'Group A';
       $scope.stage = stage;
 
+      var betMatchId = $location.search().bet;
+
       $scope.loginInfo = {
         nickName: WorldCupApp.user_nickname,
         loginUrl: WorldCupApp.login_url
@@ -66,6 +68,20 @@ WorldCupApp.getModule().controller('GroupCtrl',
             });
 
             $scope.matches = matches;
+
+            // Popup bet model if redirected by
+            // jumpToBet() in groupdiv.tpl.html
+            if (!!betMatchId) {
+              var mm = null;
+              if (matches.some(function(m) {
+                if (m.matchid == betMatchId) {
+                  mm = m;
+                }
+                return m.matchid == betMatchId;
+              })) {
+                $scope.showBetModal(mm);
+              }
+            }
           });
         });
       }
