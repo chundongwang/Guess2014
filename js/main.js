@@ -1,7 +1,6 @@
 var WorldCupApp = (function() {
   var name = 'WorldCupApp';
-  var module = angular.module(name, ['ngRoute']);
-  //var root = 'http://localhost:8080';
+  var module = angular.module(name, ['ngRoute', 'ngAnimate', 'ngCookies']);
   var root = '';
   return {
     getModule: function() {
