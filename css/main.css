@@ -9,6 +9,12 @@ img.flag {
     height: 32px;
     border:1px solid #c7c6c6;
 }
+img.ico24 {
+    display: inline-block;
+    width:24px;
+    height:24px;
+    background: url("/img/ico.png") no-repeat
+}
 
 .match .nation,
 .vsli {
