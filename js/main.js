@@ -39,3 +39,22 @@ WorldCupApp.getModule()
     }
   });
 }]);
+/*
+http://guessworldcup2014.appspot.com/ => 769411229766097
+http://localhost:8080/ => 769462413094312
+*/
+window.fbAsyncInit = function() {
+  FB.init({
+    appId      : '769462413094312',
+    xfbml      : true,
+    version    : 'v2.0'
+  });
+};
+
+(function(d, s, id){
+   var js, fjs = d.getElementsByTagName(s)[0];
+   if (d.getElementById(id)) {return;}
+   js = d.createElement(s); js.id = id;
+   js.src = "//connect.facebook.net/en_US/sdk.js";
+   fjs.parentNode.insertBefore(js, fjs);
+ }(document, 'script', 'facebook-jssdk'));
