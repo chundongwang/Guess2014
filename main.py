@@ -1,5 +1,6 @@
 import logging
 import json
+import os
 
 from flask import Flask,request,render_template,send_from_directory,redirect,url_for,abort,Response,make_response
 
@@ -7,6 +8,9 @@ from google.appengine.ext import ndb
 from google.appengine.api import users
 
 from model import Match,Bet,DateTimeEncoder
+
+def isLocal():
+    return os.environ['SERVER_SOFTWARE'].startswith('Development')
 
 app = Flask(__name__, static_folder='static')
 app.config.update(dict(
@@ -27,7 +31,11 @@ def main():
         login_url = users.create_login_url(url_for('main'))
     else:
         user_nickname = user.nickname()
-    return render_template('index.html', user_nickname=user_nickname, login_url=login_url)
+    #index.html is for prod, index2.html for local development
+    template = 'index.html'
+    if isLocal():
+        template = 'index2.html'
+    return render_template(template, user_nickname=user_nickname, login_url=login_url)
 
 @app.route('/list')
 @app.route('/list/<stage_name>')
