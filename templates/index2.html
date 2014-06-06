@@ -19,7 +19,18 @@
 
 <body>
   <div ng-view ng-app="WorldCupApp"></div>
-  <script src="js/1402023770.js"></script>
+  <script src="js/third-party/jquery.min.js"></script>
+  <script src="js/third-party/bootstrap.min.js"></script>
+  <script src="js/third-party/angular.js"></script>
+  <script src="js/third-party/angular-route.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/directive/navbar.js"></script>
+  <script src="js/directive/footer.js"></script>
+  <script src="js/directive/groupdiv.js"></script>
+  <script src="js/directive/betmodal.js"></script>
+  <script src="js/service/guesser.js"></script>
+  <script src="js/view/home.js"></script>
+  <script src="js/view/group.js"></script>
   <script>
     {% if user_nickname %}WorldCupApp.user_nickname = '{{ user_nickname }}';{% endif %}
     {% if login_url %}WorldCupApp.login_url = '{{ login_url }}';{% endif %}
