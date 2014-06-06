@@ -45,7 +45,7 @@ http://localhost:8080/ => 769462413094312
 */
 window.fbAsyncInit = function() {
   FB.init({
-    appId      : '769462413094312',
+    appId      : '769411229766097',
     xfbml      : true,
     version    : 'v2.0'
   });
