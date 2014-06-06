@@ -34,3 +34,12 @@ img.ico24 {
 .match-date {
     line-height:15px;
 }
+
+a.list-group-item-header {
+    background-color: #F5F5F5;
+}
+
+a.list-group-item-header:hover,
+a.list-group-item-header:focus  {
+    background-color: #E7E7E7;
+}
