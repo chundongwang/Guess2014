@@ -15,6 +15,13 @@
     <div ng-if="!!loginInfo.nickName" class="navbar-right navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li class="{{activeNav=='home'?'active':''}}"><a ng-href="#/home" class="navbar-brand">首页</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li><a ng-href="#/home?mode=default"><span class="glyphicon glyphicon-th-list">&nbsp;按组别</a></li>
+            <li><a ng-href="#/home?mode=bydate"><span class="glyphicon glyphicon-calendar">&nbsp;按日期</a></li>
+          </ul>
+        </li>
         <li class="{{activeNav=='my'?'active':''}}"><a ng-href="#/my" class="navbar-brand">我的竞猜</a></li>
       </ul>
       <p class="navbar-text">{{loginInfo.nickName}}</p>
