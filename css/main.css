@@ -41,14 +41,10 @@ img.ico24 {
     line-height:15px;
 }
 
-a.list-group-item-header {
-    background-color: #F5F5F5;
+.list-group-item-header {
+    background-color: #EFEFEF;
 }
 
-a.list-group-item-header:hover,
-a.list-group-item-header:focus  {
-    background-color: #E7E7E7;
-}
 
 .animate-hide.ng-hide-add,
 .animate-hide.ng-hide-remove {
