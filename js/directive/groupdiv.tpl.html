@@ -1,7 +1,0 @@
-<div class="list-group">
-  <p class="list-group-item list-group-item-header"><strong>{{matches[0].stage}}</strong></p>
-  <a ng-repeat="m in matches" class="list-group-item match" href ng-click="onMatchClick(m)">
-    <gw-matchdiv gw-match="m"></gw-matchdiv>
-    <div ng-if="!!m.bet">我的竞猜: {{m.bet.score_a}} : {{m.bet.score_b}}</div>
-  </a>
-</div>
