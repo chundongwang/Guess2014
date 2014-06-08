@@ -27,7 +27,13 @@ img.ico24 {
     background-size:cover;
 }
 
-.hero .panel {
+.paul {
+    background:url("/img/octopus_paul.jpg") center;
+    background-size:cover;
+}
+
+.hero .panel,
+.paul .panel {
     background:url("/img/transparent.png") repeat;
 }
 
@@ -46,19 +52,40 @@ a.list-group-item-header:focus  {
 
 .animate-hide.ng-hide-add,
 .animate-hide.ng-hide-remove {
--webkit-transition:all linear 0.5s;
--moz-transition:all linear 0.5s;
--o-transition:all linear 0.5s;
-transition:all linear 0.5s;
-display:inline-block!important;
+    -webkit-transition:all linear 0.5s;
+    -moz-transition:all linear 0.5s;
+    -o-transition:all linear 0.5s;
+    transition:all linear 0.5s;
+    display:inline-block!important;
 }
  
 .animate-hide.ng-hide-add.ng-hide-add-active,
 .animate-hide.ng-hide-remove {
-opacity:0;
+    opacity:0;
 }
  
 .animate-hide.ng-hide-add,
 .animate-hide.ng-hide-remove.ng-hide-remove-active {
-opacity:1;
+    opacity:1;
+}
+
+.editable-row {
+    cursor:pointer;
+}
+
+.editable-score {
+    min-width:280px;
+}
+
+.editable-score input,
+.editable-bet input {
+    width:60px!important;
+}
+
+.editable-bet {
+    min-width:70px;
+}
+
+.text-middle td {
+    vertical-align: middle!important;
 }

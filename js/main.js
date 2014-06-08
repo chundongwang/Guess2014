@@ -21,6 +21,9 @@ WorldCupApp.getModule()
   }).when('/group', {
     templateUrl: 'js/view/group.tpl.html',
     controller: 'GroupCtrl'
+  }).when('/my', {
+    templateUrl: 'js/view/my.tpl.html',
+    controller: 'MyCtrl'
   }).otherwise({
     redirectTo: '/home'
   });
@@ -44,7 +47,7 @@ http://localhost:8080/ => 769462413094312
 */
 window.fbAsyncInit = function() {
   FB.init({
-    appId      : '769462413094312',
+    appId      : '769411229766097',
     xfbml      : true,
     version    : 'v2.0'
   });

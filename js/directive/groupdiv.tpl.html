@@ -4,18 +4,18 @@
   <a ng-repeat="m in matches" class="list-group-item match"
     ng-href="#/group?stage={{m.stage}}&bet={{m.matchid}}">
     <div class="row">
-      <div class="col-xs-2 col-md-2 match-date text-right">
+      <div class="col-xs-2 match-date text-right">
         <small>{{m.date | date:'short'}}</small>
       </div>
-      <div class="col-xs-4 col-md-4 text-left">
+      <div class="col-xs-4 text-left">
         <img class="flag" ng-alt="{{m.team_a}}"
           ng-src="/img/{{m.team_a.substr(0,3)}}.png"> <abbr
           ng-attr-title="{{m.team_a}}"><span class="nation">{{m.team_a.substr(0,6)}}</span></abbr>
       </div>
-      <div class="col-xs-2 col-md-2 vs">
+      <div class="col-xs-2 vs">
         <kbd>vs</kbd>
       </div>
-      <div class="col-xs-4 col-md-4 text-right">
+      <div class="col-xs-4 text-right">
         <abbr ng-attr-title="{{m.team_b}}"><span class="nation">{{m.team_b.substr(0,6)}}</span></abbr>
         <img class="flag" ng-alt="{{m.team_b}}"
           ng-src="/img/{{m.team_b.substr(0,3)}}.png">

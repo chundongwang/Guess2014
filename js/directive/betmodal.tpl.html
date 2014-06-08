@@ -8,12 +8,12 @@
         <h4 class="modal-title" id="myModalLabel">我的预测...</h4>
       </div>
       <div class="modal-body">
-        <form class="form-inline" role="form">
+        <form class="form-inline text-center" role="form">
           <div class="form-group">
             <label for="score_a">{{matchref.team_a}}</label>
-            <input type="text" class="form-control" id="score_a" ng-model="bet.score_a" min="0" max="30" required="true">
+            <input type="number" class="form-control" id="score_a" ng-model="bet.score_a" min="0" max="30" required="true">
             <label>:</label>
-            <input type="text" class="form-control" id="score_b" ng-model="bet.score_b" min="0" max="30" required="true">
+            <input type="number" class="form-control" id="score_b" ng-model="bet.score_b" min="0" max="30" required="true">
             <label for="score_b">{{matchref.team_b}}</label>
           </div>
         </form>

@@ -1,0 +1,61 @@
+<gw-navbar gw-login="loginInfo"></gw-navbar>
+
+<div class="container" ng-click="resetAllEditables()">
+  <!-- Main jumbotron for a primary marketing message or call to action -->
+  <div class="jumbotron paul">
+    <div class="container panel">
+      <h1>我的竞猜</h1>
+    </div>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-hover text-center text-middle">
+      <thead>
+        <tr>
+          <th colspan="4" class="text-center">场次</th>
+          <th class="text-center">比分</th>
+          <th class="text-center">点数</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="b in bets" ng-click="editBet($index, $event)" class="editable-row">
+          <td>
+            <small>{{b.match.date | date:'short'}}</small>
+          </td>
+          <td class="text-left">
+            <img class="flag" ng-alt="{{b.match.team_a}}" ng-src="/img/{{b.match.team_a.substr(0,3)}}.png"> 
+            <abbr ng-attr-title="{{b.match.team_a}}"><span class="nation">{{b.match.team_a.substr(0,10)}}</span></abbr>
+          </td>
+          <td>
+            <kbd>vs</kbd>
+          </td>
+          <td class="text-right">
+            <abbr ng-attr-title="{{b.match.team_b}}"><span class="nation">{{b.match.team_b.substr(0,10)}}</span></abbr>
+            <img class="flag" ng-alt="{{b.match.team_b}}" ng-src="/img/{{b.match.team_b.substr(0,3)}}.png">
+          </td>
+          <td>
+            <div class="editable-score">
+              <center>
+              <span ng-if="!isediting[$index]">
+                <strong>{{b.score_a}} : {{b.score_b}}</strong>
+              </span>
+              <form class="form-inline" role="form" ng-if="!!isediting[$index]">
+                <input type="number" class="form-control" id="score_a" ng-model="b.score_a" min="0" max="30" required="true" placeholder="{{b.score_a}}">
+                &nbsp;:&nbsp;
+                <input type="number" class="form-control" id="score_b" ng-model="b.score_b" min="0" max="30" required="true" placeholder="{{b.score_b}}">
+                &nbsp;
+                <button type="button" class="btn btn-primary" ng-click="saveBet($index)" ng-disabled="disableSave"><span class="glyphicon glyphicon-floppy-disk"></span></button>
+              </form>
+            </center>
+            </div>
+          </td>
+          <td>
+            <span>
+              <strong>{{b.bet_amount*3}}</strong>
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <gw-footer></gw-footer>
+</div>

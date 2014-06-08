@@ -11,14 +11,17 @@ files = [
     "js/directive/betmodal.js",
     "js/service/guesser.js",
     "js/view/home.js",
-    "js/view/group.js"
+    "js/view/group.js",
+    "js/view/my.js"
 ]
 
 raw_files = [
     "js/third-party/jquery.min.js",
     "js/third-party/bootstrap.min.js",
     "js/third-party/angular.min.js",
-    "js/third-party/angular-route.min.js"
+    "js/third-party/angular-route.min.js",
+    "js/third-party/angular-animate.min.js",
+    "js/third-party/angular-cookies.min.js"
 ]
 
 copyright = '/*! GuessWorldCup2014 (c) 2014 */'
