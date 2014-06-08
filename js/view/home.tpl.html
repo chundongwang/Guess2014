@@ -12,12 +12,16 @@
 </div>
 
 <div class="container">
-  <div ng-if="mode=='bydate'" class="panel panel-default" ng-repeat="group in groups">
-    <div class="panel-heading">{{group[0].date | date:'yyyy年M月d日'}}</div>
-    <div class="list-group">
-      <a class="list-group-item match" ng-repeat="m in group" href ng-click="showBetModal(m)">
-        <gw-matchdiv gw-match="m" gw-shownationname="true"></gw-matchdiv>
-      </a>
+  <div ng-if="mode=='bydate'" class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <div class="panel panel-default" ng-repeat="group in groups">
+        <div class="panel-heading">{{group[0].date | date:'yyyy年M月d日'}}</div>
+        <div class="list-group">
+          <a class="list-group-item match" ng-repeat="m in group" href ng-click="showBetModal(m)">
+            <gw-matchdiv gw-match="m" gw-shownationname="true"></gw-matchdiv>
+          </a>
+        </div>
+      </div>
     </div>
   </div>
   <div ng-if="mode=='default'" class="row" ng-repeat="i in [0, 1]">
@@ -26,7 +30,7 @@
         <p class="list-group-item list-group-item-header"><strong>{{groups[j+i*4][0].stage}}</strong></p>
         <a ng-repeat="m in groups[j+i*4]" class="list-group-item match" href ng-click="showBetModal(m)">
           <gw-matchdiv gw-match="m"></gw-matchdiv>
-          <div ng-if="!!m.bet">我的竞猜: {{m.bet.score_a}} : {{m.bet.score_b}}</div>
+          <span ng-if="!!m.bet" class="badge">我的竞猜: {{m.bet.score_a}} : {{m.bet.score_b}}</span>
         </a>
       </div>
     </div>

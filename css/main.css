@@ -1,12 +1,12 @@
 /* Move down content because we have a fixed navbar that is 50px tall */
 body {
-  padding-top: 50px;
-  padding-bottom: 20px;
+  padding-top:50px;
+  padding-bottom:20px;
 }
 
 img.flag {
-    width: 48px;
-    height: 32px;
+    width:48px;
+    height:32px;
     border:1px solid #c7c6c6;
 }
 img.ico24 {
@@ -35,6 +35,15 @@ img.ico24 {
 .hero .panel,
 .paul .panel {
     background:url("/img/transparent.png") repeat;
+}
+
+.match-row {
+    line-height:32px; /* eq img.flag.width */
+}
+
+.match-row .vs {
+    top:0px;
+    bottom:0px;
 }
 
 .match-date {
