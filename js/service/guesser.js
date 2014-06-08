@@ -31,6 +31,7 @@ WorldCupApp.getModule().factory('Guesser', ['$http', function($http) {
 
   return {
     listAll: listAll,
+    listAllByDate: listAllByDate,
     listA: listA,
     mybets: mybets,
     bet: bet

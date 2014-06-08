@@ -4,7 +4,8 @@ WorldCupApp.getModule().directive('gwNavbar', function() {
   return {
     restrict: 'E',
     scope: {
-      loginInfo: '=gwLogin'
+      loginInfo: '=gwLogin',
+      activeNav: '=gwActivenav'
     },
     templateUrl: 'js/directive/navbar.tpl.html',
     link: function(scope, elem, attr) {

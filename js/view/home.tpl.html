@@ -1,4 +1,4 @@
-<gw-navbar gw-login="loginInfo"></gw-navbar>
+<gw-navbar gw-login="loginInfo" gw-activenav="'home'"></gw-navbar>
 
 <!-- Main jumbotron for a primary marketing message or call to action -->
 <div class="jumbotron hero">
@@ -12,13 +12,13 @@
 </div>
 
 <div class="container">
-  <div ng-if="mode=='default'" class="row" ng-repeat="i in [0, 1, 2, 3]">
+  <div ng-if="mode=='bydate'" class="row" ng-repeat="i in [0, 1, 2, 3]">
     <div class="col-md-6" ng-repeat="j in [0, 1]">
       <gw-groupdiv ng-if="(j+i*2)<8" gw-matches="groups[j+i*2]" gw-onmatchclick="showBetModal"></gw-groupdiv>
     </div>
   </div>
-  <div ng-if="mode=='bydate'" class="row" ng-repeat="i in [0, 1]">
-    <div class="col-md-3" ng-repeat="j in [0, 1, 2, 3]">
+  <div ng-if="mode=='default'" class="row" ng-repeat="i in [0, 1]">
+    <div class="col-xs-6 col-md-3" ng-repeat="j in [0, 1, 2, 3]">
       <gw-groupdiv ng-if="(j+i*4)<8" gw-matches="groups[j+i*4]"></gw-groupdiv>
     </div>
   </div>

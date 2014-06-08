@@ -3,22 +3,22 @@
   <a ng-repeat="m in matches" class="list-group-item match" href ng-click="onMatchClick(m)">
     <div class="row">
       <div class="col-xs-2 match-date text-right">
-        <small>{{m.date | date:'short'}}</small>
+        <small>{{m.date | date:'M/d HH:mm'}}</small>
       </div>
       <div class="col-xs-4 text-left">
-        <img class="flag" ng-alt="{{m.team_a}}"
-          ng-src="/img/{{m.team_a.substr(0,3)}}.png"> <abbr
-          ng-attr-title="{{m.team_a}}"><span class="nation">{{m.team_a.substr(0,6)}}</span></abbr>
+         <abbr ng-attr-title="{{m.team_a}}">
+            <img class="flag" ng-alt="{{m.team_a}}" ng-src="/img/{{m.team_a.substr(0,3)}}.png">
+         </abbr>
       </div>
       <div class="col-xs-2 vs">
         <kbd>vs</kbd>
-        <div ng-if="!!m.bet">我的竞猜: {{m.bet.score_a}} : {{m.bet.score_b}}</div>
       </div>
       <div class="col-xs-4 text-right">
-        <abbr ng-attr-title="{{m.team_b}}"><span class="nation">{{m.team_b.substr(0,6)}}</span></abbr>
-        <img class="flag" ng-alt="{{m.team_b}}"
-          ng-src="/img/{{m.team_b.substr(0,3)}}.png">
+        <abbr ng-attr-title="{{m.team_b}}">
+          <img class="flag" ng-alt="{{m.team_b}}" ng-src="/img/{{m.team_b.substr(0,3)}}.png">
+        </abbr>
       </div>
     </div>
+    <div ng-if="!!m.bet">我的竞猜: {{m.bet.score_a}} : {{m.bet.score_b}}</div>
   </a>
 </div>

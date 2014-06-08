@@ -1,4 +1,4 @@
-<gw-navbar gw-login="loginInfo"></gw-navbar>
+<gw-navbar gw-login="loginInfo" gw-activenav="'my'"></gw-navbar>
 
   <!-- Main jumbotron for a primary marketing message or call to action -->
   <div class="jumbotron paul">
@@ -53,7 +53,6 @@
           </td>
           <td>
             <div class="editable-score">
-              <center>
               <span ng-if="!isediting[$index]">
                 <strong>{{b.score_a}} : {{b.score_b}}</strong>
               </span>
@@ -64,7 +63,6 @@
                 &nbsp;
                 <button type="button" class="btn btn-primary" ng-click="saveBet($index)" ng-disabled="disableSave"><span class="glyphicon glyphicon-floppy-disk"></span></button>
               </form>
-            </center>
             </div>
           </td>
           <td>

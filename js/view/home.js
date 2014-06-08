@@ -3,7 +3,7 @@
 WorldCupApp.getModule().controller('HomeCtrl', ['$scope', '$cookies', '$location', 'Guesser', function($scope, $cookies, $location, Guesser) {
   
   $scope.known = angular.equals($cookies.gwKnown, 'true');
-  $scope.mode = 'default';
+  $scope.mode = $location.search().mode || 'default';
 
   $scope.loginInfo = {
     nickName:WorldCupApp.user_nickname, 
