@@ -1,0 +1,20 @@
+<div class="row">
+  <div class="col-xs-2 match-date text-right">
+    <small>{{match.date | date:'M/d HH:mm'}}</small>
+  </div>
+  <div class="col-xs-4 text-left">
+     <abbr ng-attr-title="{{match.team_a}}">
+        <img class="flag" ng-alt="{{match.team_a}}" ng-src="/img/{{match.team_a.substr(0,3)}}.png">
+        <span ng-if="!!showNationName" class="nation">{{match.team_a.substr(0,10)}}</span>
+     </abbr>
+  </div>
+  <div class="col-xs-2 vs">
+    <kbd>vs</kbd>
+  </div>
+  <div class="col-xs-4 text-right">
+    <abbr ng-attr-title="{{match.team_b}}">
+      <span ng-if="!!showNationName" class="nation">{{match.team_b.substr(0,10)}}</span>
+      <img class="flag" ng-alt="{{match.team_b}}" ng-src="/img/{{match.team_b.substr(0,3)}}.png">
+    </abbr>
+  </div>
+</div>

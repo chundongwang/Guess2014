@@ -30,7 +30,7 @@
     <table class="table table-hover text-center text-middle">
       <thead>
         <tr>
-          <th colspan="4" class="text-center">场次</th>
+          <th class="text-center">场次</th>
           <th class="text-center">比分</th>
           <th class="text-center">点数</th>
         </tr>
@@ -38,18 +38,7 @@
       <tbody>
         <tr ng-repeat="b in bets" ng-click="editBet($index, $event)" class="editable-row">
           <td>
-            <small>{{b.match.date | date:'short'}}</small>
-          </td>
-          <td class="text-left">
-            <img class="flag" ng-alt="{{b.match.team_a}}" ng-src="/img/{{b.match.team_a.substr(0,3)}}.png"> 
-            <abbr ng-attr-title="{{b.match.team_a}}"><span class="nation">{{b.match.team_a.substr(0,10)}}</span></abbr>
-          </td>
-          <td>
-            <kbd>vs</kbd>
-          </td>
-          <td class="text-right">
-            <abbr ng-attr-title="{{b.match.team_b}}"><span class="nation">{{b.match.team_b.substr(0,10)}}</span></abbr>
-            <img class="flag" ng-alt="{{b.match.team_b}}" ng-src="/img/{{b.match.team_b.substr(0,3)}}.png">
+            <gw-matchdiv gw-match="b.match" gw-shownationname="true"></gw-matchdiv>
           </td>
           <td>
             <div class="editable-score">

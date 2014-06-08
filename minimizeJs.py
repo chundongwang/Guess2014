@@ -8,6 +8,7 @@ files = [
     "js/directive/navbar.js",
     "js/directive/footer.js",
     "js/directive/groupdiv.js",
+    "js/directive/matchdiv.js",
     "js/directive/betmodal.js",
     "js/service/guesser.js",
     "js/view/home.js",
