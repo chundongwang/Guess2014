@@ -14,8 +14,10 @@
 <div class="container">
   <div class="row" ng-repeat="i in [0, 1, 2, 3]">
     <div class="col-md-6" ng-repeat="j in [0, 1]">
-      <gw-groupdiv ng-if="(j+i*2)<8" gw-matches="groups[j+i*2]"></gw-groupdiv>
+      <gw-groupdiv ng-if="(j+i*2)<8" gw-matches="groups[j+i*2]" gw-onmatchclick="showBetModal"></gw-groupdiv>
     </div>
   </div>
   <gw-footer></gw-footer>
 </div>
+
+<gw-betmodal gw-matchref="theMatchRef" gw-bet="theBet"></gw-betmodal>

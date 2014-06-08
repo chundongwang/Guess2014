@@ -11,7 +11,6 @@ files = [
     "js/directive/betmodal.js",
     "js/service/guesser.js",
     "js/view/home.js",
-    "js/view/group.js",
     "js/view/my.js"
 ]
 
