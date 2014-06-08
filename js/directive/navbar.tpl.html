@@ -11,6 +11,7 @@
     </div>
     <div class="navbar-right">
       <p class="navbar-text" ng-if="!!loginInfo.nickName">{{loginInfo.nickName}}</p>
+      <a ng-if="!!loginInfo.nickName" ng-href="#/my" class="btn btn-success navbar-btn">我的竞猜</a>
       <a ng-if="!!loginInfo.loginUrl" ng-href="{{loginInfo.loginUrl}}" class="btn btn-success navbar-btn">登录</a>
     </div>
   </div>
