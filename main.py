@@ -2,6 +2,9 @@ import logging
 import json
 import os
 
+from datetime import date
+import time
+
 from flask import Flask,request,render_template,send_from_directory,redirect,url_for,abort,Response,make_response
 
 from google.appengine.ext import ndb
@@ -57,9 +60,24 @@ def list_matches(stage_name=None):
     response.headers['mimetype'] = 'application/json'
     return response
 
+@app.route('/list_by_date')
+def list_matches_by_date():
+    """Return a list of match list group by date"""
+    matches_by_date = {}
+    for match in Match.query().fetch():
+        d = date.fromtimestamp(time.mktime(match.date.timetuple()))
+        if not d in matches_by_date:
+            matches_by_date[d] = []
+        matches_by_date[d].append(match.to_dict())
+    response = make_response(json.dumps(sorted(matches_by_date.values(), key=lambda list: list[0]['date']), cls=DateTimeEncoder))
+    response.headers['Content-Type'] = 'application/json'
+    response.headers['mimetype'] = 'application/json'
+    return response
+
 @app.route('/bet/<match_id>')
 @app.route('/bet/<match_id>/<bet_amount>')
 def bet(match_id, bet_amount=1):
+    """Put down a bet"""
     user = users.get_current_user()
     if not user:
         abort(401)

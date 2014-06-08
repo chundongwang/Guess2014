@@ -21,6 +21,9 @@ handlers:
 - url: /mybet.*
   script: main.app
 
+- url: /list_by_date.*
+  script: main.app
+
 - url: /admin.*
   script: admin.app
 
