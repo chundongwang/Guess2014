@@ -1,9 +1,9 @@
 'use strict';
 
-WorldCupApp.getModule().controller('HomeCtrl', ['$scope', '$cookies', 'Guesser', function($scope, $cookies, Guesser) {
+WorldCupApp.getModule().controller('HomeCtrl', ['$scope', '$cookies', '$location', 'Guesser', function($scope, $cookies, $location, Guesser) {
   
-  $scope.known = angular.equals($cookies.gwKnown, 'true')
-
+  $scope.known = angular.equals($cookies.gwKnown, 'true');
+  $scope.mode = 'default';
 
   $scope.loginInfo = {
     nickName:WorldCupApp.user_nickname, 
@@ -35,7 +35,11 @@ WorldCupApp.getModule().controller('HomeCtrl', ['$scope', '$cookies', 'Guesser',
   };
 
   function updateAll() {
-    Guesser.listAll(function(groups) {
+    var listfunc = Guesser.listAll;
+    if ($scope.mode == 'bydate') {
+      listfunc = Guesser.listAllByDate;
+    }
+    listfunc(function(groups) {
       $scope.groups = groups;
       
       // Retrieve bets if the user is logged in

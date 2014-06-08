@@ -15,18 +15,19 @@ files = [
 ]
 
 raw_files = [
-    "js/third-party/jquery.min.js",
-    "js/third-party/bootstrap.min.js",
-    "js/third-party/angular.min.js",
-    "js/third-party/angular-route.min.js",
-    "js/third-party/angular-animate.min.js",
-    "js/third-party/angular-cookies.min.js"
+    "js/third-party/Chart.min.js"
 ]
 
 copyright = '/*! GuessWorldCup2014 (c) 2014 */'
 
 index_template = """{%% extends "base.html" %%}
 {%% block script %%}
+  <script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.0.min.js"></script>
+  <script src="//ajax.aspnetcdn.com/ajax/bootstrap/3.1.1/bootstrap.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-route.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-animate.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-cookies.min.js"></script>
   <script src="%s"></script>
 {%% endblock %%}"""
 

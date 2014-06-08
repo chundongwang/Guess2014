@@ -85,3 +85,12 @@ img.ico24 {
 .text-middle td {
     vertical-align: middle!important;
 }
+
+/* TO BE REMOVED */
+.placeholders {
+  text-align: center;
+}
+.placeholder img {
+  display: inline-block;
+  border-radius: 50%;
+}

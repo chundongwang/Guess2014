@@ -12,9 +12,14 @@
 </div>
 
 <div class="container">
-  <div class="row" ng-repeat="i in [0, 1, 2, 3]">
+  <div ng-if="mode=='default'" class="row" ng-repeat="i in [0, 1, 2, 3]">
     <div class="col-md-6" ng-repeat="j in [0, 1]">
       <gw-groupdiv ng-if="(j+i*2)<8" gw-matches="groups[j+i*2]" gw-onmatchclick="showBetModal"></gw-groupdiv>
+    </div>
+  </div>
+  <div ng-if="mode=='bydate'" class="row" ng-repeat="i in [0, 1]">
+    <div class="col-md-3" ng-repeat="j in [0, 1, 2, 3]">
+      <gw-groupdiv ng-if="(j+i*4)<8" gw-matches="groups[j+i*4]"></gw-groupdiv>
     </div>
   </div>
   <gw-footer></gw-footer>
