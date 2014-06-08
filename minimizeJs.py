@@ -25,11 +25,20 @@ raw_files = [
 
 copyright = '/*! GuessWorldCup2014 (c) 2014 */'
 
+index_template = """{%% extends "base.html" %%}
+{%% block script %%}
+  <script src="%s"></script>
+{%% endblock %%}"""
+
+def replaceIndexHtml(root,filename):
+    with open(os.path.join(root, 'templates/index.html'), 'w+') as f:
+        f.write(index_template % filename)
+
 def minimizeAllJs(root):
     minimized_content = minimizeJsHelper(combineFiles(root, files))
     raw_content = combineFiles(root, raw_files)
-    filename = os.path.join(root, 'js/%s.js'%str(int(time.time())))
-    with open(filename, 'w+') as f:
+    filename = 'js/%s.js'%str(int(time.time()))
+    with open(os.path.join(root, filename), 'w+') as f:
         f.write(raw_content)
         f.write('\n'+copyright+'\n')
         f.write(minimized_content)
@@ -68,4 +77,5 @@ def minimizeJsHelper(js_content):
     return None
 
 if __name__ == '__main__':
-    print(minimizeAllJs(os.path.dirname(os.path.abspath(__file__))))
+    root = os.path.dirname(os.path.abspath(__file__))
+    replaceIndexHtml(root, minimizeAllJs(root))

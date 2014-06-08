@@ -1,27 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh_cn">
-<head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta property="wb:webmaster" content="e4fd0bf29d1fa5f6" />
-<link rel="shortcut icon" href="img/24x24.png">
-
-<title>Guess 2014</title>
-
-<!-- Bootstrap core CSS -->
-<link href="css/bootstrap.min.css" rel="stylesheet">
-
-<!-- Custom styles for this template -->
-<link href="css/main.css" rel="stylesheet">
-</head>
-
-<body>
-  <div ng-view ng-app="WorldCupApp"></div>
-  <script src="js/1402042361.js"></script>
-  <script>
-    {% if user_nickname %}WorldCupApp.user_nickname = '{{ user_nickname }}';{% endif %}
-    {% if login_url %}WorldCupApp.login_url = '{{ login_url }}';{% endif %}
-  </script>
-</body>
-</html>
+{% extends "base.html" %}
+{% block script %}
+  <script src="js/1402256472.js"></script>
+{% endblock %}
