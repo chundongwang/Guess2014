@@ -8,6 +8,8 @@ img.flag {
   width:48px;
   height:32px;
   border:1px solid #c7c6c6;
+  padding:1px;
+  border-radius:3px;
 }
 img.ico24 {
   display:inline-block;
@@ -38,12 +40,12 @@ img.ico24 {
 }
 
 .match-row {
-    line-height:32px; /* eq img.flag.width */
+  line-height:32px; /* eq img.flag.width */
 }
 
 .match-row .vs {
-    top:0px;
-    bottom:0px;
+  top:0px;
+  bottom:0px;
 }
 
 .match-date {
