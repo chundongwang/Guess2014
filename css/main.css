@@ -9,7 +9,7 @@ img.flag {
   height:32px;
   border:1px solid #c7c6c6;
   padding:1px;
-  border-radius:3px;
+  border-radius:6px;
 }
 img.ico24 {
   display:inline-block;
@@ -18,7 +18,7 @@ img.ico24 {
   background:url("/img/24x24.png") no-repeat
 }
 
-.match .nation,
+.match-row .nation,
 .vsli {
   text-transform:uppercase;
   font-family:Menlo,Monaco,Consolas,"Courier New",monospace
