@@ -44,6 +44,24 @@ def admin():
                                 )
                   match.put()
           return render_template('admin.html', msg='Matches imported!')
+      if method == 'initdb2':
+          with open('worldcup2014-knockoff-stage.csv', 'rb') as csvfile:
+              spamreader = csv.reader(csvfile)
+              for row in spamreader:
+                  match = Match(matchid=int(row[0]),
+                                date=datetime.strptime(str(row[1]), "%m/%d/%Y %H:%M"),
+                                stage=row[5],
+                                team_a='winner of '+row[2],
+                                team_b='winner of '+row[3],
+                                score_a=None,
+                                score_b=None,
+                                extra_a=None,
+                                extra_b=None,
+                                penalty_a=None,
+                                penalty_b=None
+                                )
+                  match.put()
+          return render_template('admin.html', msg='Matches imported!')
       elif method == 'insertmatch':
           match_id = int(request.args.get('id',0))
           team_a = request.args.get('a',None)
