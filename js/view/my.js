@@ -1,8 +1,6 @@
 'use strict';
 
 WorldCupApp.getModule().controller('MyCtrl', ['$scope', 'Guesser', 'Miner', function($scope, Guesser, Miner) {
-  $scope.isediting = [];
-  $scope.results = [];
 
   function rateResult(bet) {
     if (Miner.hasScores(bet)) {
@@ -22,10 +20,10 @@ WorldCupApp.getModule().controller('MyCtrl', ['$scope', 'Guesser', 'Miner', func
   function updateAll() {
     Guesser.mybets(function(data) {
       $scope.bets = data;
-      for (var i = $scope.bets.length - 1; i >= 0; i--) {
-        $scope.isediting[i]=false;
-        $scope.results[i]=rateResult($scope.bets[i]);
-      };
+      $scope.bets.forEach(function(b,i){
+        b.editable=false;
+        b.result=rateResult(b);
+      });
     });
   }
 
@@ -39,21 +37,21 @@ WorldCupApp.getModule().controller('MyCtrl', ['$scope', 'Guesser', 'Miner', func
   }
 
   $scope.resetAllEditables = function() {
-    for (var i = $scope.isediting.length - 1; i >= 0; i--) {
-      $scope.isediting[i]=false;
+    for (var i = $scope.bets.length - 1; i >= 0; i--) {
+      $scope.bets[i].editable=false;
     };
   }
   
-  $scope.editBet = function(iEdit, $event) {
-    if (!$scope.hasresult[iEdit]) {
+  $scope.editBet = function(bet, $event) {
+    if (bet.result<0) {
       $scope.resetAllEditables();
-      $scope.isediting[iEdit]=true;
+      bet.editable=true;
       $scope.stopBubble($event);
     }
   };
   
   $scope.saveBet = function(iEdit, $event) {
-    if (!$scope.hasresult[iEdit]) {
+    if ($scope.bets[iEdit].result<0) {
       $scope.disableSave = true;
       Guesser.bet($scope.bets[iEdit].bet_match_id, $scope.bets[iEdit], function(data){
         // refresh the bets in parent scope
@@ -65,14 +63,14 @@ WorldCupApp.getModule().controller('MyCtrl', ['$scope', 'Guesser', 'Miner', func
     }
   };
 
-  $scope.getClass = function(iEdit) {
-    switch($scope.results[iEdit]) {
+  $scope.getClass = function(bet) {
+    switch(bet.result) {
       case 0:
-        return ['bg-danger']
+        return ['bet-wrong']
       case 1:
-        return ['bg-warning']
+        return ['bet-okay']
       case 2:
-        return ['bg-success']
+        return ['bet-success']
       default:
         return ['editable-row'];
     }

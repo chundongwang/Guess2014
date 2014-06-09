@@ -90,6 +90,9 @@ def bet(match_id, bet_amount=1):
     else:
         match = Match.query(Match.matchid==int(match_id)).fetch(1)[0]
         logging.info('betting on %s' % str(match))
+        # Don't bet on played matches
+        if match.score_a is not None or match.score_b is not None:
+            abort(400)
         bets = Bet.query(ndb.AND(Bet.userid==user.user_id(), Bet.bet_match_id==int(match_id))).fetch()
         result = {}
         score_a = request.args.get('sa',None)

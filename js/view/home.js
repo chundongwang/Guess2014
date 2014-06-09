@@ -1,6 +1,6 @@
 'use strict';
 
-WorldCupApp.getModule().controller('HomeCtrl', ['$scope', '$cookies', '$location', 'Guesser', function($scope, $cookies, $location, Guesser) {
+WorldCupApp.getModule().controller('HomeCtrl', ['$scope', '$cookies', '$location', 'Guesser', 'Miner', function($scope, $cookies, $location, Guesser, Miner) {
   
   $scope.known = angular.equals($cookies.gwKnown, 'true');
   $scope.mode = $location.search().mode || 'default';
@@ -14,13 +14,15 @@ WorldCupApp.getModule().controller('HomeCtrl', ['$scope', '$cookies', '$location
   $scope.showBetModal = function(match) {
     // If loggedIn, display the modal
     if ($scope.loggedIn) {
-      $scope.theBet = match.bet ? {
-        score_a: match.bet.score_a,
-        score_b: match.bet.score_b
-      } : {};
-      $scope.theMatchRef = match;
+      if (!match.bet || match.bet.result<0) {
+        $scope.theBet = match.bet ? {
+          score_a: match.bet.score_a,
+          score_b: match.bet.score_b
+        } : {};
+        $scope.theMatchRef = match;
 
-      $('#betModal').modal();
+        $('#betModal').modal();
+      }
     }
     // Otherwise, redirect to signin
     else {
@@ -29,13 +31,47 @@ WorldCupApp.getModule().controller('HomeCtrl', ['$scope', '$cookies', '$location
   }
 
   $scope.getBetClass = function(bet) {
-    if (!!bet) return 'bet-has';//'bet-disabled',bet-win','bet-lose'
-    return ''
+    var classes = ['list-group-item', 'match'];
+    if (!!bet) {
+      switch(bet.result) {
+        case 0:
+          classes.push('bet-wrong');
+          break;
+        case 1:
+          classes.push('bet-okay');
+          break;
+        case 2:
+          classes.push('bet-success');
+          break;
+        default:
+          classes.push('bet-no-result');
+          classes.push('editable-row');
+          break;
+      }
+    } else {
+      classes.push('editable-row');
+    }
+    return classes;
   }
   
   $scope.setKnown = function() {
     $scope.known = true;
     $cookies.gwKnown = 'true';
+  }
+
+  function rateResult(bet) {
+    if (Miner.hasScores(bet)) {
+      var guess = {a:bet.score_a, b:bet.score_b};
+      var actual = {a:bet.match.score_a, b:bet.match.score_b}
+      if (Miner.rightAboutScore(actual, guess)) {
+        return 2;
+      } else if (Miner.rightAboutWinner(actual, guess)) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+    return -1;
   }
 
   function updateAll() {
@@ -52,7 +88,10 @@ WorldCupApp.getModule().controller('HomeCtrl', ['$scope', '$cookies', '$location
           bets.forEach(function(b) {
             groups.some(function(g) {
               return g.some(function(m){
-                if (m.matchid == b.bet_match_id) {m.bet = b;}
+                if (m.matchid == b.bet_match_id) {
+                  m.bet = b;
+                  m.bet.result = rateResult(b);
+                }
                 return m.matchid == b.bet_match_id;
               });
             });

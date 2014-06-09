@@ -97,8 +97,20 @@ img.ico24 {
   vertical-align: middle!important;
 }
 
-.bet-has {
-    background-color: #d9edf7!important;
+.bet-success {
+    background-color: #5cb85c!important;
+}
+
+.bet-okay {
+    background-color: #f0ad4e!important;
+}
+
+.bet-wrong {
+    background-color: #d9534f!important;
+}
+
+.bet-no-result {
+    background-color: #5bc0de!important;
 }
 
 /* TO BE REMOVED */

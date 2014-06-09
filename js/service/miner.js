@@ -87,6 +87,11 @@ WorldCupApp.getModule().factory('Miner', [function() {
     return team;
   }
 
+  function injectLeastRate(team) {
+    team.leastRate = team.lose * 2 + team.draw * 1;
+    return team;
+  }
+
   /*
    * Return the compare function of favorite rate to sort array of teams. Team
    * with higher favRate will comes first. The side effect of this function is
@@ -94,6 +99,9 @@ WorldCupApp.getModule().factory('Miner', [function() {
    */
   function getComparitorByFavRate(t1, t2) {
     return injectFavRate(t2).favRate - injectFavRate(t1).favRate;
+  }
+  function getComparitorByLeastRate(t1, t2) {
+    return injectLeastRate(t2).leastRate - injectLeastRate(t1).leastRate;
   }
 
   return {
@@ -104,6 +112,7 @@ WorldCupApp.getModule().factory('Miner', [function() {
     mergeTeam: mergeTeam,
     mergeTeams: mergeTeams,
     injectFavRate: injectFavRate,
-    getComparitorByFavRate: getComparitorByFavRate
+    getComparitorByFavRate: getComparitorByFavRate,
+    getComparitorByLeastRate: getComparitorByLeastRate
   };
 }]);

@@ -3,11 +3,12 @@ var WorldCupApp = (function() {
   var module = angular.module(name, ['ngRoute', 'ngAnimate', 'ngCookies']);
   var root = '';
   var colors = {
-    success :'#179355',
-    okay : '#FAEA0E',
-    wrong : '#DC171E',
-    grey : '#e0e4cc'/*,
-    white: '#fff',
+    /* Please keep aligned with main.css bet-* classes */
+    success :'#5cb85c',
+    okay : '#f0ad4e',
+    wrong : '#d9534f',
+    grey : '#e0e4cc',
+    white: '#fff'/*,
     steel: '#999',
     transparent : 'transparent'*/
   };
