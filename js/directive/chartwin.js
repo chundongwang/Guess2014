@@ -45,13 +45,13 @@ WorldCupApp.getModule().directive('gwChartwin', ['Miner', function(Miner) {
     var data, legends;
     if (all != 0) {
       legends = [{
-        color: colors.green,
+        color: colors.success,
         text: '猜对比分'
       }, {
-        color: colors.orange,
+        color: colors.okay,
         text: '猜对胜负'
       }, {
-        color: colors.grey,
+        color: colors.wrong,
         text: '猜错'
       }];
       data = [{

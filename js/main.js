@@ -3,9 +3,9 @@ var WorldCupApp = (function() {
   var module = angular.module(name, ['ngRoute', 'ngAnimate', 'ngCookies']);
   var root = '';
   var colors = {
-    green :'#5cb85c',
-    orange : '#f0ad4e',
-    red : '#d9534f',
+    success :'#179355',
+    okay : '#FAEA0E',
+    wrong : '#DC171E',
     grey : '#e0e4cc'/*,
     white: '#fff',
     steel: '#999',
