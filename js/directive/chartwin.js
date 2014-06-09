@@ -3,7 +3,8 @@
 WorldCupApp.getModule().directive('gwChartwin', ['Miner', function(Miner) {
   var colors = WorldCupApp.getColors();
   var options = {
-    animation: false
+    animation: false,
+    segmentStrokeWidth: 1
   };
   function getWinHalfLoss(bets) {
     var data = bets.filter(Miner.hasScores).reduce(function(prev, bet) {
