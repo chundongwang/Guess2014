@@ -2,12 +2,24 @@ var WorldCupApp = (function() {
   var name = 'WorldCupApp';
   var module = angular.module(name, ['ngRoute', 'ngAnimate', 'ngCookies']);
   var root = '';
+  var colors = {
+    green :'#5cb85c',
+    orange : '#f0ad4e',
+    red : '#d9534f',
+    grey : '#e0e4cc'/*,
+    white: '#fff',
+    steel: '#999',
+    transparent : 'transparent'*/
+  };
   return {
     getModule: function() {
       return module;
     },
     getRoot: function() {
       return root;
+    },
+    getColors: function() {
+      return colors;
     }
   };
 })();

@@ -5,36 +5,36 @@ body {
 }
 
 img.flag {
-    width:48px;
-    height:32px;
-    border:1px solid #c7c6c6;
+  width:48px;
+  height:32px;
+  border:1px solid #c7c6c6;
 }
 img.ico24 {
-    display: inline-block;
-    width:24px;
-    height:24px;
-    background: url("/img/24x24.png") no-repeat
+  display:inline-block;
+  width:24px;
+  height:24px;
+  background:url("/img/24x24.png") no-repeat
 }
 
 .match .nation,
 .vsli {
-    text-transform: uppercase;
-    font-family: Menlo,Monaco,Consolas,"Courier New",monospace
+  text-transform:uppercase;
+  font-family:Menlo,Monaco,Consolas,"Courier New",monospace
 }
 
 .hero {
-    background:url("/img/2014-world-cup-background.jpg") center;
-    background-size:cover;
+  background:url("/img/2014-world-cup-background.jpg") center;
+  background-size:cover;
 }
 
 .paul {
-    background:url("/img/octopus_paul.jpg") center;
-    background-size:cover;
+  background:url("/img/octopus_paul.jpg") center;
+  background-size:cover;
 }
 
 .hero .panel,
 .paul .panel {
-    background:url("/img/transparent.png") repeat;
+  background:url("/img/transparent.png") repeat;
 }
 
 .match-row {
@@ -47,52 +47,52 @@ img.ico24 {
 }
 
 .match-date {
-    line-height:15px;
+  line-height:15px;
 }
 
 .list-group-item-header {
-    background-color: #EFEFEF;
+  background-color: #EFEFEF;
 }
 
 
 .animate-hide.ng-hide-add,
 .animate-hide.ng-hide-remove {
-    -webkit-transition:all linear 0.5s;
-    -moz-transition:all linear 0.5s;
-    -o-transition:all linear 0.5s;
-    transition:all linear 0.5s;
-    display:inline-block!important;
+  -webkit-transition:all linear 0.5s;
+  -moz-transition:all linear 0.5s;
+  -o-transition:all linear 0.5s;
+  transition:all linear 0.5s;
+  display:inline-block!important;
 }
  
 .animate-hide.ng-hide-add.ng-hide-add-active,
 .animate-hide.ng-hide-remove {
-    opacity:0;
+  opacity:0;
 }
  
 .animate-hide.ng-hide-add,
 .animate-hide.ng-hide-remove.ng-hide-remove-active {
-    opacity:1;
+  opacity:1;
 }
 
 .editable-row {
-    cursor:pointer;
+  cursor:pointer;
 }
 
 .editable-score {
-    min-width:214px;
+  min-width:214px;
 }
 
 .editable-score input,
 .editable-bet input {
-    width:60px!important;
+  width:60px!important;
 }
 
 .editable-bet {
-    min-width:70px;
+  min-width:70px;
 }
 
 .text-middle td {
-    vertical-align: middle!important;
+  vertical-align: middle!important;
 }
 
 .bet-has {
@@ -104,6 +104,21 @@ img.ico24 {
   text-align: center;
 }
 .placeholder img {
-  display: inline-block;
-  border-radius: 50%;
+  display:inline-block;
+  border-radius:50%;
+}
+.legend {
+}
+.legend .color {
+  display:inline-block;
+  width:20px;
+  height:14px;
+  line-height:18px;
+  border:2px solid #FFF;
+  border-radius:3px;
+  vertical-align:middle;
+  margin-right:5px;
+}
+.legend .text {
+  font-size:12px;
 }
