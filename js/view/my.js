@@ -1,13 +1,30 @@
 'use strict';
 
-WorldCupApp.getModule().controller('MyCtrl', ['$scope', 'Guesser', function($scope, Guesser) {
+WorldCupApp.getModule().controller('MyCtrl', ['$scope', 'Guesser', 'Miner', function($scope, Guesser, Miner) {
   $scope.isediting = [];
+  $scope.results = [];
+
+  function rateResult(bet) {
+    if (Miner.hasScores(bet)) {
+      var guess = {a:bet.score_a, b:bet.score_b};
+      var actual = {a:bet.match.score_a, b:bet.match.score_b}
+      if (Miner.rightAboutScore(actual, guess)) {
+        return 2;
+      } else if (Miner.rightAboutWinner(actual, guess)) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+    return -1;
+  }
 
   function updateAll() {
     Guesser.mybets(function(data) {
       $scope.bets = data;
-      for (var i = data.length - 1; i >= 0; i--) {
+      for (var i = $scope.bets.length - 1; i >= 0; i--) {
         $scope.isediting[i]=false;
+        $scope.results[i]=rateResult($scope.bets[i]);
       };
     });
   }
@@ -28,21 +45,38 @@ WorldCupApp.getModule().controller('MyCtrl', ['$scope', 'Guesser', function($sco
   }
   
   $scope.editBet = function(iEdit, $event) {
-    $scope.resetAllEditables();
-    $scope.isediting[iEdit]=true;
-    $scope.stopBubble($event);
+    if (!$scope.hasresult[iEdit]) {
+      $scope.resetAllEditables();
+      $scope.isediting[iEdit]=true;
+      $scope.stopBubble($event);
+    }
   };
   
   $scope.saveBet = function(iEdit, $event) {
-    $scope.disableSave = true;
-    Guesser.bet($scope.bets[iEdit].bet_match_id, $scope.bets[iEdit], function(data){
-      // refresh the bets in parent scope
-      $scope.bets[iEdit] = data;
-      $scope.resetAllEditables();
-      $scope.disableSave = false;
-    });
-    $scope.stopBubble($event);
+    if (!$scope.hasresult[iEdit]) {
+      $scope.disableSave = true;
+      Guesser.bet($scope.bets[iEdit].bet_match_id, $scope.bets[iEdit], function(data){
+        // refresh the bets in parent scope
+        $scope.bets[iEdit] = data;
+        $scope.resetAllEditables();
+        $scope.disableSave = false;
+      });
+      $scope.stopBubble($event);
+    }
   };
+
+  $scope.getClass = function(iEdit) {
+    switch($scope.results[iEdit]) {
+      case 0:
+        return ['bg-danger']
+      case 1:
+        return ['bg-warning']
+      case 2:
+        return ['bg-success']
+      default:
+        return ['editable-row'];
+    }
+  }
   
   $scope.loginInfo = {
     nickName:WorldCupApp.user_nickname, 

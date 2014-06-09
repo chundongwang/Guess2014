@@ -29,19 +29,19 @@
       <thead>
         <tr>
           <th class="text-center">场次</th>
-          <th class="text-center">比分</th>
+          <th class="text-center">所猜比分</th>
           <th class="text-center">点数</th>
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="b in bets" ng-click="editBet($index, $event)" class="editable-row">
+        <tr ng-repeat="b in bets" ng-click="editBet($index, $event)" ng-class="getClass($index)">
           <td>
             <gw-matchdiv gw-match="b.match" gw-shownationname="true"></gw-matchdiv>
           </td>
           <td>
             <div class="editable-score">
               <span ng-if="!isediting[$index]">
-                <strong>{{b.score_a}} : {{b.score_b}}</strong>
+                <strong>{{b.score_a}} : {{b.score_b}}</strong><small ng-if="results[$index]>=0">(实际比分: {{b.match.score_a}} : {{b.match.score_b}})</small>
               </span>
               <form class="form-inline" role="form" ng-if="!!isediting[$index]">
                 <input type="number" class="form-control" id="score_a" ng-model="b.score_a" min="0" max="30" required="true" placeholder="{{b.score_a}}">
