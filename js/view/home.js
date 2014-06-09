@@ -28,11 +28,15 @@ WorldCupApp.getModule().controller('HomeCtrl', ['$scope', '$cookies', '$location
     }
   }
 
+  $scope.getBetClass = function(bet) {
+    if (!!bet) return 'bet-has';//'bet-disabled',bet-win','bet-lose'
+    return ''
+  }
   
   $scope.setKnown = function() {
     $scope.known = true;
     $cookies.gwKnown = 'true';
-  };
+  }
 
   function updateAll() {
     var listfunc = Guesser.listAll;
