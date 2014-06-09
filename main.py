@@ -50,9 +50,14 @@ def list_matches(stage_name=None):
         matches_of_this_stage.sort(key=lambda match: match['date'])
         matches.append(matches_of_this_stage)
     else:
-        match_stages=Match.query(projection=[Match.stage],distinct=True).fetch()
-        for match_stage in match_stages:
-            matches_of_this_stage = [match.to_dict() for match in Match.query(Match.stage==match_stage.stage).fetch()]
+        group_stages=['Group '+g for g in ['A','B','C','D','E','F','G','H']]
+        knockoff_stages=['Round of 16','Quarterfinals','Semi-Finals','Third-Place Play-Off','Final']
+        for match_stage in group_stages:
+            matches_of_this_stage = [match.to_dict() for match in Match.query(Match.stage==match_stage).fetch()]
+            matches_of_this_stage.sort(key=lambda match: match['date'])
+            matches.append(matches_of_this_stage)
+        for match_stage in knockoff_stages:
+            matches_of_this_stage = [match.to_dict() for match in Match.query(Match.stage==match_stage).fetch()]
             matches_of_this_stage.sort(key=lambda match: match['date'])
             matches.append(matches_of_this_stage)
     response = make_response(json.dumps(matches, cls=DateTimeEncoder))
