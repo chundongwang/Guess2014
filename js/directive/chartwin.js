@@ -1,23 +1,12 @@
 'use strict';
 
-WorldCupApp.getModule().directive('gwChartwin', [function() {
+WorldCupApp.getModule().directive('gwChartwin', ['Miner', function(Miner) {
   var colors = WorldCupApp.getColors();
   var options = {
     animation: false
   };
   function getWinHalfLoss(bets) {
-    function rightAboutWinner(actual, guess) {
-      var rightAboutDraw = actual.a == actual.b && guess.a == guess.b;
-      var rightOtherwise = (actual.a - actual.b) * (guess.a - guess.b) > 0;
-      return rightAboutDraw || rightOtherwise;
-    }
-    function rightAboutScore(actual, guess) {
-      return actual.a == guess.a && actual.b == guess.b;
-    }
-    function hasScores(bet) {
-      return bet.match.score_a != null && bet.match.score_b != null;
-    }
-    var data = bets.filter(hasScores).reduce(function(prev, bet) {
+    var data = bets.filter(Miner.hasScores).reduce(function(prev, bet) {
       var result = {
         win: 0,
         half: 0,
@@ -31,9 +20,9 @@ WorldCupApp.getModule().directive('gwChartwin', [function() {
         a: bet.score_a,
         b: bet.score_b
       };
-      if (rightAboutScore(actualScores, guessScores)) {
+      if (Miner.rightAboutScore(actualScores, guessScores)) {
         result.win = 1;
-      } else if (rightAboutWinner(actualScores, guessScores)) {
+      } else if (Miner.rightAboutWinner(actualScores, guessScores)) {
         result.half = 1;
       } else {
         result.loss = 1;

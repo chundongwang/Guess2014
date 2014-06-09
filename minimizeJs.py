@@ -5,11 +5,13 @@ from urllib import urlencode
 
 files = [
     "js/main.js",
+    "js/service/guesser.js",
+    "js/service/miner.js",
     "js/directive/navbar.js",
     "js/directive/footer.js",
     "js/directive/matchdiv.js",
     "js/directive/betmodal.js",
-    "js/service/guesser.js",
+    "js/directive/chartwin.js",
     "js/view/home.js",
     "js/view/my.js"
 ]
