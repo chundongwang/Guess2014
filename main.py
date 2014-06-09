@@ -5,7 +5,7 @@ import os
 from datetime import date
 import time
 
-from flask import Flask,request,render_template,send_from_directory,redirect,url_for,abort,Response,make_response
+from flask import Flask,request,render_template,send_from_directory,redirect,url_for,abort,Response,make_response,Markup
 
 from google.appengine.ext import ndb
 from google.appengine.api import users
@@ -31,13 +31,15 @@ def main():
     login_url = None
     user_nickname = None
     if not user:
-        login_url = users.create_login_url(url_for('main'))
+        # call Markup or we'll end up with escaped url
+        login_url = Markup(users.create_login_url(url_for('main')))
     else:
         user_nickname = user.nickname()
     #index.html is for prod, index2.html for local development
     template = 'index.html'
     if isLocal():
         template = 'index2.html'
+    logging.info('login_url=[[%s]]' % str(login_url))
     return render_template(template, user_nickname=user_nickname, login_url=login_url)
 
 @app.route('/list')
