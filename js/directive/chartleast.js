@@ -39,7 +39,7 @@ WorldCupApp.getModule().directive('gwChartleast', ['Miner', function(Miner) {
     scope: {
       bets: '=gwBets'
     },
-    templateUrl: 'js/directive/chartleast.tpl.html',
+    template: '<h5><strong>看衰球队</strong></h5><canvas id="gwChartLeast" width="200" height="200"></canvas>',
     link: function(scope, elem, attrs) {
       scope.$watch('bets', function(newVal, oldVal) {
         if (newVal === oldVal) {
