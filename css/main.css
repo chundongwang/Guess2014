@@ -136,3 +136,8 @@ img.ico24 {
 .legend .text {
   font-size:12px;
 }
+#eula-content
+{
+  height:500px;
+  overflow:auto;
+}

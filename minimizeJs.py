@@ -11,6 +11,7 @@ files = [
     "js/directive/footer.js",
     "js/directive/matchdiv.js",
     "js/directive/betmodal.js",
+    "js/directive/eulamodal.js",
     "js/directive/chartwin.js",
     "js/directive/chartfav.js",
     "js/directive/chartleast.js",

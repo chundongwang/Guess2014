@@ -1,6 +1,6 @@
 'use strict';
 
-WorldCupApp.getModule().controller('MyCtrl', ['$scope', 'Guesser', 'Miner', function($scope, Guesser, Miner) {
+WorldCupApp.getModule().controller('MyCtrl', ['$scope', '$cookies', '$location', 'Guesser', 'Miner', function($scope, $cookies, $location, Guesser, Miner) {
 
   function rateResult(bet) {
     if (Miner.hasScores(bet)) {
@@ -19,6 +19,10 @@ WorldCupApp.getModule().controller('MyCtrl', ['$scope', 'Guesser', 'Miner', func
 
   function updateAll() {
     Guesser.mybets(function(data) {
+      // Make sure user accepted Eula or navigate to home to review it.
+      if (!angular.equals($cookies.gwEulaStatus, 'true')) {
+        $location.path('/home');
+      }
       $scope.bets = data;
       $scope.bets.forEach(function(b,i){
         b.editable=false;
