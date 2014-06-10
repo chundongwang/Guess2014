@@ -56,6 +56,7 @@ WorldCupApp.getModule().controller('MyCtrl', ['$scope', 'Guesser', 'Miner', func
       Guesser.bet($scope.bets[iEdit].bet_match_id, $scope.bets[iEdit], function(data){
         // refresh the bets in parent scope
         $scope.bets[iEdit] = data;
+        $scope.bets[iEdit].result=rateResult(data);
         $scope.resetAllEditables();
         $scope.disableSave = false;
       });

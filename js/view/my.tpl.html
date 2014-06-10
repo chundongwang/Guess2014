@@ -44,7 +44,7 @@
                 &nbsp;:&nbsp;
                 <input type="number" class="form-control" id="score_b" ng-model="b.score_b" min="0" max="30" required="true" placeholder="{{b.score_b}}">
                 &nbsp;
-                <button type="button" class="btn btn-primary" ng-click="saveBet($index)" ng-disabled="disableSave"><span class="glyphicon glyphicon-floppy-disk"></span></button>
+                <button type="button" class="btn btn-primary" ng-click="saveBet($index, $event)" ng-disabled="disableSave"><span class="glyphicon glyphicon-floppy-disk"></span></button>
               </form>
             </div>
           </td>
