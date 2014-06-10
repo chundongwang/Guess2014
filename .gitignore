@@ -54,3 +54,6 @@ coverage.xml
 
 # Sphinx documentation
 docs/_build/
+
+# Windows Image Thumbnail
+img/Thumbs.db
