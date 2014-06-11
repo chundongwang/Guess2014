@@ -25,6 +25,15 @@ app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 # Note: We don't need to call run() since our application is embedded within
 # the App Engine WSGI application server.
 
+def json_response(obj):
+    response = make_response(json.dumps(obj, cls=DateTimeEncoder))
+    response.headers['Content-Type'] = 'application/json'
+    response.headers['mimetype'] = 'application/json'
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response.headers['Pragma'] = 'no-cache'
+    return response
+
+
 @app.route('/')
 def main():
     user = users.get_current_user()
@@ -62,10 +71,7 @@ def list_matches(stage_name=None):
             matches_of_this_stage = [match.to_dict() for match in Match.query(Match.stage==match_stage).order(Match.date).fetch()]
             matches_of_this_stage.sort(key=lambda match: match['date'])
             matches.append(matches_of_this_stage)
-    response = make_response(json.dumps(matches, cls=DateTimeEncoder))
-    response.headers['Content-Type'] = 'application/json'
-    response.headers['mimetype'] = 'application/json'
-    return response
+    return json_response(matches)
 
 def calcPopularity(team_name=None):
     if team_name is None:
@@ -91,10 +97,7 @@ def popularity(match_id=None):
         "team_b":calcPopularity(match.team_b),
         "match":match.to_dict()
     }
-    response = make_response(json.dumps(final_result, cls=DateTimeEncoder))
-    response.headers['Content-Type'] = 'application/json'
-    response.headers['mimetype'] = 'application/json'
-    return response
+    return json_response(final_result)
 
 @app.route('/report/<match_id>')
 def report_match(match_id=None):
@@ -108,10 +111,7 @@ def report_match(match_id=None):
         result = bet.to_dict()
         result['match'] = match.to_dict()
         bet_results.append(result)
-    response = make_response(json.dumps(bet_results, cls=DateTimeEncoder))
-    response.headers['Content-Type'] = 'application/json'
-    response.headers['mimetype'] = 'application/json'
-    return response
+    return json_response(bet_results)
 
 @app.route('/list_by_date')
 def list_matches_by_date():
@@ -122,10 +122,7 @@ def list_matches_by_date():
         if not d in matches_by_date:
             matches_by_date[d] = []
         matches_by_date[d].append(match.to_dict())
-    response = make_response(json.dumps(sorted(matches_by_date.values(), key=lambda list: list[0]['date']), cls=DateTimeEncoder))
-    response.headers['Content-Type'] = 'application/json'
-    response.headers['mimetype'] = 'application/json'
-    return response
+    return json_response(sorted(matches_by_date.values(), key=lambda list: list[0]['date']))
 
 @app.route('/bet/<match_id>')
 @app.route('/bet/<match_id>/<bet_amount>')
@@ -206,10 +203,7 @@ def bet(match_id, bet_amount=1):
             bet.put()
             result = bet.to_dict()
         result['match'] = match.to_dict()
-        response = make_response(json.dumps(result, cls=DateTimeEncoder))
-        response.headers['Content-Type'] = 'application/json'
-        response.headers['mimetype'] = 'application/json'
-        return response
+        return json_response(result)
 
 @app.route('/mybet')
 @app.route('/mybet/<match_id>')
@@ -229,10 +223,7 @@ def mybet(match_id=None):
             match = Match.query(Match.matchid==int(bet.bet_match_id)).fetch(1)[0]
             result['match'] = match.to_dict()
             results.append(result)
-        response = make_response(json.dumps(results, cls=DateTimeEncoder))
-        response.headers['Content-Type'] = 'application/json'
-        response.headers['mimetype'] = 'application/json'
-        return response
+        return json_response(results)
 
 @app.errorhandler(400)
 def invalid_parameter(error):
