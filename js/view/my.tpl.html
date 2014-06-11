@@ -37,7 +37,9 @@
           <td>
             <div class="editable-score">
               <span ng-if="!b.editable">
-                <strong>{{b.score_a}} : {{b.score_b}}</strong><small ng-if="b.result>=0">(实际比分: {{b.match.score_a}} : {{b.match.score_b}})</small>
+                <strong>{{b.score_a}} : {{b.score_b}}</strong>
+                <small ng-if="b.result>=0">(实际比分: {{b.match.score_a}} : {{b.match.score_b}})</small>
+                <i ng-if="b.result<0" class="glyphicon glyphicon-pencil"></i>
               </span>
               <form class="form-inline" role="form" ng-if="b.editable">
                 <input type="number" class="form-control" id="score_a" ng-model="b.score_a" min="0" max="30" required="true" placeholder="{{b.score_a}}">
