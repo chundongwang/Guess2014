@@ -113,14 +113,6 @@ img.ico24 {
     background-color: #5bc0de!important;
 }
 
-/* TO BE REMOVED */
-.placeholders {
-  text-align: center;
-}
-.placeholder img {
-  display:inline-block;
-  border-radius:50%;
-}
 .legend {
 }
 .legend .color {
@@ -136,8 +128,44 @@ img.ico24 {
 .legend .text {
   font-size:12px;
 }
-#eula-content
-{
+#eula-content {
   height:500px;
   overflow:auto;
+}
+.ico-large {
+  height: 1.11em;
+  line-height: 1.11em;
+  font-size: 4em;
+}
+@-webkit-keyframes spin {
+  0% {transform: rotate(0deg);}
+  50% {transform: rotate(180deg);}
+  100% {transform: rotate(360deg);}
+}
+@-moz-keyframes spin {
+  0% {transform: rotate(0deg);}
+  50% {transform: rotate(180deg);}
+  100% {transform: rotate(360deg);}
+}
+@-o-keyframes spin {
+  0% {transform: rotate(0deg);}
+  50% {transform: rotate(180deg);}
+  100% {transform: rotate(360deg);}
+}
+@-ms-keyframes spin {
+  0% {transform: rotate(0deg);}
+  50% {transform: rotate(180deg);}
+  100% {transform: rotate(360deg);}
+}
+@keyframes spin {
+  0% {transform: rotate(0deg);}
+  50% {transform: rotate(180deg);}
+  100% {transform: rotate(360deg);}
+}
+.spin {
+  display:inline-block;
+  -webkit-animation:spin 1.5s infinite linear;
+     -moz-animation:spin 1.5s infinite linear;
+       -o-animation:spin 1.5s infinite linear;
+          animation:spin 1.5s infinite linear;
 }

@@ -19,8 +19,8 @@
   </div>
 
 <div class="container" ng-click="resetAllEditables()">
-
-  <div class="table-responsive">
+  <gw-spinner gw-show="!loaded"></gw-spinner>
+  <div ng-if="loaded" class="table-responsive">
     <table class="table table-hover text-center text-middle">
       <thead>
         <tr>

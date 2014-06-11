@@ -4,6 +4,7 @@ WorldCupApp.getModule().controller('HomeCtrl', ['$scope', '$cookies', '$location
   
   $scope.known = angular.equals($cookies.gwKnown, 'true');
   $scope.mode = $location.search().mode || 'default';
+  $scope.loaded = false;
 
   $scope.loginInfo = {
     nickName:WorldCupApp.user_nickname, 
@@ -75,11 +76,9 @@ WorldCupApp.getModule().controller('HomeCtrl', ['$scope', '$cookies', '$location
   }
 
   function updateAll() {
-    var listfunc = Guesser.listAll;
-    if ($scope.mode == 'bydate') {
-      listfunc = Guesser.listAllByDate;
-    }
+    var listfunc = $scope.mode == 'bydate' ? Guesser.listAllByDate : Guesser.listAll;
     listfunc(function(groups) {
+      $scope.loaded = true;
       $scope.groups = groups;
       $scope.showEulaModal();
       
@@ -115,4 +114,4 @@ WorldCupApp.getModule().controller('HomeCtrl', ['$scope', '$cookies', '$location
   }
 
   updateAll();
-}]);
+}]);  
