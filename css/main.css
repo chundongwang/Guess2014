@@ -3,7 +3,6 @@ body {
   padding-top:50px;
   padding-bottom:20px;
 }
-
 img.flag {
   width:48px;
   height:32px;
@@ -56,14 +55,13 @@ img.ico24 {
   background-color: #EFEFEF;
 }
 
-
 .animate-hide.ng-hide-add,
 .animate-hide.ng-hide-remove {
-  -webkit-transition:all linear 0.5s;
-  -moz-transition:all linear 0.5s;
-  -o-transition:all linear 0.5s;
-  transition:all linear 0.5s;
   display:inline-block!important;
+  -webkit-transition:all linear 0.5s;
+     -moz-transition:all linear 0.5s;
+       -o-transition:all linear 0.5s;
+          transition:all linear 0.5s;
 }
  
 .animate-hide.ng-hide-add.ng-hide-add-active,
@@ -97,20 +95,24 @@ img.ico24 {
   vertical-align: middle!important;
 }
 
-.bet-success {
-    background-color: #5cb85c!important;
+.table-hover > tbody > tr.bet-success > td,
+.table-hover > tbody > tr.bet-success:hover > td {
+  background-color: #5cb85c;
 }
 
-.bet-okay {
-    background-color: #f0ad4e!important;
+.table-hover > tbody > tr.bet-okay > td,
+.table-hover > tbody > tr.bet-okay:hover > td {
+    background-color: #f0ad4e;
 }
 
-.bet-wrong {
-    background-color: #d9534f!important;
+.table-hover > tbody > tr.bet-wrong > td,
+.table-hover > tbody > tr.bet-wrong:hover > td {
+    background-color: #d9534f;
 }
 
-.bet-no-result {
-    background-color: #5bc0de!important;
+.table-hover > tbody > tr.bet-no-result > td,
+.table-hover > tbody > tr.bet-no-result:hover > td {
+    background-color: #5bc0de;
 }
 
 .legend {
