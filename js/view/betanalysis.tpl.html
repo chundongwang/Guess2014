@@ -4,14 +4,14 @@
   <div class="jumbotron paul">
     <div class="container panel">
       <h1>单场次竞猜分析</h1>
-      <div class="row placeholders">
-        <div class="col-xs-6 col-sm-4 placeholder">
+      <div class="row text-center">
+        <div class="col-xs-6 col-sm-4">
           <gw-chartallbets gw-bets="bets"></gw-chartallbets>
         </div>
-        <div class="col-xs-6 col-sm-4 placeholder">
+        <div class="col-xs-6 col-sm-4">
           <gw-chartwin gw-bets="bets"></gw-chartwin>
         </div>
-        <div class="col-xs-6 col-sm-4 placeholder">
+        <div class="col-xs-6 col-sm-4">
           <gw-chartpop gw-pops="pops"></gw-chartpop>
         </div>
       </div>
@@ -21,7 +21,7 @@
 <div class="container">
   <gw-spinner gw-show="!loaded"></gw-spinner>
   <div ng-if="loaded" class="row">
-    <div class="col-xs-4 col-xs-offset-4">
+    <div class="col-xs-6 col-xs-offset-3">
       <gw-matchdiv gw-match="bets[0].match" gw-shownationname="true" gw-showscore="true"></gw-matchdiv>
     </div>
   </div>
