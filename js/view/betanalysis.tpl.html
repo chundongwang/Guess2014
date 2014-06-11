@@ -19,7 +19,8 @@
   </div>
 
 <div class="container">
-  <div class="row">
+  <gw-spinner gw-show="!loaded"></gw-spinner>
+  <div ng-if="loaded" class="row">
     <div class="col-xs-4 col-xs-offset-4">
       <gw-matchdiv gw-match="bets[0].match" gw-shownationname="true" gw-showscore="true"></gw-matchdiv>
     </div>

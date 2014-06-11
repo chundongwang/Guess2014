@@ -26,7 +26,7 @@ WorldCupApp.getModule().directive('gwChartpop', ['Miner', function(Miner) {
     scope: {
       pops: '=gwPops'
     },
-    templateUrl: 'js/directive/chartpop.tpl.html',
+    template: '<h5><strong>人气对比</strong></h5><canvas id="gwChartPop" width="200" height="200"></canvas>',
     link: function(scope, elem, attrs) {
       scope.$watch('pops', function(newVal, oldVal) {
         if (newVal === oldVal) {

@@ -1,6 +1,7 @@
 'use strict';
 
-WorldCupApp.getModule().controller('BetanalysisCtrl', ['$scope', '$location', 'Guesser', 'Miner', function($scope, $location, Guesser, Miner) {
+WorldCupApp.getModule().controller('BetanalysisCtrl', ['$scope', '$cookies', '$location', 'Guesser', 'Miner', function($scope, $cookies, $location, Guesser, Miner) {
+  $scope.loaded = false;
 
   function rateResult(bet) {
     if (Miner.hasScores(bet)) {
@@ -20,6 +21,11 @@ WorldCupApp.getModule().controller('BetanalysisCtrl', ['$scope', '$location', 'G
   function updateAll() {
     var match_id = $location.search().m || 1;
     Guesser.report(match_id, function(data) {
+      $scope.loaded = true;
+      // Make sure user accepted Eula or navigate to home to review it.
+      if (!angular.equals($cookies.gwEulaStatus, 'true')) {
+        $location.path('/home');
+      }
       $scope.bets = data;
       $scope.bets.forEach(function(b,i){
         b.result=rateResult(b);

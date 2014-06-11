@@ -48,18 +48,18 @@ def list_matches(stage_name=None):
     """Return a list of match according to the stage name"""
     matches = []
     if stage_name is not None:
-        matches_of_this_stage = [match.to_dict() for match in Match.query(Match.stage==stage_name).fetch().order(Match.date)]
+        matches_of_this_stage = [match.to_dict() for match in Match.query(Match.stage==stage_name).order(Match.date).fetch()]
         matches_of_this_stage.sort(key=lambda match: match['date'])
         matches.append(matches_of_this_stage)
     else:
         group_stages=['Group '+g for g in ['A','B','C','D','E','F','G','H']]
         knockoff_stages=['Round of 16','Quarterfinals','Semi-Finals','Third-Place Play-Off','Final']
         for match_stage in group_stages:
-            matches_of_this_stage = [match.to_dict() for match in Match.query(Match.stage==match_stage).fetch().order(Match.date)]
+            matches_of_this_stage = [match.to_dict() for match in Match.query(Match.stage==match_stage).order(Match.date).fetch()]
             matches_of_this_stage.sort(key=lambda match: match['date'])
             matches.append(matches_of_this_stage)
         for match_stage in knockoff_stages:
-            matches_of_this_stage = [match.to_dict() for match in Match.query(Match.stage==match_stage).fetch().order(Match.date)]
+            matches_of_this_stage = [match.to_dict() for match in Match.query(Match.stage==match_stage).order(Match.date).fetch()]
             matches_of_this_stage.sort(key=lambda match: match['date'])
             matches.append(matches_of_this_stage)
     response = make_response(json.dumps(matches, cls=DateTimeEncoder))
