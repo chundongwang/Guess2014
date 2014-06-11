@@ -32,7 +32,7 @@
       <tbody>
         <tr ng-repeat="b in bets" ng-click="editBet(b, $event)" ng-class="getClass(b)">
           <td>
-            <gw-matchdiv gw-match="b.match" gw-shownationname="true"></gw-matchdiv>
+            <gw-matchdiv gw-match="b.match" gw-shownationname="true" gw-showscore="true"></gw-matchdiv>
           </td>
           <td>
             <div class="editable-score">

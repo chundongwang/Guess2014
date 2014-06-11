@@ -3,11 +3,11 @@
 WorldCupApp.getModule().factory('Guesser', ['$http', function($http) {
   function listAll(successCallback, errorCallback) {
     getListHelper('/list', successCallback, errorCallback);
-  };
+  }
 
   function listAllByDate(successCallback, errorCallback) {
     getListHelper('/list_by_date', successCallback, errorCallback);
-  };
+  }
   
   function listA(groupName, successCallback, errorCallback) {
     getListHelper('/list/'+groupName, successCallback, errorCallback);
@@ -15,6 +15,14 @@ WorldCupApp.getModule().factory('Guesser', ['$http', function($http) {
   
   function mybets(successCallback, errorCallback) {
     getListHelper('/mybet', successCallback, errorCallback);
+  }
+  
+  function report(matchid, successCallback, errorCallback) {
+    getListHelper('/report/'+matchid, successCallback, errorCallback);
+  }
+  
+  function popularity(matchid, successCallback, errorCallback) {
+    getListHelper('/pop/'+matchid, successCallback, errorCallback);
   }
 
   function getListHelper(path, successCallback, errorCallback) {
@@ -34,6 +42,8 @@ WorldCupApp.getModule().factory('Guesser', ['$http', function($http) {
     listAllByDate: listAllByDate,
     listA: listA,
     mybets: mybets,
-    bet: bet
+    bet: bet,
+    report: report,
+    popularity: popularity
   };
 }]);

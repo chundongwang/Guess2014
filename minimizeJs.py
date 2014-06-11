@@ -16,8 +16,11 @@ files = [
     "js/directive/chartfav.js",
     "js/directive/chartleast.js",
     "js/directive/spinner.js",
+    "js/directive/chartallbets.js",
+    "js/directive/chartpop.js",
     "js/view/home.js",
-    "js/view/my.js"
+    "js/view/my.js",
+    "js/view/betanalysis.js"
 ]
 
 raw_files = [

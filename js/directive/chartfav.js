@@ -3,11 +3,16 @@
 WorldCupApp.getModule().directive('gwChartfav', ['Miner', function(Miner) {
   var colors = WorldCupApp.getColors();
   var options = {
-    animation: false,
-    scaleShowGridLines: false
+    animation: true,
+    scaleShowGridLines: false,
+    scaleOverride: true,
+    scaleSteps: 0,
+    scaleStepWidth: 2,
+    scaleStartValue: 0
   };
 
   var top = 3;
+  var maxFavRate = 0;
 
   function getFavTeams(bets) {
     var teams = bets.reduce(function(prev, bet) {
@@ -20,6 +25,9 @@ WorldCupApp.getModule().directive('gwChartfav', ['Miner', function(Miner) {
 
   function convert(teams) {
     var data = teams.map(function(t) {
+      if (maxFavRate<t.favRate) {
+        maxFavRate = t.favRate;
+      }
       return t.favRate;
     });
     var labels = teams.map(function(t) {
@@ -48,6 +56,7 @@ WorldCupApp.getModule().directive('gwChartfav', ['Miner', function(Miner) {
 
         var ctx = document.getElementById("gwChartFav").getContext("2d");
         var data = convert(getFavTeams(newVal));
+        options.scaleSteps = Math.ceil(maxFavRate * 1.0 / options.scaleStepWidth);
         var chart = new Chart(ctx).Bar(data, options);
       });
     }

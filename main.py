@@ -48,21 +48,67 @@ def list_matches(stage_name=None):
     """Return a list of match according to the stage name"""
     matches = []
     if stage_name is not None:
-        matches_of_this_stage = [match.to_dict() for match in Match.query(Match.stage==stage_name).fetch()]
+        matches_of_this_stage = [match.to_dict() for match in Match.query(Match.stage==stage_name).fetch().order(Match.date)]
         matches_of_this_stage.sort(key=lambda match: match['date'])
         matches.append(matches_of_this_stage)
     else:
         group_stages=['Group '+g for g in ['A','B','C','D','E','F','G','H']]
         knockoff_stages=['Round of 16','Quarterfinals','Semi-Finals','Third-Place Play-Off','Final']
         for match_stage in group_stages:
-            matches_of_this_stage = [match.to_dict() for match in Match.query(Match.stage==match_stage).fetch()]
+            matches_of_this_stage = [match.to_dict() for match in Match.query(Match.stage==match_stage).fetch().order(Match.date)]
             matches_of_this_stage.sort(key=lambda match: match['date'])
             matches.append(matches_of_this_stage)
         for match_stage in knockoff_stages:
-            matches_of_this_stage = [match.to_dict() for match in Match.query(Match.stage==match_stage).fetch()]
+            matches_of_this_stage = [match.to_dict() for match in Match.query(Match.stage==match_stage).fetch().order(Match.date)]
             matches_of_this_stage.sort(key=lambda match: match['date'])
             matches.append(matches_of_this_stage)
     response = make_response(json.dumps(matches, cls=DateTimeEncoder))
+    response.headers['Content-Type'] = 'application/json'
+    response.headers['mimetype'] = 'application/json'
+    return response
+
+def calcPopularity(team_name=None):
+    if team_name is None:
+        abort(400)
+    matches = Match.query(ndb.OR(Match.team_a==team_name, Match.team_b==team_name)).fetch()
+    support=0
+    for match in matches:
+        bets = Bet.query(Bet.bet_match_id==int(match.matchid)).fetch()
+        for bet in bets:
+            if match.team_a == team_name and bet.score_a > bet.score_b:
+                support+=1
+            elif match.team_b == team_name and bet.score_b > bet.score_a:
+                support+=1
+    return support
+        
+@app.route('/pop/<match_id>')
+def popularity(match_id=None):
+    if match_id is None:
+        abort(400)
+    match = Match.query(Match.matchid==int(match_id)).fetch(1)[0]
+    final_result = {
+        "team_a":calcPopularity(match.team_a),
+        "team_b":calcPopularity(match.team_b),
+        "match":match.to_dict()
+    }
+    response = make_response(json.dumps(final_result, cls=DateTimeEncoder))
+    response.headers['Content-Type'] = 'application/json'
+    response.headers['mimetype'] = 'application/json'
+    return response
+
+@app.route('/report/<match_id>')
+def report_match(match_id=None):
+    user = users.get_current_user()
+    if match_id is None or not user:
+        abort(401)
+    bets = Bet.query(Bet.bet_match_id==int(match_id)).fetch()
+    match = Match.query(Match.matchid==int(match_id)).fetch(1)[0]
+    bet_results = []
+    for bet in bets:
+        result = bet.to_dict()
+        result['match'] = match.to_dict()
+        bet_results.append(result)
+    response = make_response(json.dumps(bet_results, cls=DateTimeEncoder))
     response.headers['Content-Type'] = 'application/json'
     response.headers['mimetype'] = 'application/json'
     return response

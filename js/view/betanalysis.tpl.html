@@ -1,0 +1,55 @@
+<gw-navbar gw-login="loginInfo" gw-activenav="'betanalysis'"></gw-navbar>
+
+  <!-- Main jumbotron for a primary marketing message or call to action -->
+  <div class="jumbotron paul">
+    <div class="container panel">
+      <h1>单场次竞猜分析</h1>
+      <div class="row placeholders">
+        <div class="col-xs-6 col-sm-4 placeholder">
+          <gw-chartallbets gw-bets="bets"></gw-chartallbets>
+        </div>
+        <div class="col-xs-6 col-sm-4 placeholder">
+          <gw-chartwin gw-bets="bets"></gw-chartwin>
+        </div>
+        <div class="col-xs-6 col-sm-4 placeholder">
+          <gw-chartpop gw-pops="pops"></gw-chartpop>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-xs-4 col-xs-offset-4">
+      <gw-matchdiv gw-match="bets[0].match" gw-shownationname="true" gw-showscore="true"></gw-matchdiv>
+    </div>
+  </div>
+  <br><br><br>
+  <div class="table-responsive">
+    <table class="table table-hover text-center text-middle">
+      <thead>
+        <tr>
+          <th class="text-center">参与者</th>
+          <th class="text-center">所猜比分</th>
+          <th class="text-center">结果</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="b in bets">
+          <td>
+            <span>{{b.useremail}}</span>
+          </td>
+          <td>
+            <strong>{{b.score_a}} : {{b.score_b}}</strong>
+          </td>
+          <td>
+            <span ng-if="b.result<2&&b.result>=0" class="glyphicon glyphicon-remove"></span>
+            <span ng-if="b.result==2" class="glyphicon glyphicon-ok"></span>
+            <span ng-if="b.result<0" class="glyphicon glyphicon-time"></span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <gw-footer></gw-footer>
+</div>

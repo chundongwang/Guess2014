@@ -18,7 +18,7 @@
       <div class="list-group" ng-repeat="group in groups">
         <p class="list-group-item list-group-item-header"><strong>{{group[0].date | date:'yyyy年M月d日'}}</strong></p>
         <div ng-class="getBetClass(m.bet)" ng-repeat="m in group" href ng-click="showBetModal(m)">
-          <gw-matchdiv gw-match="m" gw-shownationname="true"></gw-matchdiv>
+          <gw-matchdiv gw-match="m" gw-shownationname="true" gw-showscore="true"></gw-matchdiv>
         </div>
       </div>
     </div>
@@ -28,7 +28,7 @@
       <div ng-if="(j+i*4)<13" class="list-group">
         <p class="list-group-item list-group-item-header"><strong>{{groups[j+i*4][0].stage}}</strong></p>
         <div ng-class="getBetClass(m.bet)" ng-repeat="m in groups[j+i*4]"= href ng-click="showBetModal(m)">
-          <gw-matchdiv gw-match="m" gw-bet="m.bet"></gw-matchdiv>
+          <gw-matchdiv gw-match="m" gw-bet="m.bet" gw-showscore="true"></gw-matchdiv>
         </div>
       </div>
     </div>

@@ -34,6 +34,9 @@ WorldCupApp.getModule()
   }).when('/my', {
     templateUrl: 'js/view/my.tpl.html',
     controller: 'MyCtrl'
+  }).when('/betanalysis', {
+    templateUrl: 'js/view/betanalysis.tpl.html',
+    controller: 'BetanalysisCtrl'
   }).otherwise({
     redirectTo: '/home'
   });

@@ -24,6 +24,12 @@ handlers:
 - url: /list_by_date.*
   script: main.app
 
+- url: /report.*
+  script: main.app
+
+- url: /pop.*
+  script: main.app
+
 - url: /admin.*
   script: admin.app
 
