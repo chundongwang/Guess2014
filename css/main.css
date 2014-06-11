@@ -96,22 +96,26 @@ img.ico24 {
 }
 
 .table-hover > tbody > tr.bet-success > td,
-.table-hover > tbody > tr.bet-success:hover > td {
+.table-hover > tbody > tr.bet-success:hover > td,
+.bet-success {
   background-color: #5cb85c;
 }
 
 .table-hover > tbody > tr.bet-okay > td,
-.table-hover > tbody > tr.bet-okay:hover > td {
+.table-hover > tbody > tr.bet-okay:hover > td,
+.bet-okay {
     background-color: #f0ad4e;
 }
 
 .table-hover > tbody > tr.bet-wrong > td,
-.table-hover > tbody > tr.bet-wrong:hover > td {
+.table-hover > tbody > tr.bet-wrong:hover > td,
+.bet-wrong {
     background-color: #d9534f;
 }
 
 .table-hover > tbody > tr.bet-no-result > td,
-.table-hover > tbody > tr.bet-no-result:hover > td {
+.table-hover > tbody > tr.bet-no-result:hover > td,
+.bet-no-result {
     background-color: #5bc0de;
 }
 

@@ -32,7 +32,7 @@ WorldCupApp.getModule().controller('HomeCtrl', ['$scope', '$cookies', '$location
   }
 
   $scope.getBetClass = function(bet) {
-    var classes = ['list-group-item', 'match'];
+    var classes = ['list-group-item'];
     if (!!bet) {
       switch(bet.result) {
         case 0:
