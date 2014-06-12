@@ -12,10 +12,7 @@
 </div>
 
 <div class="container">
-  <div class="alert alert-info alert-dismissable">
-    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-    <strong>温馨提示: </strong>赛前10分钟，预测通道关闭。
-  </div>
+  <gw-notice></gw-notice>
   <gw-spinner gw-show="!loaded"></gw-spinner>
   <div ng-if="loaded && mode=='bydate'" class="row">
     <div class="col-md-8 col-md-offset-2">
