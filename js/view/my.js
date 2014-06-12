@@ -58,6 +58,8 @@ WorldCupApp.getModule().controller('MyCtrl', ['$scope', '$cookies', '$location',
       $scope.resetAllEditables();
       bet.editable=true;
       $scope.stopBubble($event);
+    } else {
+      $location.path('/betanalysis').search({m:bet.bet_match_id});
     }
   };
   
@@ -77,17 +79,14 @@ WorldCupApp.getModule().controller('MyCtrl', ['$scope', '$cookies', '$location',
   $scope.getClass = function(bet) {
     switch(bet.result) {
       case 0:
-        return ['bet-wrong']
+        return ['bet-wrong'];
       case 1:
-        return ['bet-okay']
+        return ['bet-okay'];
       case 2:
-        return ['bet-success']
+        return ['bet-success'];
       default:;
     }
-    if (bet.bettable) {
-      return ['editable-row'];
-    }
-    return [];
+    return ['editable-row'];
   }
   
   $scope.loginInfo = {

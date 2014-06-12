@@ -23,6 +23,8 @@ WorldCupApp.getModule().controller('HomeCtrl', ['$scope', '$cookies', '$location
         $scope.theMatchRef = match;
 
         $('#betModal').modal();
+      } else {
+        $location.path('/betanalysis').search({m:match.matchid});
       }
     }
     // Otherwise, redirect to signin
@@ -33,7 +35,7 @@ WorldCupApp.getModule().controller('HomeCtrl', ['$scope', '$cookies', '$location
 
   $scope.getBetClass = function(match) {
     var bet = match.bet;
-    var classes = ['list-group-item'];
+    var classes = ['list-group-item', 'editable-row'];
     if (!!bet) {
       switch(bet.result) {
         case 0:
@@ -49,9 +51,6 @@ WorldCupApp.getModule().controller('HomeCtrl', ['$scope', '$cookies', '$location
           classes.push('bet-no-result');
           break;
       }
-    }
-    if (Guesser.bettable(match)) {
-      classes.push('editable-row');
     }
     return classes;
   }
