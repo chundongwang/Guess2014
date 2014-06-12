@@ -25,13 +25,17 @@ WorldCupApp.getModule().controller('MyCtrl', ['$scope', '$cookies', '$location',
       if (!angular.equals($cookies.gwEulaStatus, 'true')) {
         $location.path('/home');
       }
-      $scope.bets = data;
-      $scope.bets.forEach(function(b, i){
-        b.editable = false;
-        b.bettable = Guesser.bettable(b.match)
-        b.result = rateResult(b);
+      data.forEach(function(b, i){
+        amendBet(b);
       });
+      $scope.bets = data;
     });
+  }
+
+  function amendBet(bet) {
+    bet.editable = false;
+    bet.bettable = Guesser.bettable(bet.match);
+    bet.result = rateResult(bet);
   }
 
   $scope.stopBubble = function($event) {    
@@ -62,9 +66,8 @@ WorldCupApp.getModule().controller('MyCtrl', ['$scope', '$cookies', '$location',
       $scope.disableSave = true;
       Guesser.bet($scope.bets[iEdit].bet_match_id, $scope.bets[iEdit], function(data){
         // refresh the bets in parent scope
+        amendBet(data);
         $scope.bets[iEdit] = data;
-        $scope.bets[iEdit].result=rateResult(data);
-        $scope.resetAllEditables();
         $scope.disableSave = false;
       });
       $scope.stopBubble($event);
