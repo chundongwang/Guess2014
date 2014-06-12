@@ -14,6 +14,8 @@ img.ico24 {
   display:inline-block;
   width:24px;
   height:24px;
+}
+.logo {
   background:url("/img/24x24.png") no-repeat
 }
 img.ico14 {
