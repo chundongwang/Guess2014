@@ -1,6 +1,6 @@
 'use strict';
 
-WorldCupApp.getModule().directive('gwSpinner', function(Miner) {
+WorldCupApp.getModule().directive('gwSpinner', function() {
   return {
   	restrict: 'E',
     scope: {
