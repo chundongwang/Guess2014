@@ -3,6 +3,6 @@
 WorldCupApp.getModule().directive('gwFooter', function() {
   return {
     restrict: 'E',
-    templateUrl: 'js/directive/footer.tpl.html'
+    template: '<hr><footer><p>&copy; Guess 2014</p></footer>'
   };
 });
