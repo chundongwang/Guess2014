@@ -9,6 +9,7 @@ from flask import Flask,request,render_template,send_from_directory,make_respons
 
 from google.appengine.ext import ndb
 from google.appengine.api import users
+from google.appengine.api import mail
 
 from model import Match,Bet
 
@@ -21,13 +22,24 @@ app.config.update(dict(
 ))
 app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 
+def send_mail(addr,subject,body):
+    if mail.is_email_valid(addr):
+        sender_address = "Guess Worldcup 2014 Support <support@guessworldcup2014.appspot.com>"
+        logging.info('Sending email to %s with <%s>' % (addr, subject))
+        mail.send_mail(sender_address, "chundongwang@gmail.com", subject, body)
+
 @app.route('/admin')
 def admin():
     """Admin page"""
     if users.is_current_user_admin():
+        logout_url=users.create_logout_url('/admin')
         method = request.args.get('m','')
         logging.info('Method name:[%s]' % method)
-        if method == 'initdb':
+        if method == 'dropdb':
+            match_keys = Match.query().fetch(keys_only=True)
+            ndb.delete_multi(match_keys)
+            return render_template('admin.html', msg='Matches all deleted!', logout_url=logout_url)
+        elif method == 'initdb':
             with open('worldcup2014-group-stage.csv', 'rb') as csvfile:
                 spamreader = csv.reader(csvfile)
                 for row in spamreader:
@@ -44,7 +56,7 @@ def admin():
                                     penalty_b=None
                                     )
                     match.put()
-            return render_template('admin.html', msg='Matches imported!')
+            return render_template('admin.html', msg='Matches imported!', logout_url=logout_url)
         elif method == 'initdb2':
             with open('worldcup2014-knockoff-stage.csv', 'rb') as csvfile:
                 spamreader = csv.reader(csvfile)
@@ -62,7 +74,7 @@ def admin():
                                     penalty_b=None
                                     )
                     match.put()
-            return render_template('admin.html', msg='Matches imported!')
+            return render_template('admin.html', msg='Matches imported!', logout_url=logout_url)
         elif method == 'randombet':
             digits = 21
             uid = str(int(random.random()*10**digits)).rjust(digits,'0')
@@ -81,19 +93,19 @@ def admin():
                             penalty_b=None
                             )
                 bet.put()
-            return render_template('admin.html', msg='simulated bets for %s has been generated!'%uid)
+            return render_template('admin.html', msg='simulated bets for %s has been generated!'%uid, logout_url=logout_url)
         elif method == 'insertmatch':
             match_id = int(request.args.get('id',0))
-            team_a = request.args.get('a',None)
-            team_b = request.args.get('b',None)
-            match_stage = request.args.get('s',None)
-            match_date = request.args.get('d',None)
-            score_a = request.args.get('sa',None)
-            score_b = request.args.get('sb',None)
-            extra_a = request.args.get('ea',None)
-            extra_b = request.args.get('eb',None)
-            penalty_a = request.args.get('pa',None)
-            penalty_b = request.args.get('pb',None)
+            team_a = request.args.get('a',None) or None
+            team_b = request.args.get('b',None) or None
+            match_stage = request.args.get('s',None) or None
+            match_date = request.args.get('d',None) or None
+            score_a = request.args.get('sa',None) or None or None
+            score_b = request.args.get('sb',None) or None
+            extra_a = request.args.get('ea',None) or None
+            extra_b = request.args.get('eb',None) or None
+            penalty_a = request.args.get('pa',None) or None
+            penalty_b = request.args.get('pb',None) or None
 
             matches = Match.query(Match.matchid==match_id).fetch()
             if len(matches)==0:
@@ -113,7 +125,7 @@ def admin():
                 match.put()
                 return render_template('admin.html',
                     msg='Match between %s and %s has been inserted!' % 
-                        (match.team_a, match.team_b))
+                        (match.team_a, match.team_b), logout_url=logout_url)
             else:
                 match = matches[0]
                 if match_date:
@@ -141,7 +153,22 @@ def admin():
                 return render_template('admin.html',
                     msg='Match between %s and %s has been updated!' % 
                         (match.team_a, match.team_b))
-        return render_template('admin.html', logout_url=users.create_logout_url('/admin'))
+        elif method == 'sendmail':
+            match_id = int(request.args.get('id',0))
+            logging.info('sendmail attempt:%s' % str(match_id))
+            if match_id > 0:
+                bets = Bet.query(Bet.bet_match_id==match_id).fetch()
+                match = Match.query(Match.matchid==match_id).fetch()[0]
+                addresses = []
+                [addresses.append(str(bet.useremail)) for bet in bets]
+                target_address = ';'.join(addresses)
+                subject = "Match between %s and %s just started!" %(match.team_a, match.team_b)
+                body =  "<a href=\"http://localhost:8080/#/my\">My guess</a>"
+                send_mail(target_address, subject, body)
+                return render_template('admin.html',
+                    msg='Mail to %s with <%s> has succeeded!' % (target_address, subject))
+            return render_template('admin.html',msg='You have to specify match id!', logout_url=logout_url)
+        return render_template('admin.html', logout_url=logout_url)
     else:
         return render_template('logout.html', logout_url=users.create_logout_url(request.path), login_url=users.create_login_url(request.path))
       

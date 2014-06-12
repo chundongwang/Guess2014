@@ -26,6 +26,10 @@ WorldCupApp.getModule().controller('BetanalysisCtrl', ['$scope', '$cookies', '$l
       if (!angular.equals($cookies.gwEulaStatus, 'true')) {
         $location.path('/home');
       }
+      // Make sure only admin could access this page
+      if (!angular.equals(WorldCupApp.admin_status, 'True')) {
+        $location.path('/home');
+      }
       $scope.bets = data;
       $scope.bets.forEach(function(b,i){
         b.result=rateResult(b);

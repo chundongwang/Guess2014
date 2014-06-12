@@ -48,8 +48,9 @@ def main():
     template = 'index.html'
     if isLocal():
         template = 'index2.html'
-    logging.info('login_url=[[%s]]' % str(login_url))
-    return render_template(template, user_nickname=user_nickname, login_url=login_url)
+    logging.info('%s just visited' % str(user_nickname))
+    admin_status = str(users.is_current_user_admin())
+    return render_template(template, user_nickname=user_nickname, login_url=login_url, admin_status=admin_status)
 
 @app.route('/list')
 @app.route('/list/<stage_name>')
