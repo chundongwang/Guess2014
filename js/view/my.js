@@ -26,9 +26,10 @@ WorldCupApp.getModule().controller('MyCtrl', ['$scope', '$cookies', '$location',
         $location.path('/home');
       }
       $scope.bets = data;
-      $scope.bets.forEach(function(b,i){
-        b.editable=false;
-        b.result=rateResult(b);
+      $scope.bets.forEach(function(b, i){
+        b.editable = false;
+        b.bettable = Guesser.bettable(b.match)
+        b.result = rateResult(b);
       });
     });
   }
@@ -49,7 +50,7 @@ WorldCupApp.getModule().controller('MyCtrl', ['$scope', '$cookies', '$location',
   }
   
   $scope.editBet = function(bet, $event) {
-    if (bet.result<0) {
+    if (bet.bettable && bet.result<0) {
       $scope.resetAllEditables();
       bet.editable=true;
       $scope.stopBubble($event);
@@ -78,9 +79,12 @@ WorldCupApp.getModule().controller('MyCtrl', ['$scope', '$cookies', '$location',
         return ['bet-okay']
       case 2:
         return ['bet-success']
-      default:
-        return ['editable-row'];
+      default:;
     }
+    if (bet.bettable) {
+      return ['editable-row'];
+    }
+    return [];
   }
   
   $scope.loginInfo = {

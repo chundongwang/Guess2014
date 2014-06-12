@@ -24,7 +24,8 @@ files = [
 ]
 
 raw_files = [
-    "js/third-party/Chart.min.js"
+    "js/third-party/Chart.min.js",
+    "js/third-party/moment.min.js"
 ]
 
 copyright = '/*! GuessWorldCup2014 (c) 2014 */'

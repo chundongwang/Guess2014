@@ -15,7 +15,7 @@ WorldCupApp.getModule().controller('HomeCtrl', ['$scope', '$cookies', '$location
   $scope.showBetModal = function(match) {
     // If loggedIn, display the modal
     if ($scope.loggedIn) {
-      if (!match.bet || match.bet.result<0) {
+      if (Guesser.bettable(match) && (!match.bet || match.bet.result<0)) {
         $scope.theBet = match.bet ? {
           score_a: match.bet.score_a,
           score_b: match.bet.score_b
@@ -31,7 +31,8 @@ WorldCupApp.getModule().controller('HomeCtrl', ['$scope', '$cookies', '$location
     }
   }
 
-  $scope.getBetClass = function(bet) {
+  $scope.getBetClass = function(match) {
+    var bet = match.bet;
     var classes = ['list-group-item'];
     if (!!bet) {
       switch(bet.result) {
@@ -46,10 +47,10 @@ WorldCupApp.getModule().controller('HomeCtrl', ['$scope', '$cookies', '$location
           break;
         default:
           classes.push('bet-no-result');
-          classes.push('editable-row');
           break;
       }
-    } else {
+    }
+    if (Guesser.bettable(match)) {
       classes.push('editable-row');
     }
     return classes;

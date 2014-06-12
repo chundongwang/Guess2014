@@ -37,6 +37,12 @@ WorldCupApp.getModule().factory('Guesser', ['$http', function($http) {
     $http({url: WorldCupApp.getRoot() + '/bet/' + matchid + '?' + $.param(parms), method:'GET'}).success(successCallback).error(errorCallback);
   }
 
+  function bettable(match) {
+    var date = moment.unix(match.date/1000);
+    var now = moment().utc();
+    return now.isBefore(date.subtract('minutes', 10));
+  }
+
   return {
     listAll: listAll,
     listAllByDate: listAllByDate,
@@ -44,6 +50,7 @@ WorldCupApp.getModule().factory('Guesser', ['$http', function($http) {
     mybets: mybets,
     bet: bet,
     report: report,
-    popularity: popularity
+    popularity: popularity,
+    bettable: bettable
   };
 }]);
