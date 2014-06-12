@@ -2,7 +2,7 @@ import logging
 import json
 import os
 
-from datetime import date
+from datetime import date,datetime,timedelta
 import time
 
 from flask import Flask,request,render_template,send_from_directory,redirect,url_for,abort,Response,make_response,Markup
@@ -134,6 +134,11 @@ def bet(match_id, bet_amount=1):
         #return redirect(users.create_login_url(url_for('main')))
     else:
         match = Match.query(Match.matchid==int(match_id)).fetch(1)[0]
+
+        # Shutdown bet channel 10 minutes prior to the beginning of the match
+        if datetime.utcnow()+timedelta(minutes=10) > match.date:
+            abort(400)
+
         logging.info('betting on %s' % str(match))
         # Don't bet on played matches
         if match.score_a is not None or match.score_b is not None:
