@@ -16,7 +16,11 @@ img.ico24 {
   height:24px;
   background:url("/img/24x24.png") no-repeat
 }
-
+img.ico14 {
+  display:inline-block;
+  height:14px;
+  width:14px;
+}
 .match-row .nation,
 .vsli {
   text-transform:uppercase;

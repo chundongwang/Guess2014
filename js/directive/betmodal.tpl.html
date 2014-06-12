@@ -5,23 +5,23 @@
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"
           aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="betModalLabel">我的预测...</h4>
+        <h4 class="modal-title" id="betModalLabel">我的竞猜...</h4>
       </div>
       <div class="modal-body">
         <form class="form-inline text-center" role="form">
           <div class="form-group">
-            <label for="score_a">{{matchref.team_a}}</label>
-            <input type="number" class="form-control" id="score_a" ng-model="bet.score_a" min="0" max="30" required="true">
+            <label for="score_a">{{matchref.team_a}} <img ng-if="!!matchref" class="flag" ng-alt="Flag of {{matchref.team_a}}" ng-attr-title="{{matchref.team_a}}" ng-src="/img/{{matchref.team_a.substr(0,3)}}.png"></label>
+            <input type="number" class="form-control" id="score_a" ng-model="bet.score_a" min="0" max="30" required="true" style="width:100px">
             <label>:</label>
-            <input type="number" class="form-control" id="score_b" ng-model="bet.score_b" min="0" max="30" required="true">
-            <label for="score_b">{{matchref.team_b}}</label>
+            <input type="number" class="form-control" id="score_b" ng-model="bet.score_b" min="0" max="30" required="true" style="width:100px">
+            <label for="score_b"><img ng-if="!!matchref" class="flag" ng-alt="Flag of {{matchref.team_b}}" ng-attr-title="{{matchref.team_b}}" ng-src="/img/{{matchref.team_b.substr(0,3)}}.png"> {{matchref.team_b}}</label>
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
         <button type="button" class="btn btn-primary" ng-click="save()" ng-disabled="disableSave">完成</button>
-        <button type="button" class="btn btn-primary" ng-click="share()" ng-disabled="disableSave">保存并分享</button>
+        <button type="button" class="btn btn-primary" ng-click="share()" ng-disabled="disableSave">保存并分享 <img class="ico14" src="/img/fb.png" /></button>
       </div>
     </div>
   </div>
