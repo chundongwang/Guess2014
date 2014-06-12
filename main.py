@@ -107,6 +107,11 @@ def report_match(match_id=None):
         abort(401)
     bets = Bet.query(Bet.bet_match_id==int(match_id)).fetch()
     match = Match.query(Match.matchid==int(match_id)).fetch(1)[0]
+
+    # No report page until 10 minutes prior to the beginning of the match
+    if datetime.utcnow()+timedelta(minutes=10) <= match.date:
+        abort(400)
+
     bet_results = []
     for bet in bets:
         result = bet.to_dict()

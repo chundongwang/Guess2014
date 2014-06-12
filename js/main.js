@@ -49,6 +49,10 @@ WorldCupApp.getModule()
           window.location.href = rejection.headers().loginurl;
           return;
         }
+        if (rejection.status === 400) {
+          window.location.href = '/';
+          return;
+        }
         return rejection;
       }
     }

@@ -22,11 +22,16 @@ app.config.update(dict(
 ))
 app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 
-def send_mail(addr,subject,body):
+def send_mail(addr,subject,body,html):
     if mail.is_email_valid(addr):
-        sender_address = "Guess Worldcup 2014 Support <support@guessworldcup2014.appspot.com>"
+        message = mail.EmailMessage(sender="Guess Worldcup 2014 Support <chundongwang@gmail.com>",
+                            subject=subject)
+        message.to = addr
+        message.body = body
+        if html is not None:
+            message.html = html
+        message.send()
         logging.info('Sending email to %s with <%s>' % (addr, subject))
-        mail.send_mail(sender_address, "chundongwang@gmail.com", subject, body)
 
 @app.route('/admin')
 def admin():
@@ -155,6 +160,9 @@ def admin():
                         (match.team_a, match.team_b))
         elif method == 'sendmail':
             match_id = int(request.args.get('id',0))
+            subject = request.args.get('s',None) or None
+            body = request.args.get('b',None) or None
+            html = request.args.get('h',None) or None
             logging.info('sendmail attempt:%s' % str(match_id))
             if match_id > 0:
                 bets = Bet.query(Bet.bet_match_id==match_id).fetch()
@@ -162,9 +170,10 @@ def admin():
                 addresses = []
                 [addresses.append(str(bet.useremail)) for bet in bets]
                 target_address = ';'.join(addresses)
-                subject = "Match between %s and %s just started!" %(match.team_a, match.team_b)
-                body =  "<a href=\"http://localhost:8080/#/my\">My guess</a>"
-                send_mail(target_address, subject, body)
+                #subject = "Match between %s and %s just started!" %(match.team_a, match.team_b)
+                #body = "http://localhost:8080/#/my"
+                #html =  "<a href=\"http://localhost:8080/#/my\">My guess</a>"
+                send_mail(target_address, subject, body, html)
                 return render_template('admin.html',
                     msg='Mail to %s with <%s> has succeeded!' % (target_address, subject))
             return render_template('admin.html',msg='You have to specify match id!', logout_url=logout_url)

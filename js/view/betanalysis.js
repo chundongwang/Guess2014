@@ -27,7 +27,7 @@ WorldCupApp.getModule().controller('BetanalysisCtrl', ['$scope', '$cookies', '$l
         $location.path('/home');
       }
       // Make sure only admin could access this page
-      if (!angular.equals(WorldCupApp.admin_status, 'True')) {
+      if (Guesser.bettable(data[0].match)) {
         $location.path('/home');
       }
       $scope.bets = data;
