@@ -14,7 +14,7 @@ WorldCupApp.getModule().directive('gwMatchdiv',
       scope.hasScore = function() {
         // don't show score if no nation names showed as
         // there might be no available space for score digits
-        if (!scope.match || !scope.showScore || !scope.showNationName) return false;
+        if (!scope.match || !scope.showScore) return false;
         return !!$.trim(scope.match.score_a) && !!$.trim(scope.match.score_b);
       };
     }

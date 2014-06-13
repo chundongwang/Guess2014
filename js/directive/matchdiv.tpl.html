@@ -1,4 +1,4 @@
-<div class="row match-row">
+<!--<div class="row match-row">
   <div class="col-xs-2 match-date text-right">
     <small>{{match.date | date:'MM/d'}}<br>{{match.date | date:'HH:mm'}}</small>
   </div>
@@ -14,4 +14,27 @@
     <span ng-if="!!showNationName" class="nation hidden-sm hidden-xs">{{match.team_b.substr(0,15)}}</span>
     <img class="flag" ng-alt="Flag of {{match.team_b}}" ng-attr-title="{{match.team_b}}" ng-src="/img/{{match.team_b.substr(0,3)}}.png">
   </div>
+</div>-->
+<div class="match-row">
+  <span class="pull-left match-date text-right">
+    <small>{{match.date | date:'MM/d'}}<br>{{match.date | date:'HH:mm'}}</small>
+  </span>
+  <span class="text-center match-body">
+    <span class="pull-left text-left">
+      <img class="flag" ng-alt="Flag of {{match.team_a}}" ng-attr-title="{{match.team_a}}" ng-src="/img/{{match.team_a.substr(0,3)}}.png">
+      <span ng-if="!!showNationName" class="nation hidden-sm hidden-md hidden-lg">{{(match.team_a.substr(0,3) + "&nbsp;&nbsp;&nbsp;").slice(0,3)}}</span>
+      <span ng-if="!!showNationName" class="nation hidden-xs hidden-md hidden-lg">{{(match.team_a.substr(0,6) + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;").slice(0,6)}}</span>
+      <span ng-if="!!showNationName" class="nation hidden-sm hidden-xs">{{(match.team_a.substr(0,10) + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;").slice(0,10)}}</span>
+    </span>
+    <span class="vs">
+      <kbd ng-if="hasScore()">{{match.score_a}} : {{match.score_b}}</kbd>
+      <kbd ng-if="!hasScore()">vs</kbd>
+    </span>
+    <span class="pull-right text-right">
+      <span ng-if="!!showNationName" class="nation hidden-sm hidden-md hidden-lg">{{("&nbsp;&nbsp;&nbsp;" + match.team_b.substr(0,3)).slice(-3);}}</span>
+      <span ng-if="!!showNationName" class="nation hidden-xs hidden-md hidden-lg">{{("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + match.team_b.substr(0,6)).slice(-6);}}</span>
+      <span ng-if="!!showNationName" class="nation hidden-sm hidden-xs">{{("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + match.team_b.substr(0,10)).slice(-10);}}</span>
+      <img class="flag" ng-alt="Flag of {{match.team_b}}" ng-attr-title="{{match.team_b}}" ng-src="/img/{{match.team_b.substr(0,3)}}.png">
+    </span>
+  </span>
 </div>

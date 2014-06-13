@@ -56,6 +56,16 @@ img.ico14 {
 
 .match-date {
   line-height:15px;
+  position: absolute;
+}
+
+.match-body {
+  width: 100%;
+  display: inline-block;
+  position: relative;
+  padding-left: 40px;
+  vertical-align: middle;
+  white-space: nowrap;
 }
 
 .list-group-item-header {
