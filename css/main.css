@@ -59,15 +59,6 @@ img.ico14 {
   margin-right:.5em;
 }
 
-.match-body {
-  width: 100%;
-  display: inline-block;
-  position: relative;
-  padding-left: 40px;
-  vertical-align: middle;
-  white-space: nowrap;
-}
-
 .list-group-item-header {
   background-color: #EFEFEF;
 }
