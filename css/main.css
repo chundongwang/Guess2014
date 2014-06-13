@@ -55,8 +55,8 @@ img.ico14 {
 }
 
 .match-date {
-  line-height:15px;
-  position: absolute;
+  line-height:14px;
+  margin-right:.5em;
 }
 
 .match-body {
