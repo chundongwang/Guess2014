@@ -44,7 +44,8 @@
             <strong>{{b.score_a}} : {{b.score_b}}</strong>
           </td>
           <td>
-            <span ng-if="b.result<2&&b.result>=0" class="glyphicon glyphicon-remove"></span>
+            <span ng-if="b.result==0" class="glyphicon glyphicon-remove"></span>
+            <span ng-if="b.result==1" class="glyphicon glyphicon-minus"></span>
             <span ng-if="b.result==2" class="glyphicon glyphicon-ok"></span>
             <span ng-if="b.result<0" class="glyphicon glyphicon-time"></span>
           </td>
