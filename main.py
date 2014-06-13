@@ -33,6 +33,25 @@ def json_response(obj):
     response.headers['Pragma'] = 'no-cache'
     return response
 
+known_users={
+    "yangyilincn@gmail.com":"Yilin Yang",
+    "nanruqin@gmail.com":"Carl Nan",
+    "zhanbo.xiong@gmail.com":"Ray Xiong",
+    "dbfuns@gmail.com":"Edward Liu",
+    "lss672@gmail.com":"Shanshan Liu",
+    "kenthzhang@gmail.com":"Jason Zhang",
+    "knightlinwu@gmail.com":"Wu Lin",
+    "yunwu55@gmail.com":"Yunlong Wu",
+    "dotnetview@gmail.com":"Lei Ma",
+    "dengydongn@gmail.com":"Chandler Deng",
+    "zhaoyong73@gmail.com":"Yong Zhao",
+    "cnjamescao@gmail.com":"James Cao",
+    "lfive.wujun@gmail.com":"Wujun Li",
+    "TheQuanSheng@gmail.com":"Quan Sheng",
+    "samprasyork@gmail.com":"Shawn Yu",
+    "lilylihou@gmail.com":"Lily Hou",
+    "chundongwang@gmail.com":"Chundong Wang"
+}
 
 @app.route('/')
 def main():
@@ -112,9 +131,14 @@ def report_match(match_id=None):
     if datetime.utcnow()+timedelta(minutes=10) <= match.date:
         abort(400)
 
+    show_known_user = False
+    if user.email() in known_users:
+        show_known_user = True
     bet_results = []
     for bet in bets:
         result = bet.to_dict()
+        if show_known_user and result['useremail'] in known_users:
+            result['useremail'] = known_users[result['useremail']]
         result['match'] = match.to_dict()
         bet_results.append(result)
     return json_response(bet_results)
