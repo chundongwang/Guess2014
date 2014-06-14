@@ -9,6 +9,7 @@ from flask import Flask,request,render_template,send_from_directory,redirect,url
 
 from google.appengine.ext import ndb
 from google.appengine.api import users
+from google.appengine.api import memcache
 
 from model import Match,Bet,DateTimeEncoder
 
@@ -77,18 +78,18 @@ def list_matches(stage_name=None):
     """Return a list of match according to the stage name"""
     matches = []
     if stage_name is not None:
-        matches_of_this_stage = [match.to_dict() for match in Match.query(Match.stage==stage_name).order(Match.date).fetch()]
+        matches_of_this_stage = [match.to_dict() for match in Match.fetch_by_stage(match_stage)]
         matches_of_this_stage.sort(key=lambda match: match['date'])
         matches.append(matches_of_this_stage)
     else:
         group_stages=['Group '+g for g in ['A','B','C','D','E','F','G','H']]
         knockoff_stages=['Round of 16','Quarterfinals','Semi-Finals','Third-Place Play-Off','Final']
         for match_stage in group_stages:
-            matches_of_this_stage = [match.to_dict() for match in Match.query(Match.stage==match_stage).order(Match.date).fetch()]
+            matches_of_this_stage = [match.to_dict() for match in Match.fetch_by_stage(match_stage)]
             matches_of_this_stage.sort(key=lambda match: match['date'])
             matches.append(matches_of_this_stage)
         for match_stage in knockoff_stages:
-            matches_of_this_stage = [match.to_dict() for match in Match.query(Match.stage==match_stage).order(Match.date).fetch()]
+            matches_of_this_stage = [match.to_dict() for match in Match.fetch_by_stage(match_stage)]
             matches_of_this_stage.sort(key=lambda match: match['date'])
             matches.append(matches_of_this_stage)
     return json_response(matches)
@@ -96,22 +97,26 @@ def list_matches(stage_name=None):
 def calcPopularity(team_name=None):
     if team_name is None:
         abort(400)
-    matches = Match.query(ndb.OR(Match.team_a==team_name, Match.team_b==team_name)).fetch()
-    support=0
-    for match in matches:
-        bets = Bet.query(Bet.bet_match_id==int(match.matchid)).fetch()
-        for bet in bets:
-            if match.team_a == team_name and bet.score_a > bet.score_b:
-                support+=1
-            elif match.team_b == team_name and bet.score_b > bet.score_a:
-                support+=1
+    support = memcache.get('[TeamPop]'+team_name)
+    if support is None:
+        matches = Match.fetch_by_name(team_name)
+        support=0
+        for match in matches:
+            bets = Bet.query(Bet.bet_match_id==int(match.matchid)).fetch()
+            for bet in bets:
+                if match.team_a == team_name and bet.score_a > bet.score_b:
+                    support+=1
+                elif match.team_b == team_name and bet.score_b > bet.score_a:
+                    support+=1
+        # expire in 5 minutes
+        memcache.set('[TeamPop]'+team_name, support, 300)
     return support
         
 @app.route('/pop/<match_id>')
 def popularity(match_id=None):
     if match_id is None:
         abort(400)
-    match = Match.query(Match.matchid==int(match_id)).fetch(1)[0]
+    match = Match.fetch_by_id(match_id)
     final_result = {
         "team_a":calcPopularity(match.team_a),
         "team_b":calcPopularity(match.team_b),
@@ -125,7 +130,7 @@ def report_match(match_id=None):
     if match_id is None or not user:
         abort(401)
     bets = Bet.query(Bet.bet_match_id==int(match_id)).fetch()
-    match = Match.query(Match.matchid==int(match_id)).fetch(1)[0]
+    match = Match.fetch_by_id(match_id)
 
     # No report page until 10 minutes prior to the beginning of the match
     if datetime.utcnow()+timedelta(minutes=10) <= match.date:
@@ -147,7 +152,7 @@ def report_match(match_id=None):
 def list_matches_by_date():
     """Return a list of match list group by date"""
     matches_by_date = {}
-    for match in Match.query().fetch():
+    for match in Match.fetch_all():
         d = date.fromtimestamp(time.mktime(match.date.timetuple()))
         if not d in matches_by_date:
             matches_by_date[d] = []
@@ -163,7 +168,7 @@ def bet(match_id, bet_amount=1):
         abort(401)
         #return redirect(users.create_login_url(url_for('main')))
     else:
-        match = Match.query(Match.matchid==int(match_id)).fetch(1)[0]
+        match = Match.fetch_by_id(match_id)
 
         # Shutdown bet channel 10 minutes prior to the beginning of the match
         if datetime.utcnow()+timedelta(minutes=10) > match.date:
@@ -255,7 +260,7 @@ def mybet(match_id=None):
         results = []
         for bet in bets:
             result = bet.to_dict()
-            match = Match.query(Match.matchid==int(bet.bet_match_id)).fetch(1)[0]
+            match = Match.fetch_by_id(bet.bet_match_id)
             result['match'] = match.to_dict()
             results.append(result)
         return json_response(results)
