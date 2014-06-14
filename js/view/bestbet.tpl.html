@@ -25,6 +25,7 @@
       <thead>
         <tr>
           <th class="text-center">参与者</th>
+          <th ng-if="showpoints" class="text-center">当前点数</th>
           <th class="text-center">猜对结果</th>
           <th class="text-center">猜对胜负</th>
         </tr>
@@ -33,6 +34,9 @@
         <tr ng-repeat="b in betscores">
           <td>
             <span>{{b[0]}}</span>
+          </td>
+          <td ng-if="showpoints">
+            <strong>{{b[1].points}}</strong>
           </td>
           <td>
             <strong>{{b[1].rightAboutScore}}</strong>

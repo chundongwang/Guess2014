@@ -13,8 +13,6 @@ from google.appengine.api import memcache
 
 from model import Match,Bet,DateTimeEncoder
 
-def isLocal():
-    return os.environ['SERVER_SOFTWARE'].startswith('Development')
 
 app = Flask(__name__, static_folder='static')
 app.config.update(dict(
@@ -25,6 +23,11 @@ app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 
 # Note: We don't need to call run() since our application is embedded within
 # the App Engine WSGI application server.
+
+_is_local = os.environ['SERVER_SOFTWARE'].startswith('Development')
+
+def isLocal():
+    return _is_local
 
 def json_response(obj):
     response = make_response(json.dumps(obj, cls=DateTimeEncoder))
@@ -51,16 +54,20 @@ known_users={
     "TheQuanSheng@gmail.com":"Quan Sheng",
     "samprasyork@gmail.com":"Shawn Yu",
     "lilylihou@gmail.com":"Lily Hou",
-    "chundongwang@gmail.com":"Chundong Wang"
+    "chundongwang@gmail.com":"Chundong Wang(Debugging)"
 }
 
-def is_known_user(user):
-    if not user:
-        abort(401)
-    show_known_user = False
-    if user.email() in known_users:
-        show_known_user = True
-    return show_known_user
+def known_user_name(useremail):
+    if isLocal():
+        return useremail
+    if known_users[useremail] is not None:
+        return known_users[useremail]
+    return useremail
+
+def is_known_user(useremail):
+    if isLocal():
+        return True
+    return useremail in known_users
 
 @app.route('/')
 def main():
@@ -144,12 +151,11 @@ def report_match(match_id=None):
     if datetime.utcnow()+timedelta(minutes=10) <= match.date:
         abort(400)
 
-    show_known_user = is_known_user(user)
+    show_known_user = is_known_user(user.email())
     bet_results = []
     for bet in bets:
         result = bet.to_dict()
-        if show_known_user and result['useremail'] in known_users:
-            result['useremail'] = known_users[result['useremail']]
+        result['useremail'] = known_user_name(result['useremail'])
         result['match'] = match.to_dict()
         bet_results.append(result)
     return json_response(bet_results)
@@ -277,27 +283,69 @@ def bestbet():
     if not user:
         abort(401)
     else:
-        show_known_user = is_known_user(user)
+        show_known_user = is_known_user(user.email())
         final_results = memcache.get('[BestBet]'+str(show_known_user))
         if final_results is None:
-            bets = Bet.fetch_all()
-            results = {}
-            for bet in bets:
-                match = Match.fetch_by_id(bet.bet_match_id)
-                if match.score_a is None or match.score_b is None:
-                    continue
-                #replace with known name
-                if show_known_user and bet.useremail in known_users:
-                    bet.useremail = known_users[bet.useremail]
-                #statistic
-                if bet.useremail not in results:
-                    results[bet.useremail] = {'rightAboutScore':0,'rightAboutWin':0}
-                result = results[bet.useremail]
-                if match.score_a == bet.score_a and match.score_b == bet.score_b:
-                    results[bet.useremail]['rightAboutScore']+=1
-                if cmp(match.score_a, match.score_b) == cmp(bet.score_a, bet.score_b):
-                    results[bet.useremail]['rightAboutWin']+=1
-            final_results = sorted(results.iteritems(), reverse=True, cmp=lambda x, y: cmp(x[1]['rightAboutScore'], y[1]['rightAboutScore']) or cmp(x[1]['rightAboutWin'],y[1]['rightAboutWin']))
+            if show_known_user:
+                bets = Bet.fetch_all()
+                results = {} #key:email/known_name
+                bet_pool = {} #key:match_id
+                for bet in bets:
+                    #only process known users
+                    if not is_known_user(bet.useremail):
+                        logging.info('%s is not known user, skip it.' % str(bet.useremail))
+                        continue
+                    #only process bets of finished matches
+                    match = Match.fetch_by_id(bet.bet_match_id)
+                    if match.score_a is None or match.score_b is None:
+                        logging.info('Match between %s and %s has not finished, skip it.' % (match.team_a, match.team_a))
+                        continue
+                    #replace with known name
+                    bet.useremail = known_user_name(bet.useremail)
+                    #statistic
+
+                    #pool of award
+                    if bet.bet_match_id not in bet_pool:
+                        bet_pool[bet.bet_match_id]={'total_amount':0,'bingo_count':0,'bingo_user':[]}
+                    bet_pool[bet.bet_match_id]['total_amount']+=3
+
+                    #award
+                    if bet.useremail not in results:
+                        results[bet.useremail] = {'rightAboutScore':0,'rightAboutWin':0,'points':0}
+                    result = results[bet.useremail]
+                    #Bingo!
+                    if match.score_a == bet.score_a and match.score_b == bet.score_b:
+                        results[bet.useremail]['rightAboutScore']+=1
+                        bet_pool[bet.bet_match_id]['bingo_count']+=1
+                        bet_pool[bet.bet_match_id]['bingo_user'].append(bet.useremail)
+
+                    if cmp(match.score_a, match.score_b) == cmp(bet.score_a, bet.score_b):
+                        results[bet.useremail]['rightAboutWin']+=1
+                for pool_entry in bet_pool.values():
+                    if pool_entry['bingo_count'] == 0:
+                        continue
+                    award = pool_entry['total_amount']*3.0/pool_entry['bingo_count']
+                    for awarded_user in pool_entry['bingo_user']:
+                        results[awarded_user]['points']+=award
+                final_results = sorted(results.iteritems(), reverse=True, 
+                    cmp=lambda x, y: cmp(x[1]['points'], y[1]['points']) or cmp(x[1]['rightAboutScore'], y[1]['rightAboutScore']) or cmp(x[1]['rightAboutWin'],y[1]['rightAboutWin']))
+            else: #not known user:
+                bets = Bet.fetch_all()
+                results = {}
+                for bet in bets:
+                    #only process bets of finished matches
+                    match = Match.fetch_by_id(bet.bet_match_id)
+                    if match.score_a is None or match.score_b is None:
+                        continue
+                    #statistic
+                    if bet.useremail not in results:
+                        results[bet.useremail] = {'rightAboutScore':0,'rightAboutWin':0}
+                    result = results[bet.useremail]
+                    if match.score_a == bet.score_a and match.score_b == bet.score_b:
+                        results[bet.useremail]['rightAboutScore']+=1
+                    if cmp(match.score_a, match.score_b) == cmp(bet.score_a, bet.score_b):
+                        results[bet.useremail]['rightAboutWin']+=1
+                final_results = sorted(results.iteritems(), reverse=True, cmp=lambda x, y: cmp(x[1]['rightAboutScore'], y[1]['rightAboutScore']) or cmp(x[1]['rightAboutWin'],y[1]['rightAboutWin']))
         return json_response(final_results)
 
 

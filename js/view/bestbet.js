@@ -11,6 +11,9 @@ WorldCupApp.getModule().controller('BestBetCtrl', ['$scope', '$cookies', '$locat
         $location.path('/home');
       }
       $scope.betscores = data;
+      if (!!data[0][1].points) {
+        $scope.showpoints = true;
+      }
     });
   }
   
