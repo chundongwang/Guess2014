@@ -19,9 +19,13 @@ files = [
     "js/directive/spinner.js",
     "js/directive/chartallbets.js",
     "js/directive/chartpop.js",
+    "js/directive/chartbetscoredist.js",
+    "js/directive/chartbetmatchdist.js",
+    "js/directive/charttopbet.js",
     "js/view/home.js",
     "js/view/my.js",
-    "js/view/betanalysis.js"
+    "js/view/betanalysis.js",
+    "js/view/bestbet"
 ]
 
 raw_files = [

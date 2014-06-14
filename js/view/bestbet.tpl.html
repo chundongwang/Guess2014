@@ -1,0 +1,48 @@
+<gw-navbar gw-login="loginInfo" gw-activenav="'bestbet'"></gw-navbar>
+
+  <!-- Main jumbotron for a primary marketing message or call to action -->
+  <div class="jumbotron paul">
+    <div class="container panel">
+      <h1>竞猜排名</h1>
+      <div class="row text-center hidden-xs">
+        <div class="col-xs-6 col-sm-4">
+          <gw-chartbetscoredist gw-betscores="betscores"></gw-chartbetscoredist>
+        </div>
+        <div class="col-xs-6 col-sm-4">
+          <gw-chartbetmatchdist gw-betscores="betscores"></gw-chartbetmatchdist>
+        </div>
+        <div class="col-xs-6 col-sm-4">
+          <gw-charttopbet gw-betscores="betscores"></gw-charttopbet>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div class="container">
+  <gw-spinner gw-show="!loaded"></gw-spinner>
+  <div ng-if="loaded" class="table-responsive">
+    <table class="table table-hover text-center text-middle">
+      <thead>
+        <tr>
+          <th class="text-center">参与者</th>
+          <th class="text-center">猜对结果</th>
+          <th class="text-center">猜对胜负</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="b in betscores">
+          <td>
+            <span>{{b[0]}}</span>
+          </td>
+          <td>
+            <strong>{{b[1].rightAboutScore}}</strong>
+          </td>
+          <td>
+            <strong>{{b[1].rightAboutWin}}</strong>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <gw-footer></gw-footer>
+</div>

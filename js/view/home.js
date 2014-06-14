@@ -60,21 +60,6 @@ WorldCupApp.getModule().controller('HomeCtrl', ['$scope', '$cookies', '$location
     $cookies.gwKnown = 'true';
   }
 
-  function rateResult(bet) {
-    if (Miner.hasScores(bet)) {
-      var guess = {a:bet.score_a, b:bet.score_b};
-      var actual = {a:bet.match.score_a, b:bet.match.score_b}
-      if (Miner.rightAboutScore(actual, guess)) {
-        return 2;
-      } else if (Miner.rightAboutWinner(actual, guess)) {
-        return 1;
-      } else {
-        return 0;
-      }
-    }
-    return -1;
-  }
-
   function updateAll() {
     var listfunc = $scope.mode == 'bydate' ? Guesser.listAllByDate : Guesser.listAll;
     listfunc(function(groups) {
@@ -90,7 +75,7 @@ WorldCupApp.getModule().controller('HomeCtrl', ['$scope', '$cookies', '$location
               return g.some(function(m){
                 if (m.matchid == b.bet_match_id) {
                   m.bet = b;
-                  m.bet.result = rateResult(b);
+                  m.bet.result = Miner.rateResult(b);
                 }
                 return m.matchid == b.bet_match_id;
               });

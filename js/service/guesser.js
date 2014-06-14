@@ -24,6 +24,10 @@ WorldCupApp.getModule().factory('Guesser', ['$http', function($http) {
   function popularity(matchid, successCallback, errorCallback) {
     getListHelper('/pop/'+matchid, successCallback, errorCallback);
   }
+  
+  function bestbet(successCallback, errorCallback) {
+    getListHelper('/bestbet', successCallback, errorCallback);
+  }
 
   function getListHelper(path, successCallback, errorCallback) {
     $http({url: WorldCupApp.getRoot() + path, method:'GET'}).success(successCallback).error(errorCallback);
@@ -51,6 +55,7 @@ WorldCupApp.getModule().factory('Guesser', ['$http', function($http) {
     bet: bet,
     report: report,
     popularity: popularity,
-    bettable: bettable
+    bettable: bettable,
+    bestbet: bestbet
   };
 }]);

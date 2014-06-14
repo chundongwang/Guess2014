@@ -35,7 +35,7 @@ WorldCupApp.getModule().directive('gwChartpop', ['Miner', function(Miner) {
 
         var ctx = document.getElementById("gwChartPop").getContext("2d");
         var data = convert(newVal);
-        options.scaleSteps = Math.ceil(Math.max(newVal.team_a, newVal.team_b) * 1.0 / options.scaleStepWidth)
+        options.scaleSteps = Math.ceil(Math.max(newVal.team_a, newVal.team_b) * 1.0 / options.scaleStepWidth);
         var chart = new Chart(ctx).Bar(data, options);
       });
     }

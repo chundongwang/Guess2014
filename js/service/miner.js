@@ -103,6 +103,20 @@ WorldCupApp.getModule().factory('Miner', [function() {
   function getComparitorByLeastRate(t1, t2) {
     return injectLeastRate(t2).leastRate - injectLeastRate(t1).leastRate;
   }
+  function rateResult(bet) {
+    if (hasScores(bet)) {
+      var guess = {a:bet.score_a, b:bet.score_b};
+      var actual = {a:bet.match.score_a, b:bet.match.score_b}
+      if (rightAboutScore(actual, guess)) {
+        return 2;
+      } else if (rightAboutWinner(actual, guess)) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+    return -1;
+  }
 
   return {
     rightAboutWinner: rightAboutWinner,
@@ -113,6 +127,7 @@ WorldCupApp.getModule().factory('Miner', [function() {
     mergeTeams: mergeTeams,
     injectFavRate: injectFavRate,
     getComparitorByFavRate: getComparitorByFavRate,
-    getComparitorByLeastRate: getComparitorByLeastRate
+    getComparitorByLeastRate: getComparitorByLeastRate,
+    rateResult: rateResult
   };
 }]);

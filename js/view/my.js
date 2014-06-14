@@ -3,21 +3,6 @@
 WorldCupApp.getModule().controller('MyCtrl', ['$scope', '$cookies', '$location', 'Guesser', 'Miner', function($scope, $cookies, $location, Guesser, Miner) {
   $scope.loaded = false;
 
-  function rateResult(bet) {
-    if (Miner.hasScores(bet)) {
-      var guess = {a:bet.score_a, b:bet.score_b};
-      var actual = {a:bet.match.score_a, b:bet.match.score_b}
-      if (Miner.rightAboutScore(actual, guess)) {
-        return 2;
-      } else if (Miner.rightAboutWinner(actual, guess)) {
-        return 1;
-      } else {
-        return 0;
-      }
-    }
-    return -1;
-  }
-
   function updateAll() {
     Guesser.mybets(function(data) {
       $scope.loaded = true;
@@ -35,7 +20,7 @@ WorldCupApp.getModule().controller('MyCtrl', ['$scope', '$cookies', '$location',
   function amendBet(bet) {
     bet.editable = false;
     bet.bettable = Guesser.bettable(bet.match);
-    bet.result = rateResult(bet);
+    bet.result = Miner.rateResult(bet);
   }
 
   $scope.stopBubble = function($event) {    

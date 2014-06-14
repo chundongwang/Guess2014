@@ -1,6 +1,7 @@
 import logging
 import json
 import time
+import os
 import csv
 import random
 from datetime import datetime
@@ -14,6 +15,9 @@ from google.appengine.api import mail
 from model import Match,Bet
 
 import admin
+
+def isLocal():
+    return os.environ['SERVER_SOFTWARE'].startswith('Development')
 
 app = Flask(__name__, static_folder='static')
 app.config.update(dict(
@@ -44,6 +48,12 @@ def admin():
             match_keys = Match.query().fetch(keys_only=True)
             ndb.delete_multi(match_keys)
             return render_template('admin.html', msg='Matches all deleted!', logout_url=logout_url)
+        if method == 'dropbet':
+            if not isLocal():
+                abort(401)
+            bet_keys = Bet.query().fetch(keys_only=True)
+            ndb.delete_multi(bet_keys)
+            return render_template('admin.html', msg='Bet all deleted!', logout_url=logout_url)
         elif method == 'initdb':
             with open('worldcup2014-group-stage.csv', 'rb') as csvfile:
                 spamreader = csv.reader(csvfile)
@@ -83,7 +93,8 @@ def admin():
         elif method == 'randombet':
             digits = 21
             uid = str(int(random.random()*10**digits)).rjust(digits,'0')
-            email = 'test@example.com'
+            digits = 3
+            email = 'test%d@example.com'%int(random.random()*10**digits)
             matches = Match.query().fetch()
             for match in matches:
                 bet = Bet(  userid=uid,
@@ -180,4 +191,8 @@ def admin():
         return render_template('admin.html', logout_url=logout_url)
     else:
         return render_template('logout.html', logout_url=users.create_logout_url(request.path), login_url=users.create_login_url(request.path))
-      
+
+
+@app.errorhandler(401)
+def invalid_parameter(error):
+    return Response('Some functionality are for localhost test only.', 401)

@@ -1,6 +1,6 @@
 'use strict';
 
-WorldCupApp.getModule().directive('gwBetmodal', ['$location', 'Guesser', function($location, Guesser) {
+WorldCupApp.getModule().directive('gwBetmodal', ['$location', 'Guesser', 'Miner', function($location, Guesser, Miner) {
   return {
     restrict: 'E',
     scope: {
@@ -17,7 +17,9 @@ WorldCupApp.getModule().directive('gwBetmodal', ['$location', 'Guesser', functio
         scope.disableSave = true;
         Guesser.bet(scope.matchref.matchid, scope.bet, function(data){
           // refresh the bets in parent scope
+          data.result = Miner.rateResult(data);
           scope.matchref.bet = data;
+
           // Enable the button - we will use the modal next time
           scope.disableSave = false;
           $('#betModal').modal('hide');

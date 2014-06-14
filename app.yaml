@@ -30,6 +30,9 @@ handlers:
 - url: /pop.*
   script: main.app
 
+- url: /bestbet.*
+  script: main.app
+
 - url: /admin.*
   script: admin.app
 

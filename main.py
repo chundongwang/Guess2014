@@ -54,6 +54,14 @@ known_users={
     "chundongwang@gmail.com":"Chundong Wang"
 }
 
+def is_known_user(user):
+    if not user:
+        abort(401)
+    show_known_user = False
+    if user.email() in known_users:
+        show_known_user = True
+    return show_known_user
+
 @app.route('/')
 def main():
     user = users.get_current_user()
@@ -136,9 +144,7 @@ def report_match(match_id=None):
     if datetime.utcnow()+timedelta(minutes=10) <= match.date:
         abort(400)
 
-    show_known_user = False
-    if user.email() in known_users:
-        show_known_user = True
+    show_known_user = is_known_user(user)
     bet_results = []
     for bet in bets:
         result = bet.to_dict()
@@ -264,6 +270,36 @@ def mybet(match_id=None):
             result['match'] = match.to_dict()
             results.append(result)
         return json_response(results)
+
+@app.route('/bestbet')
+def bestbet():
+    user = users.get_current_user()
+    if not user:
+        abort(401)
+    else:
+        show_known_user = is_known_user(user)
+        final_results = memcache.get('[BestBet]'+str(show_known_user))
+        if final_results is None:
+            bets = Bet.fetch_all()
+            results = {}
+            for bet in bets:
+                match = Match.fetch_by_id(bet.bet_match_id)
+                if match.score_a is None or match.score_b is None:
+                    continue
+                #replace with known name
+                if show_known_user and bet.useremail in known_users:
+                    bet.useremail = known_users[bet.useremail]
+                #statistic
+                if bet.useremail not in results:
+                    results[bet.useremail] = {'rightAboutScore':0,'rightAboutWin':0}
+                result = results[bet.useremail]
+                if match.score_a == bet.score_a and match.score_b == bet.score_b:
+                    results[bet.useremail]['rightAboutScore']+=1
+                if cmp(match.score_a, match.score_b) == cmp(bet.score_a, bet.score_b):
+                    results[bet.useremail]['rightAboutWin']+=1
+            final_results = sorted(results.iteritems(), reverse=True, cmp=lambda x, y: cmp(x[1]['rightAboutScore'], y[1]['rightAboutScore']) or cmp(x[1]['rightAboutWin'],y[1]['rightAboutWin']))
+        return json_response(final_results)
+
 
 @app.errorhandler(400)
 def invalid_parameter(error):

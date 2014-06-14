@@ -3,21 +3,6 @@
 WorldCupApp.getModule().controller('BetanalysisCtrl', ['$scope', '$cookies', '$location', 'Guesser', 'Miner', function($scope, $cookies, $location, Guesser, Miner) {
   $scope.loaded = false;
 
-  function rateResult(bet) {
-    if (Miner.hasScores(bet)) {
-      var guess = {a:bet.score_a, b:bet.score_b};
-      var actual = {a:bet.match.score_a, b:bet.match.score_b}
-      if (Miner.rightAboutScore(actual, guess)) {
-        return 2;
-      } else if (Miner.rightAboutWinner(actual, guess)) {
-        return 1;
-      } else {
-        return 0;
-      }
-    }
-    return -1;
-  }
-
   function updateAll() {
     var match_id = $location.search().m || 1;
     Guesser.report(match_id, function(data) {
@@ -26,13 +11,13 @@ WorldCupApp.getModule().controller('BetanalysisCtrl', ['$scope', '$cookies', '$l
       if (!angular.equals($cookies.gwEulaStatus, 'true')) {
         $location.path('/home');
       }
-      // Make sure only admin could access this page
+      // Make sure this page is available only after cut-off time
       if (Guesser.bettable(data[0].match)) {
         $location.path('/home');
       }
       $scope.bets = data;
       $scope.bets.forEach(function(b,i){
-        b.result=rateResult(b);
+        b.result=Miner.rateResult(b);
       });
     });
     Guesser.popularity(match_id, function(data) {

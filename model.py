@@ -62,7 +62,7 @@ class Match(ndb.Model):
 
     def _post_put_hook(self, future):
         match = future.get_result().get()
-        memcache.delete_multi(['[MatchAll]','[MatchId]'+str(match.matchid),'[StageName]'+match.stage,'[TeamName]'+match.team_a,'[TeamName]'+match.team_b]);
+        memcache.delete_multi(['[MatchAll]','[BestBet]True','[BestBet]False','[MatchId]'+str(match.matchid),'[StageName]'+match.stage,'[TeamName]'+match.team_a,'[TeamName]'+match.team_b]);
 
 class Bet(ndb.Model):
     """People's bet"""
@@ -76,6 +76,14 @@ class Bet(ndb.Model):
     penalty_a = ndb.IntegerProperty()
     penalty_b = ndb.IntegerProperty()
     bet_amount = ndb.IntegerProperty()
+
+    @classmethod
+    def fetch_all(cls):
+        result = memcache.get('[BetAll]');
+        if result is None:
+            result = cls.query().fetch()
+            memcache.set('[BetAll]', result)
+        return result
 
     @classmethod
     def fetch_by_matchid(cls, match_id):
@@ -100,3 +108,7 @@ class Bet(ndb.Model):
             result = cls.query(ndb.AND(cls.userid==user_id, cls.bet_match_id==int(match_id))).fetch()
             memcache.set('[BetMatchIdUserId]'+str(match_id)+':'+user_id, result)
         return result
+
+    def _post_put_hook(self, future):
+        match = future.get_result().get()
+        memcache.delete_multi(['[BetAll]','[BestBet]True','[BestBet]False']);
