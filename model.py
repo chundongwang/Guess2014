@@ -1,3 +1,4 @@
+import logging
 import time
 import json
 from datetime import datetime
@@ -59,6 +60,10 @@ class Match(ndb.Model):
             memcache.set('[TeamName]'+team_name, result)
         return result
 
+    def _post_put_hook(self, future):
+        match = future.get_result().get()
+        memcache.delete_multi(['[MatchAll]','[MatchId]'+str(match.matchid),'[StageName]'+match.stage,'[TeamName]'+match.team_a,'[TeamName]'+match.team_b]);
+
 class Bet(ndb.Model):
     """People's bet"""
     userid = ndb.StringProperty()
@@ -71,3 +76,27 @@ class Bet(ndb.Model):
     penalty_a = ndb.IntegerProperty()
     penalty_b = ndb.IntegerProperty()
     bet_amount = ndb.IntegerProperty()
+
+    @classmethod
+    def fetch_by_matchid(cls, match_id):
+        result = memcache.get('[BetMatchid]'+str(match_id));
+        if result is None:
+            result = cls.query(cls.bet_match_id==int(match_id)).fetch()
+            memcache.set('[BetMatchid]'+str(match_id), result)
+        return result
+
+    @classmethod
+    def fetch_by_userid(cls, user_id):
+        result = memcache.get('[BetUserId]'+user_id);
+        if result is None:
+            result = cls.query(cls.userid==user_id).fetch()
+            memcache.set('[BetUserId]'+user_id, result)
+        return result
+
+    @classmethod
+    def fetch_by_matchid_userid(cls, match_id, user_id):
+        result = memcache.get('[BetMatchIdUserId]'+str(match_id)+':'+user_id);
+        if result is None:
+            result = cls.query(ndb.AND(cls.userid==user_id, cls.bet_match_id==int(match_id))).fetch()
+            memcache.set('[BetMatchIdUserId]'+str(match_id)+':'+user_id, result)
+        return result
