@@ -53,19 +53,18 @@ known_users={
     "lfive.wujun@gmail.com":"Wujun Li",
     "TheQuanSheng@gmail.com":"Quan Sheng",
     "samprasyork@gmail.com":"Shawn Yu",
-    "lilylihou@gmail.com":"Lily Hou",
-    "chundongwang@gmail.com":"Chundong Wang(Debugging)"
+    "lilylihou@gmail.com":"Lily Hou"
 }
 
 def known_user_name(useremail):
-    if isLocal():
-        return useremail
-    if known_users[useremail] is not None:
+    if useremail in known_users:
         return known_users[useremail]
+    elif useremail == 'chundongwang@gmail.com':
+        return 'Debugger(not counting)'
     return useremail
 
 def is_known_user(useremail):
-    if isLocal():
+    if useremail == 'chundongwang@gmail.com':
         return True
     return useremail in known_users
 
@@ -287,48 +286,50 @@ def bestbet():
         final_results = memcache.get('[BestBet]'+str(show_known_user))
         if final_results is None:
             if show_known_user:
-                bets = Bet.fetch_all()
-                results = {} #key:email/known_name
-                bet_pool = {} #key:match_id
-                for bet in bets:
-                    #only process known users
-                    if not is_known_user(bet.useremail):
-                        logging.info('%s is not known user, skip it.' % str(bet.useremail))
-                        continue
-                    #only process bets of finished matches
-                    match = Match.fetch_by_id(bet.bet_match_id)
-                    if match.score_a is None or match.score_b is None:
-                        logging.info('Match between %s and %s has not finished, skip it.' % (match.team_a, match.team_a))
-                        continue
-                    #replace with known name
-                    bet.useremail = known_user_name(bet.useremail)
-                    #statistic
-
-                    #pool of award
-                    if bet.bet_match_id not in bet_pool:
-                        bet_pool[bet.bet_match_id]={'total_amount':0,'bingo_count':0,'bingo_user':[]}
-                    bet_pool[bet.bet_match_id]['total_amount']+=3
-
-                    #award
-                    if bet.useremail not in results:
-                        results[bet.useremail] = {'rightAboutScore':0,'rightAboutWin':0,'points':0}
-                    result = results[bet.useremail]
-                    #Bingo!
-                    if match.score_a == bet.score_a and match.score_b == bet.score_b:
-                        results[bet.useremail]['rightAboutScore']+=1
-                        bet_pool[bet.bet_match_id]['bingo_count']+=1
-                        bet_pool[bet.bet_match_id]['bingo_user'].append(bet.useremail)
-
-                    if cmp(match.score_a, match.score_b) == cmp(bet.score_a, bet.score_b):
-                        results[bet.useremail]['rightAboutWin']+=1
-                for pool_entry in bet_pool.values():
-                    if pool_entry['bingo_count'] == 0:
-                        continue
-                    award = pool_entry['total_amount']*3.0/pool_entry['bingo_count']
-                    for awarded_user in pool_entry['bingo_user']:
-                        results[awarded_user]['points']+=award
+                matches = Match.fetch_all()
+                finished_matches = []
+                for match in matches:
+                    if match.score_a is not None and match.score_b is not None:
+                        finished_matches.append(match)
+                finished_matches = sorted(finished_matches, cmp=lambda x, y:cmp(x.date,y.date))
+                results = {} #key:useremail/known_name, value:rightAboutScore/rightAboutWin
+                slipped_award = 0.0
+                for match in finished_matches:
+                    bets = Bet.fetch_by_matchid(match.matchid)
+                    #collect slipped award
+                    award_pool = {'total_amount':len(known_users)*3.0+slipped_award,'bingo_count':0,'bingo_user':[]}
+                    slipped_award = 0.0
+                    for bet in bets:
+                        #only process known users
+                        if not is_known_user(bet.useremail) or bet.useremail=='chundongwang@gmail.com':
+                            logging.info('%s is not known user, skip it.' % str(bet.useremail))
+                            continue
+                        #replace with known name
+                        bet.useremail = known_user_name(bet.useremail)
+                        #initialize results for this user
+                        if bet.useremail not in results:
+                            results[bet.useremail] = {'rightAboutScore':0,'rightAboutWin':0,'points':0}
+                        #Bingo!
+                        if match.score_a == bet.score_a and match.score_b == bet.score_b:
+                            results[bet.useremail]['rightAboutScore']+=1
+                            award_pool['bingo_count']+=1
+                            award_pool['bingo_user'].append(bet.useremail)
+                        if cmp(match.score_a, match.score_b) == cmp(bet.score_a, bet.score_b):
+                            results[bet.useremail]['rightAboutWin']+=1
+                    #no one bingo, the pool goes to next match
+                    if award_pool['bingo_count'] == 0:
+                        slipped_award = award_pool['total_amount']
+                        logging.info('Award %d of match between %s and %s slipped to next match' % (slipped_award, match.team_a, match.team_b))
+                    else:
+                        award = award_pool['total_amount']/award_pool['bingo_count']
+                        logging.info('Award %d of match between %s and %s got distributed to following users, %d for each: %s' 
+                            % (award_pool['total_amount'], match.team_a, match.team_b, award, ','.join(award_pool['bingo_user'])))
+                        for awarded_user in award_pool['bingo_user']:
+                            results[awarded_user]['points']+=award
+                #sort by points/rightAboutScore/rightAboutWin for output
                 final_results = sorted(results.iteritems(), reverse=True, 
                     cmp=lambda x, y: cmp(x[1]['points'], y[1]['points']) or cmp(x[1]['rightAboutScore'], y[1]['rightAboutScore']) or cmp(x[1]['rightAboutWin'],y[1]['rightAboutWin']))
+
             else: #not known user:
                 bets = Bet.fetch_all()
                 results = {}
@@ -346,6 +347,9 @@ def bestbet():
                     if cmp(match.score_a, match.score_b) == cmp(bet.score_a, bet.score_b):
                         results[bet.useremail]['rightAboutWin']+=1
                 final_results = sorted(results.iteritems(), reverse=True, cmp=lambda x, y: cmp(x[1]['rightAboutScore'], y[1]['rightAboutScore']) or cmp(x[1]['rightAboutWin'],y[1]['rightAboutWin']))
+
+        # expire in 5 minutes
+        memcache.set('[BestBet]'+str(show_known_user), final_results, 300)
         return json_response(final_results)
 
 

@@ -26,6 +26,25 @@ app.config.update(dict(
 ))
 app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 
+known_users={
+    "yangyilincn@gmail.com":"Yilin Yang",
+    "nanruqin@gmail.com":"Carl Nan",
+    "zhanbo.xiong@gmail.com":"Ray Xiong",
+    "dbfuns@gmail.com":"Edward Liu",
+    "lss672@gmail.com":"Shanshan Liu",
+    "kenthzhang@gmail.com":"Jason Zhang",
+    "knightlinwu@gmail.com":"Wu Lin",
+    "yunwu55@gmail.com":"Yunlong Wu",
+    "dotnetview@gmail.com":"Lei Ma",
+    "dengydongn@gmail.com":"Chandler Deng",
+    "zhaoyong73@gmail.com":"Yong Zhao",
+    "cnjamescao@gmail.com":"James Cao",
+    "lfive.wujun@gmail.com":"Wujun Li",
+    "TheQuanSheng@gmail.com":"Quan Sheng",
+    "samprasyork@gmail.com":"Shawn Yu",
+    "lilylihou@gmail.com":"Lily Hou"
+}
+
 def send_mail(addr,subject,body,html):
     if mail.is_email_valid(addr):
         message = mail.EmailMessage(sender="Guess Worldcup 2014 Support <chundongwang@gmail.com>",
@@ -90,6 +109,29 @@ def admin():
                                     )
                     match.put()
             return render_template('admin.html', msg='Matches imported!', logout_url=logout_url)
+        elif method == 'randombetwithknownuser':
+            for useremail in known_users.keys():
+                #drop existing first
+                existing_bets = Bet.query(Bet.useremail==useremail).fetch(keys_only=True)
+                ndb.delete_multi(existing_bets)
+                #new data
+                digits = 21
+                uid = str(int(random.random()*10**digits)).rjust(digits,'0')
+                matches = Match.query().fetch()
+                for match in matches:
+                    bet = Bet(  userid=uid,
+                                useremail=useremail,
+                                bet_match_id=int(match.matchid),
+                                bet_amount=1,
+                                score_a=random.randint(0,3),
+                                score_b=random.randint(0,3),
+                                extra_a=None,
+                                extra_b=None,
+                                penalty_a=None,
+                                penalty_b=None
+                                )
+                    bet.put()
+            return render_template('admin.html', msg='simulated bets for known user has been generated!', logout_url=logout_url)
         elif method == 'randombet':
             digits = 21
             uid = str(int(random.random()*10**digits)).rjust(digits,'0')
