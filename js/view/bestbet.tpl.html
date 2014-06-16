@@ -1,7 +1,7 @@
 <gw-navbar gw-login="loginInfo" gw-activenav="'bestbet'"></gw-navbar>
 
   <!-- Main jumbotron for a primary marketing message or call to action -->
-  <div class="jumbotron paul">
+  <div class="jumbotron brasilflag">
     <div class="container panel">
       <h1>竞猜排名</h1>
       <div class="row text-center hidden-xs">
@@ -20,33 +20,36 @@
 
 <div class="container">
   <gw-spinner gw-show="!loaded"></gw-spinner>
-  <div ng-if="loaded" class="table-responsive">
-    <table class="table table-hover text-center text-middle">
-      <thead>
-        <tr>
-          <th class="text-center">参与者</th>
-          <th ng-if="showpoints" class="text-center">当前点数</th>
-          <th class="text-center">猜对结果</th>
-          <th class="text-center">猜对胜负</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr ng-repeat="b in betscores">
-          <td>
-            <span>{{b[0]}}</span>
-          </td>
-          <td ng-if="showpoints">
-            <strong>{{b[1].points.toFixed(2)}}</strong>
-          </td>
-          <td>
-            <strong>{{b[1].rightAboutScore}}</strong>
-          </td>
-          <td>
-            <strong>{{b[1].rightAboutWin}}</strong>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <div ng-if="loaded" class="row">
+    <div class="col-xs-6 col-xs-offset-3 table-responsive">
+      <table class="table table-hover text-center text-middle">
+        <thead>
+          <tr>
+            <th class="text-right">参与者</th>
+            <th ng-if="showpoints" class="text-center">当前点数</th>
+            <th class="text-center">猜对结果</th>
+            <th class="text-center">猜对胜负</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="b in betscores">
+            <td class="text-right">
+              <span class="pull-left label label-default" ng-if="!!b.tag">{{b.tag}}</span>
+              <span>{{b[0]}}</span>
+            </td>
+            <td ng-if="showpoints">
+              <strong>{{b[1].points.toFixed(2)}}</strong>
+            </td>
+            <td>
+              <strong>{{b[1].rightAboutScore}}</strong>
+            </td>
+            <td>
+              <strong>{{b[1].rightAboutWin}}</strong>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>    
   </div>
   <gw-footer></gw-footer>
 </div>

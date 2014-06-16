@@ -39,6 +39,11 @@ img.ico14 {
   background-size:cover;
 }
 
+.brasilflag {
+  background:url("/img/Brasil_World_Cup.jpg") center;
+  background-size:cover;
+}
+
 .hero .panel,
 .paul .panel {
   background:url("/img/transparent.png") repeat;

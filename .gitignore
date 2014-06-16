@@ -1,5 +1,6 @@
 ####### Project Guess 2014 #########
 worldcup2014/
+db-backup/
 
 ############# Sublime ##############
 *.sublime-project

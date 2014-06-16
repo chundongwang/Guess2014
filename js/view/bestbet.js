@@ -10,10 +10,22 @@ WorldCupApp.getModule().controller('BestBetCtrl', ['$scope', '$cookies', '$locat
       if (!angular.equals($cookies.gwEulaStatus, 'true')) {
         $location.path('/home');
       }
-      $scope.betscores = data;
       if (!!data[0][1].points) {
         $scope.showpoints = true;
+        
+        for (var i = data.length - 1; i >= 0; i--) {
+          if (data[i][1].points == 0) {
+            data[i].tag = "求南总咒语";
+          } else if (data[i][1].points < 10) {
+            data[i].tag = "求爆发";
+          } 
+          if (data[i][0] == "Carl Nan") {
+            data[i].tag = "南总";
+          }
+        }
+        data[0].tag = "牛 B 证";
       }
+      $scope.betscores = data;
     });
   }
   

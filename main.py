@@ -60,11 +60,13 @@ def known_user_name(useremail):
     if useremail in known_users:
         return known_users[useremail]
     elif useremail == 'chundongwang@gmail.com':
-        return 'Debugger(not counting)'
+        return 'Chundong Wang'
+    elif useremail == 'yanping.li@gmail.com':
+        return 'Yanping Li'
     return useremail
 
 def is_known_user(useremail):
-    if useremail == 'chundongwang@gmail.com':
+    if useremail == 'chundongwang@gmail.com' or useremail == 'yanping.li@gmail.com':
         return True
     return useremail in known_users
 
@@ -301,7 +303,7 @@ def bestbet():
                     slipped_award = 0.0
                     for bet in bets:
                         #only process known users
-                        if not is_known_user(bet.useremail) or bet.useremail=='chundongwang@gmail.com':
+                        if not is_known_user(bet.useremail) or bet.useremail=='chundongwang@gmail.com' or bet.useremail=='yanping.li@gmail.com':
                             logging.info('%s is not known user, skip it.' % str(bet.useremail))
                             continue
                         #replace with known name
