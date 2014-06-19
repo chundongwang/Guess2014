@@ -89,7 +89,7 @@ WorldCupApp.getModule().controller('HomeCtrl', ['$scope', '$cookies', '$location
   //function showEulaModal() {
   $scope.showEulaModal = function() {
     // If alread accepted, no need to show Eula again
-    if (!angular.equals($cookies.gwEulaStatus, 'true')) {
+    if (!Guesser.hasAcceptedEula()) {
       if (angular.equals($cookies.gwEulaStatus, 'deny')) {
         location.replace("http://apps.leg.wa.gov/rcw/default.aspx?cite=9.46.240");
       } else {

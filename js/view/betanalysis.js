@@ -8,7 +8,7 @@ WorldCupApp.getModule().controller('BetanalysisCtrl', ['$scope', '$cookies', '$l
     Guesser.report(match_id, function(data) {
       $scope.loaded = true;
       // Make sure user accepted Eula or navigate to home to review it.
-      if (!angular.equals($cookies.gwEulaStatus, 'true')) {
+      if (!Guesser.hasAcceptedEula()) {
         $location.path('/home');
       }
       // Make sure this page is available only after cut-off time

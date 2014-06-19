@@ -53,7 +53,7 @@
   <script>
     {% if user_nickname %}WorldCupApp.user_nickname = '{{ user_nickname }}';{% endif %}
     {% if login_url %}WorldCupApp.login_url = '{{ login_url }}';{% endif %}
-    {% if admin_status %}WorldCupApp.admin_status = '{{ admin_status }}';{% endif %}
+    {% if pref %}WorldCupApp.eula_accepted = '{{ pref.eulaAccepted }}'.toLowerCase();{% endif %}
   </script>
 </body>
 </html>

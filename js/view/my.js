@@ -7,7 +7,7 @@ WorldCupApp.getModule().controller('MyCtrl', ['$scope', '$cookies', '$location',
     Guesser.mybets(function(data) {
       $scope.loaded = true;
       // Make sure user accepted Eula or navigate to home to review it.
-      if (!angular.equals($cookies.gwEulaStatus, 'true')) {
+      if (!Guesser.hasAcceptedEula()) {
         $location.path('/home');
       }
       data.forEach(function(b, i){

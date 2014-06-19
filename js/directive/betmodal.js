@@ -13,6 +13,10 @@ WorldCupApp.getModule().directive('gwBetmodal', ['$location', 'Guesser', 'Miner'
         if (angular.isUndefined(newVal)) return;
         scope.disableSave = !$.trim(newVal.score_a) || !$.trim(newVal.score_b);
       });
+      scope.random = function() {
+        scope.bet.score_a = Math.floor((Math.random() * 6));
+        scope.bet.score_b = Math.floor((Math.random() * 6));
+      };
       scope.save = function(share_func) {
         scope.disableSave = true;
         Guesser.bet(scope.matchref.matchid, scope.bet, function(data){

@@ -127,3 +127,24 @@ class Bet(ndb.Model):
             '[BetUserId]'+bet.userid,
             '[BetMatchIdUserId]'+str(bet.bet_match_id)+':'+bet.userid
             ]);
+
+class Preference(ndb.Model):
+    """People's preference"""
+    userid = ndb.StringProperty()
+    eulaAccepted = ndb.BooleanProperty()
+
+    @classmethod
+    def fetch_by_userid(cls, userid):
+        result = memcache.get('[Pref]'+userid);
+        if result is None:
+            results = cls.query(cls.userid==userid).fetch(1)
+            if len(results)>0:
+                result = results[0]
+                memcache.set('[Pref]'+userid, result)
+        return result
+
+    def _post_put_hook(self, future):
+        pref = future.get_result().get()
+        memcache.delete_multi([
+            '[Pref]'+pref.userid
+            ]);

@@ -11,7 +11,7 @@ from google.appengine.ext import ndb
 from google.appengine.api import users
 from google.appengine.api import memcache
 
-from model import Match,Bet,DateTimeEncoder
+from model import Match,Bet,Preference,DateTimeEncoder
 
 
 app = Flask(__name__, static_folder='static')
@@ -52,7 +52,7 @@ known_users={
     "cnjamescao@gmail.com":"James Cao",
     "lfive.wujun@gmail.com":"Wujun Li",
     "TheQuanSheng@gmail.com":"Quan Sheng",
-    "samprasyork@gmail.com":"Shawn Yu",
+    "Saybye.Yu@gmail.com":"Shawn Yu",
     "lilylihou@gmail.com":"Lily Hou"
 }
 
@@ -75,18 +75,19 @@ def main():
     user = users.get_current_user()
     login_url = None
     user_nickname = None
+    pref = None
     if not user:
         # call Markup or we'll end up with escaped url
         login_url = Markup(users.create_login_url(url_for('main')))
     else:
         user_nickname = user.nickname()
+        pref = Preference.fetch_by_userid(user.user_id())
     #index.html is for prod, index2.html for local development
     template = 'index.html'
     if isLocal():
         template = 'index2.html'
     logging.info('%s just visited' % str(user_nickname))
-    admin_status = str(users.is_current_user_admin())
-    return render_template(template, user_nickname=user_nickname, login_url=login_url, admin_status=admin_status)
+    return render_template(template, user_nickname=user_nickname, login_url=login_url, pref=pref)
 
 @app.route('/list')
 @app.route('/list/<stage_name>')
@@ -354,6 +355,21 @@ def bestbet():
         memcache.set('[BestBet]'+str(show_known_user), final_results, 300)
         return json_response(final_results)
 
+@app.route('/eula')
+def eula():
+    user = users.get_current_user()
+    if not user:
+        abort(401)
+    else:
+        pref = Preference.fetch_by_userid(user.user_id())
+        if pref is None:
+            pref = Preference(userid=user.user_id(),
+                eulaAccepted=True)
+            pref.put()
+        else:
+            pref.eulaAccepted = True
+            pref.put()
+    return json_response([])
 
 @app.errorhandler(400)
 def invalid_parameter(error):

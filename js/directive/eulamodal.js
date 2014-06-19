@@ -8,8 +8,8 @@ WorldCupApp.getModule().directive('gwEulamodal', ['$location', '$cookies', 'Gues
     templateUrl: 'js/directive/eulamodal.tpl.html',
     link: function(scope, elem, attrs) {
       scope.accept = function() {
-        $cookies.gwEulaStatus = 'true';
         $('#eulaModal').modal('hide');
+        Guesser.acceptEula();
       };
       scope.deny = function() {
         $cookies.gwEulaStatus = 'deny';

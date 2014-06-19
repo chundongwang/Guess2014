@@ -40,11 +40,12 @@ img.ico14 {
 }
 
 .brasilflag {
-  background:url("/img/Brasil_World_Cup.jpg") center;
+  background:url("/img/Germany-Fans.jpg") center;
   background-size:cover;
 }
 
 .hero .panel,
+.brasilflag .panel,
 .paul .panel {
   background:url("/img/transparent.png") repeat;
 }
@@ -182,4 +183,11 @@ img.ico14 {
      -moz-animation:spin 1s infinite linear;
        -o-animation:spin 1s infinite linear;
           animation:spin 1s infinite linear;
+}
+
+.glyphicon-dice
+{
+  width:16px;
+  height:16px;
+  background-image:url('/img/dice-16.png');
 }

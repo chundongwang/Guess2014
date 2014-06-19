@@ -1,6 +1,6 @@
 'use strict';
 
-WorldCupApp.getModule().factory('Guesser', ['$http', function($http) {
+WorldCupApp.getModule().factory('Guesser', ['$http', '$cookies', function($http, $cookies) {
   function listAll(successCallback, errorCallback) {
     getListHelper('/list', successCallback, errorCallback);
   }
@@ -40,6 +40,24 @@ WorldCupApp.getModule().factory('Guesser', ['$http', function($http) {
     };
     $http({url: WorldCupApp.getRoot() + '/bet/' + matchid + '?' + $.param(parms), method:'GET'}).success(successCallback).error(errorCallback);
   }
+  
+  function acceptEula(successCallback, errorCallback) {
+    if (!!WorldCupApp.user_nickname) {
+      $http({url: WorldCupApp.getRoot() + '/eula', method:'GET'}).success(successCallback).error(errorCallback);
+    }
+    $cookies.gwEulaStatus = 'true';
+  }
+
+  function hasAcceptedEula() {
+    if (!!WorldCupApp.user_nickname) {
+      if (angular.equals($cookies.gwEulaStatus, 'true') && !angular.equals(WorldCupApp.eula_accepted, 'true')) {
+        acceptEula();
+      } else if (!angular.equals($cookies.gwEulaStatus, 'true') && angular.equals(WorldCupApp.eula_accepted, 'true')) {
+        acceptEula();
+      }
+    }
+    return angular.equals($cookies.gwEulaStatus, 'true') || angular.equals(WorldCupApp.eula_accepted, 'true')
+  }
 
   function bettable(match) {
     var date = moment.unix(match.date/1000);
@@ -56,6 +74,8 @@ WorldCupApp.getModule().factory('Guesser', ['$http', function($http) {
     report: report,
     popularity: popularity,
     bettable: bettable,
-    bestbet: bestbet
+    bestbet: bestbet,
+    acceptEula: acceptEula,
+    hasAcceptedEula: hasAcceptedEula
   };
 }]);
