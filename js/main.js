@@ -40,6 +40,9 @@ WorldCupApp.getModule()
   }).when('/bestbet', {
     templateUrl: 'js/view/bestbet.tpl.html',
     controller: 'BestBetCtrl'
+  }).when('/carlnan', {
+    templateUrl: 'js/view/carlnan.tpl.html',
+    controller: 'CarlNanCtrl'
   }).otherwise({
     redirectTo: '/home'
   });

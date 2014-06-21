@@ -11,7 +11,7 @@ from google.appengine.ext import ndb
 from google.appengine.api import users
 from google.appengine.api import memcache
 
-from model import Match,Bet,Preference,DateTimeEncoder
+from model import Match,Bet,Preference,Donate,DateTimeEncoder
 
 
 app = Flask(__name__, static_folder='static')
@@ -370,6 +370,37 @@ def eula():
             pref.eulaAccepted = True
             pref.put()
     return json_response([])
+
+@app.route('/donate_list')
+def donate_list():    
+    user = users.get_current_user()
+    if not user:
+        abort(401)
+    else:
+        donates = Donate.fetch_all()
+    return json_response([donate.to_dict() for donate in donates])
+
+@app.route('/donate')
+def donate():    
+    user = users.get_current_user()
+    if not user:
+        abort(401)
+    else:
+        donate = {}
+        count = request.args.get('c',None)
+        reason = request.args.get('r',None)
+        message = request.args.get('m',None)
+        if count is None or reason is None or message is None:
+            abort(400)
+        else:
+            donate = Donate(userid=user.user_id(),
+                            useremail=user.email(),
+                            count=int(request.args.get('c',None)),
+                            reason=int(request.args.get('r',None)),
+                            message=request.args.get('m',None)
+                            )
+            donate.put()
+        return json_response(donate.to_dict())
 
 @app.errorhandler(400)
 def invalid_parameter(error):

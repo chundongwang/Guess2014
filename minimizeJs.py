@@ -25,7 +25,8 @@ files = [
     "js/view/home.js",
     "js/view/my.js",
     "js/view/betanalysis.js",
-    "js/view/bestbet.js"
+    "js/view/bestbet.js",
+    "js/view/carlnan.js"
 ]
 
 raw_files = [

@@ -1,5 +1,5 @@
 application: guessworldcup2014
-version: 25
+version: 26
 runtime: python27
 api_version: 1
 threadsafe: yes
@@ -34,6 +34,9 @@ handlers:
   script: main.app
 
 - url: /eula.*
+  script: main.app
+
+- url: /donate.*
   script: main.app
 
 - url: /admin.*

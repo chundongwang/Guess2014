@@ -44,8 +44,14 @@ img.ico14 {
   background-size:cover;
 }
 
+.carl {
+  background:url("/img/CarlNan.png") center;
+  background-size:cover;
+}
+
 .hero .panel,
 .brasilflag .panel,
+.carl .panel,
 .paul .panel {
   background:url("/img/transparent.png") repeat;
 }

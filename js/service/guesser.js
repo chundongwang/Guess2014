@@ -28,6 +28,10 @@ WorldCupApp.getModule().factory('Guesser', ['$http', '$cookies', function($http,
   function bestbet(successCallback, errorCallback) {
     getListHelper('/bestbet', successCallback, errorCallback);
   }
+  
+  function listDonate(successCallback, errorCallback) {
+    getListHelper('/donate_list', successCallback, errorCallback);
+  }
 
   function getListHelper(path, successCallback, errorCallback) {
     $http({url: WorldCupApp.getRoot() + path, method:'GET'}).success(successCallback).error(errorCallback);
@@ -65,6 +69,15 @@ WorldCupApp.getModule().factory('Guesser', ['$http', '$cookies', function($http,
     return now.isBefore(date.subtract('minutes', 10));
   }
 
+  function listDonate(successCallback, errorCallback) {
+    $http({url: WorldCupApp.getRoot() + '/donate_list', method:'GET'}).success(successCallback).error(errorCallback);
+  }
+
+  function donate(donate_param, successCallback, errorCallback) {
+    $http({url: WorldCupApp.getRoot() + '/donate' + '?' + $.param(donate_param), method:'GET'}).success(successCallback).error(errorCallback);
+  }
+  
+
   return {
     listAll: listAll,
     listAllByDate: listAllByDate,
@@ -76,6 +89,8 @@ WorldCupApp.getModule().factory('Guesser', ['$http', '$cookies', function($http,
     bettable: bettable,
     bestbet: bestbet,
     acceptEula: acceptEula,
-    hasAcceptedEula: hasAcceptedEula
+    hasAcceptedEula: hasAcceptedEula,
+    listDonate:listDonate,
+    donate:donate
   };
 }]);

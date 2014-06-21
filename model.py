@@ -1,6 +1,7 @@
 import logging
 import time
 import json
+import cgi
 from datetime import datetime
 
 from google.appengine.ext import ndb
@@ -148,3 +149,28 @@ class Preference(ndb.Model):
         memcache.delete_multi([
             '[Pref]'+pref.userid
             ]);
+
+class Donate(ndb.Model):
+    """Donate to CarlNan's garden"""
+    userid = ndb.StringProperty()
+    useremail = ndb.StringProperty()
+    count = ndb.IntegerProperty()
+    reason = ndb.IntegerProperty()
+    message = ndb.TextProperty()
+    date = ndb.DateTimeProperty(auto_now_add=True)
+
+    @classmethod
+    def fetch_all(cls):
+        result = memcache.get('[DonateAll]');
+        if result is None:
+            result = cls.query().order(cls.date).fetch()
+            memcache.set('[DonateAll]', result)
+        return result
+
+    def _post_put_hook(self, future):
+        memcache.delete_multi([
+            '[DonateAll]'
+            ]);
+
+    def _pre_put_hook(self):
+        self.message = cgi.escape(self.message)
