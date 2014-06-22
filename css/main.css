@@ -197,3 +197,8 @@ img.ico14 {
   height:16px;
   background-image:url('/img/dice-16.png');
 }
+
+.red-heart
+{
+  color:red;
+}

@@ -35,7 +35,7 @@
           <tr ng-repeat="b in betscores">
             <td class="text-right">
               <span class="pull-left label label-default" ng-if="!!b.tag">{{b.tag}}</span>
-              <span>{{b[0]}}</span>
+              <span><span ng-if="b[1].donate" class="glyphicon glyphicon-heart red-heart" title="施主证">&nbsp;</span>{{b[0]}}</span>
             </td>
             <td ng-if="showpoints">
               <strong>{{b[1].points.toFixed(2)}}</strong>

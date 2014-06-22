@@ -167,9 +167,18 @@ class Donate(ndb.Model):
             memcache.set('[DonateAll]', result)
         return result
 
+    @classmethod
+    def fetch_email_distinct(cls):
+        result = memcache.get('[DonateEmail]');
+        if result is None:
+            result = cls.query(projection=[cls.useremail], distinct=True).fetch()
+            memcache.set('[DonateEmail]', result)
+        return result
+
     def _post_put_hook(self, future):
         memcache.delete_multi([
-            '[DonateAll]'
+            '[DonateAll]',
+            '[DonateEmail]'
             ]);
 
     def _pre_put_hook(self):

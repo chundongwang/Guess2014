@@ -27,7 +27,7 @@ app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 _is_local = os.environ['SERVER_SOFTWARE'].startswith('Development')
 
 def isLocal():
-    return not _is_local
+    return _is_local
 
 def json_response(obj):
     response = make_response(json.dumps(obj, cls=DateTimeEncoder))
@@ -377,8 +377,21 @@ def donate_list():
     if not user:
         abort(401)
     else:
-        donates = Donate.fetch_all()
-    return json_response([donate.to_dict() for donate in donates])
+        show_known_user = is_known_user(user.email())
+        email_only = request.args.get('email',None)
+        results = []
+        donates = []
+        if email_only is None:
+            donates = Donate.fetch_all()
+        else:
+            donates = Donate.fetch_email_distinct()
+        if show_known_user:
+            #replace with known name
+            for donate in donates:
+                result = donate.to_dict()
+                result["useremail"] = known_user_name(donate.useremail)
+                results.append(result)
+    return json_response(results)
 
 @app.route('/donate')
 def donate():    
