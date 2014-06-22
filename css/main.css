@@ -9,6 +9,14 @@ img.flag {
   border:1px solid #c7c6c6;
   padding:1px;
   border-radius:6px;
+  background-color:#fff;
+}
+.filter-gray {
+  -webkit-filter:grayscale(100%);
+     -moz-filter:grayscale(100%);
+       -o-filter:grayscale(100%);
+      -ms-filter:grayscale(100%);
+          filter:grayscale(100%);
 }
 img.ico24 {
   display:inline-block;
@@ -118,25 +126,29 @@ img.ico14 {
 .table-hover > tbody > tr.bet-success > td,
 .table-hover > tbody > tr.bet-success:hover > td,
 .bet-success {
-  background-color: #5cb85c;
+  background-color: #ABEDAE;
+  border-bottom: 3px solid #28b62c;
 }
 
 .table-hover > tbody > tr.bet-okay > td,
 .table-hover > tbody > tr.bet-okay:hover > td,
 .bet-okay {
-    background-color: #f0ad4e;
+  background-color: #FFC299;
+  border-bottom: 3px solid #ff851b;
 }
 
 .table-hover > tbody > tr.bet-wrong > td,
 .table-hover > tbody > tr.bet-wrong:hover > td,
 .bet-wrong {
-    background-color: #d9534f;
+  background-color: #FF9E99;
+  border-bottom: 3px solid #ff4136;
 }
 
 .table-hover > tbody > tr.bet-no-result > td,
 .table-hover > tbody > tr.bet-no-result:hover > td,
 .bet-no-result {
-    background-color: #5bc0de;
+  background-color: #B8E2F4;
+  border-bottom: 3px solid #75caeb;
 }
 
 .legend {
