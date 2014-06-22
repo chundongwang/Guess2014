@@ -47,18 +47,10 @@
       </thead>
       <tbody>
         <tr ng-repeat="d in donates">
-          <td>
-            <span>{{d.useremail}}</span>
-          </td>
-          <td>
-            <span>{{d.count}}</span>
-          </td>
-          <td>
-            <span>{{d.reason}}</span>
-          </td>
-          <td>
-            <span title="{{d.message}}">{{d.message.substr(0,15)}}</span>
-          </td>
+          <td><span>{{d.useremail}}</span></td>
+          <td><span>{{d.count}}</span></td>
+          <td><span>{{d.reason}}</span></td>
+          <td><span>{{d.message}}</span></td>
         </tr>
       </tbody>
     </table>
