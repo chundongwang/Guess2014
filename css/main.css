@@ -204,14 +204,20 @@ img.ico14 {
           animation:spin 1.5s infinite linear;
 }
 
-.glyphicon-dice
-{
-  width:16px;
-  height:16px;
-  background-image:url('/img/dice-16.png');
+.glyphicon-dice {
+  width:32px;
+  height:32px;
+  background-image:url('/img/dice-32.png');
 }
 
-.red-heart
-{
+a.roll-dice:hover {
+  cursor: pointer;
+  -webkit-animation:spin .6s infinite linear;
+     -moz-animation:spin .6s infinite linear;
+       -o-animation:spin .6s infinite linear;
+          animation:spin .6s infinite linear;
+}
+
+.red-heart {
   color:red;
 }
