@@ -27,7 +27,7 @@ app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 _is_local = os.environ['SERVER_SOFTWARE'].startswith('Development')
 
 def isLocal():
-    return _is_local
+    return not _is_local
 
 def json_response(obj):
     response = make_response(json.dumps(obj, cls=DateTimeEncoder))
