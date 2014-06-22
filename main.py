@@ -385,12 +385,12 @@ def donate_list():
             donates = Donate.fetch_all()
         else:
             donates = Donate.fetch_email_distinct()
-        if show_known_user:
+        for donate in donates:
+            result = donate.to_dict()
             #replace with known name
-            for donate in donates:
-                result = donate.to_dict()
+            if show_known_user:
                 result["useremail"] = known_user_name(donate.useremail)
-                results.append(result)
+            results.append(result)
     return json_response(results)
 
 @app.route('/donate')
@@ -399,6 +399,7 @@ def donate():
     if not user:
         abort(401)
     else:
+        show_known_user = is_known_user(user.email())
         donate = {}
         count = request.args.get('c',None)
         reason = request.args.get('r',None)
@@ -413,6 +414,9 @@ def donate():
                             message=request.args.get('m',None)
                             )
             donate.put()
+            #replace with known name
+            if show_known_user:
+                donate.useremail = known_user_name(donate.useremail)
         return json_response(donate.to_dict())
 
 @app.errorhandler(400)
