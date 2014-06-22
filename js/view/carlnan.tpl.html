@@ -13,10 +13,7 @@
           <label for="reason" class="col-sm-2 control-label">缘由</label>
           <div class="col-sm-4">
             <select class="form-control" id="reason" name="r" ng-model="donate.r">
-              <option value="1">献爱心</option>
-              <option value="2">首富签到</option>
-              <option value="3">求爆发</option>
-              <option value="4">求新版咒语</option>
+              <option ng-repeat="(i, d) in reasons" value="{{i+1}}">{{d}}</option>
             </select>
           </div>
         </div>
@@ -28,8 +25,8 @@
         </div>
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="btn btn-primary" ng-click="donateBrick()">捐！</button>
-            <button type="submit" class="btn btn-default" ng-click="notnow()">再想想</button>
+            <button type="submit" class="btn btn-primary" ng-disabled="disableSave" ng-click="donateBrick()">捐！</button>
+            <button type="submit" class="btn btn-default" href="/home">再想想</button>
           </div>
         </div>
       </div>
