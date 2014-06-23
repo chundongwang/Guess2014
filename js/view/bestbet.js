@@ -20,7 +20,7 @@ WorldCupApp.getModule().controller('BestBetCtrl', ['$scope', '$cookies', '$locat
             data[i].tag = "求爆发";
           } 
           if (data[i][0] == "Carl Nan") {
-            data[i].tag = "南总";
+            data[i].tag = "南总要致富";
           }
         }
         data[0].tag = "首富";
