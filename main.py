@@ -350,7 +350,9 @@ def bestbet():
                         results[bet.useremail]['rightAboutScore']+=1
                     if cmp(match.score_a, match.score_b) == cmp(bet.score_a, bet.score_b):
                         results[bet.useremail]['rightAboutWin']+=1
-                final_results = sorted(results.iteritems(), reverse=True, cmp=lambda x, y: cmp(x[1]['rightAboutScore'], y[1]['rightAboutScore']) or cmp(x[1]['rightAboutWin'],y[1]['rightAboutWin']))
+                final_results = sorted(results.iteritems(), reverse=True, 
+                    cmp=lambda x, y: cmp(x[1]['rightAboutScore'], y[1]['rightAboutScore']) or cmp(x[1]['rightAboutWin'],y[1]['rightAboutWin']))
+                final_results = {"slipped_award":0, "results":final_results}
 
         # expire in 5 minutes
         memcache.set('[BestBet]'+str(show_known_user), final_results, 300)
