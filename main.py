@@ -332,6 +332,7 @@ def bestbet():
                 #sort by points/rightAboutScore/rightAboutWin for output
                 final_results = sorted(results.iteritems(), reverse=True, 
                     cmp=lambda x, y: cmp(x[1]['points'], y[1]['points']) or cmp(x[1]['rightAboutScore'], y[1]['rightAboutScore']) or cmp(x[1]['rightAboutWin'],y[1]['rightAboutWin']))
+                final_results = {"slipped_award":slipped_award, "results":final_results}
 
             else: #not known user:
                 bets = Bet.fetch_all()

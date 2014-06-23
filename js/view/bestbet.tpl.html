@@ -20,8 +20,11 @@
 
 <div class="container">
   <gw-spinner gw-show="!loaded"></gw-spinner>
+  <div ng-if="!!slipped_award" class="alert alert-success">
+    <strong>累积点数: </strong>{{slipped_award}}
+  </div>
   <div ng-if="loaded" class="row">
-    <div class="col-xs-6 col-xs-offset-3 table-responsive">
+    <div class="table-responsive">
       <table class="table table-hover text-center text-middle table-striped">
         <thead>
           <tr>

@@ -10,30 +10,32 @@ WorldCupApp.getModule().controller('BestBetCtrl', ['$scope', '$cookies', '$locat
       if (!Guesser.hasAcceptedEula()) {
         $location.path('/home');
       }
-      if (!!data[0][1].points) {
+      var results = data.results;
+      $scope.slipped_award = data.slipped_award;
+      if (!!results[0][1].points) {
         $scope.showpoints = true;
         
-        for (var i = data.length - 1; i >= 0; i--) {
-          if (data[i][1].points == 0) {
-            data[i].tag = "求南总咒语";
-          } else if (data[i][1].points < 50) {
-            data[i].tag = "求爆发";
+        for (var i = results.length - 1; i >= 0; i--) {
+          if (results[i][1].points == 0) {
+            results[i].tag = "求南总咒语";
+          } else if (results[i][1].points < 50) {
+            results[i].tag = "求爆发";
           } 
-          if (data[i][0] == "Carl Nan") {
-            data[i].tag = "南总要致富";
+          if (results[i][0] == "Carl Nan") {
+            results[i].tag = "南总要致富";
           }
         }
-        data[0].tag = "首富";
-        data[1].tag = "牛 B 证";
-        data[2].tag = "牛 C 证";
+        results[0].tag = "首富";
+        results[1].tag = "牛 B 证";
+        results[2].tag = "牛 C 证";
       }
-      $scope.betscores = data;
-      Guesser.listDonateEmailOnly(function(data) {
+      $scope.betscores = results;
+      Guesser.listDonateEmailOnly(function(results) {
         var betscores = $scope.betscores;
         for (var i = betscores.length - 1; i >= 0; i--) {
-          var iDonate= data.length - 1;
+          var iDonate= results.length - 1;
           for (; iDonate >= 0; iDonate--) {
-            if (betscores[i][0] == data[iDonate].useremail) 
+            if (betscores[i][0] == results[iDonate].useremail) 
               break;
           }
           if (iDonate >= 0) {
