@@ -18,11 +18,17 @@ WorldCupApp.getModule().controller('HomeCtrl', ['$scope', '$cookies', '$location
       if (Guesser.bettable(match) && (!match.bet || match.bet.result<0)) {
         $scope.theBet = match.bet ? {
           score_a: match.bet.score_a,
-          score_b: match.bet.score_b
+          score_b: match.bet.score_b,
+          extra_a: match.bet.extra_a,
+          extra_b: match.bet.extra_b
         } : {};
         $scope.theMatchRef = match;
 
-        $('#betModal').modal();
+        if ((/^Group/).test(match.stage)) {
+          $('#betModal').modal();
+        } else {
+          $('#betModalExtra').modal();
+        }
       } else {
         $location.path('/betanalysis').search({m:match.matchid});
       }

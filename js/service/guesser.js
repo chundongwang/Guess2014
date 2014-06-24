@@ -42,11 +42,15 @@ WorldCupApp.getModule().factory('Guesser', ['$http', '$cookies', function($http,
   }
   
   function bet(matchid, scores, successCallback, errorCallback) {
-    var parms = {
+    var params = {
         sa: scores.score_a,
         sb: scores.score_b
     };
-    $http({url: WorldCupApp.getRoot() + '/bet/' + matchid + '?' + $.param(parms), method:'GET'}).success(successCallback).error(errorCallback);
+    if (!angular.isUndefined(scores.extra_a) && !angular.isUndefined(scores.extra_b)) {
+      params.ea = scores.extra_a;
+      params.eb = scores.extra_b;
+    }
+    $http({url: WorldCupApp.getRoot() + '/bet/' + matchid + '?' + $.param(params), method:'GET'}).success(successCallback).error(errorCallback);
   }
   
   function acceptEula(successCallback, errorCallback) {

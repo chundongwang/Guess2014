@@ -125,6 +125,10 @@ def calcPopularity(team_name=None):
                     support+=1
                 elif match.team_b == team_name and bet.score_b > bet.score_a:
                     support+=1
+                elif match.team_a == team_name and bet.extra_a > bet.extra_b:
+                    support+=1
+                elif match.team_b == team_name and bet.extra_b > bet.extra_a:
+                    support+=1
         # expire in 5 minutes
         memcache.set('[TeamPop]'+team_name, support, 300)
     return support
@@ -213,11 +217,18 @@ def bet(match_id, bet_amount=1):
                 abort(400)
             #ok, as we have both extra_a/extra_b...
             elif extra_a is not None and extra_b is not None:
+                # it has to be a tie prediction to involve extra scores
+                if score_a != score_b:
+                    abort(400)
                 #penalty_a/penalty_b has to appear in pair.
-                if penalty_a is not None and penalty_b is None:
+                elif penalty_a is not None and penalty_b is None:
                     abort(400)
                 elif penalty_a is None and penalty_b is not None:
                     abort(400)
+                elif penalty_a is not None and penalty_b is not None:
+                    # it has to be a tie prediction to involve penalty scores
+                    if extra_a != extra_a:
+                        abort(400)
             #no extra_a/extra_b, no penalty_a/penalty_b allowed
             else:
                 if penalty_a is not None or penalty_b is not None:
@@ -313,12 +324,17 @@ def bestbet():
                         if bet.useremail not in results:
                             results[bet.useremail] = {'rightAboutScore':0,'rightAboutWin':0,'points':0}
                         #Bingo!
-                        if match.score_a == bet.score_a and match.score_b == bet.score_b:
+                        if match.score_a == bet.score_a and match.score_b == bet.score_b and match.extra_a == bet.extra_a and match.extra_b == bet.extra_b:
                             results[bet.useremail]['rightAboutScore']+=1
                             award_pool['bingo_count']+=1
                             award_pool['bingo_user'].append(bet.useremail)
                         if cmp(match.score_a, match.score_b) == cmp(bet.score_a, bet.score_b):
-                            results[bet.useremail]['rightAboutWin']+=1
+                            if match.extra_a is not None and match.extra_b is not None:
+                                if bet.extra_a is not None and bet.extra_b is not None:
+                                    if cmp(match.extra_a, match.extra_b) == cmp(bet.extra_a, bet.extra_b):
+                                        results[bet.useremail]['rightAboutWin']+=1
+                            else:
+                                results[bet.useremail]['rightAboutWin']+=1
                     #no one bingo, the pool goes to next match
                     if award_pool['bingo_count'] == 0:
                         slipped_award = award_pool['total_amount']
@@ -346,10 +362,16 @@ def bestbet():
                     if bet.useremail not in results:
                         results[bet.useremail] = {'rightAboutScore':0,'rightAboutWin':0}
                     result = results[bet.useremail]
-                    if match.score_a == bet.score_a and match.score_b == bet.score_b:
+                    #Bingo!
+                    if match.score_a == bet.score_a and match.score_b == bet.score_b and match.extra_a == bet.extra_a and match.extra_b == bet.extra_b:
                         results[bet.useremail]['rightAboutScore']+=1
                     if cmp(match.score_a, match.score_b) == cmp(bet.score_a, bet.score_b):
-                        results[bet.useremail]['rightAboutWin']+=1
+                        if match.extra_a is not None and match.extra_b is not None:
+                            if bet.extra_a is not None and bet.extra_b is not None:
+                                if cmp(match.extra_a, match.extra_b) == cmp(bet.extra_a, bet.extra_b):
+                                    results[bet.useremail]['rightAboutWin']+=1
+                        else:
+                            results[bet.useremail]['rightAboutWin']+=1
                 final_results = sorted(results.iteritems(), reverse=True, 
                     cmp=lambda x, y: cmp(x[1]['rightAboutScore'], y[1]['rightAboutScore']) or cmp(x[1]['rightAboutWin'],y[1]['rightAboutWin']))
                 final_results = {"slipped_award":0, "results":final_results}
