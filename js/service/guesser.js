@@ -46,7 +46,8 @@ WorldCupApp.getModule().factory('Guesser', ['$http', '$cookies', function($http,
         sa: scores.score_a,
         sb: scores.score_b
     };
-    if (!angular.isUndefined(scores.extra_a) && !angular.isUndefined(scores.extra_b)) {
+    if (!(angular.isUndefined(scores.extra_a) || angular.isUndefined(scores.extra_b)
+          || scores.extra_a == null || scores.extra_b == null)) {
       params.ea = scores.extra_a;
       params.eb = scores.extra_b;
     }

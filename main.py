@@ -208,30 +208,38 @@ def bet(match_id, bet_amount=1):
         #Sanity check
         #score_a and score_b are mandtary.
         if score_a is None or score_b is None:
+            logging.warning('missing one of the scores')
             abort(400)
         else:
             #extra_a/extra_b has to appear in pair.
             if extra_a is not None and extra_b is None:
+                logging.warning('missing extra_b')
                 abort(400)
             elif extra_a is None and extra_b is not None:
+                logging.warning('missing extra_a')
                 abort(400)
             #ok, as we have both extra_a/extra_b...
             elif extra_a is not None and extra_b is not None:
                 # it has to be a tie prediction to involve extra scores
                 if score_a != score_b:
+                    logging.warning('not a tie score but extra presents [%d:%d]'%(len(extra_a),len(extra_b)))
                     abort(400)
                 #penalty_a/penalty_b has to appear in pair.
                 elif penalty_a is not None and penalty_b is None:
+                    logging.warning('missing penalty_b')
                     abort(400)
                 elif penalty_a is None and penalty_b is not None:
+                    logging.warning('missing penalty_a')
                     abort(400)
                 elif penalty_a is not None and penalty_b is not None:
                     # it has to be a tie prediction to involve penalty scores
                     if extra_a != extra_a:
+                        logging.warning('not a tie extra but penalty presents')
                         abort(400)
             #no extra_a/extra_b, no penalty_a/penalty_b allowed
             else:
                 if penalty_a is not None or penalty_b is not None:
+                    logging.warning('no extra but penalty presents')
                     abort(400)
 
         if len(bets)==0:
