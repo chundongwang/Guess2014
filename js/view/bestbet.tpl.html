@@ -46,7 +46,7 @@
               <strong>{{b[1].points.toFixed(2)}}</strong>
             </td>
             <td ng-if="showpoints">
-              <strong ng-if="!!b[1].donate">{{(b[1].donate*3.0).toFixed(2)}}</strong>
+              <i ng-if="!!b[1].donate">{{(b[1].donate*3.0).toFixed(2)}}</i>
             </td>
             <td ng-if="showpoints">
               <strong ng-if="!!b[1].donate">{{(b[1].points-b[1].donate*3.0).toFixed(2)}}</strong>
