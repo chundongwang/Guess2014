@@ -41,7 +41,7 @@ WorldCupApp.getModule().directive('gwCharttopbet', ['Miner', function(Miner) {
     scope: {
       betscores: '=gwBetscores'
     },
-    template: '<h5><strong>最佳竞猜</strong></h5><canvas id="gwChartTopBet" width="250" height="200"></canvas>',
+    template: '<h5><strong>最佳竞猜</strong></h5><canvas id="gwChartTopBet" width="250" height="250"></canvas>',
     link: function(scope, elem, attrs) {
       scope.$watch('betscores', function(newVal, oldVal) {
         if (newVal === oldVal) {
