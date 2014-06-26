@@ -33,8 +33,8 @@ WorldCupApp.getModule().factory('Guesser', ['$http', '$cookies', function($http,
     getListHelper('/donate_list', successCallback, errorCallback);
   }
   
-  function listDonateEmailOnly(successCallback, errorCallback) {
-    getListHelper('/donate_list?email', successCallback, errorCallback);
+  function listDonateFolded(successCallback, errorCallback) {
+    getListHelper('/donate_list?fold', successCallback, errorCallback);
   }
 
   function getListHelper(path, successCallback, errorCallback) {
@@ -100,7 +100,7 @@ WorldCupApp.getModule().factory('Guesser', ['$http', '$cookies', function($http,
     acceptEula: acceptEula,
     hasAcceptedEula: hasAcceptedEula,
     listDonate:listDonate,
-    listDonateEmailOnly:listDonateEmailOnly,
+    listDonateFolded:listDonateFolded,
     donate:donate
   };
 }]);

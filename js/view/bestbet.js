@@ -30,16 +30,16 @@ WorldCupApp.getModule().controller('BestBetCtrl', ['$scope', '$cookies', '$locat
         results[2].tag = "牛 C 证";
       }
       $scope.betscores = results;
-      Guesser.listDonateEmailOnly(function(results) {
+      Guesser.listDonateFolded(function(results) {
         var betscores = $scope.betscores;
         for (var i = betscores.length - 1; i >= 0; i--) {
           var iDonate= results.length - 1;
           for (; iDonate >= 0; iDonate--) {
-            if (betscores[i][0] == results[iDonate].useremail) 
+            if (betscores[i][0] == results[iDonate][0]) 
               break;
           }
           if (iDonate >= 0) {
-            betscores[i][1].donate = true;
+            betscores[i][1].donate = results[iDonate][1];
           }
         }
         $scope.betscores = betscores;

@@ -411,19 +411,22 @@ def donate_list():
         abort(401)
     else:
         show_known_user = is_known_user(user.email())
-        email_only = request.args.get('email',None)
+        fold = request.args.get('fold',None)
         results = []
-        donates = []
-        if email_only is None:
-            donates = Donate.fetch_all()
-        else:
-            donates = Donate.fetch_email_distinct()
+        donates = Donate.fetch_all()
         for donate in donates:
             result = donate.to_dict()
             #replace with known name
             if show_known_user:
                 result["useremail"] = known_user_name(donate.useremail)
             results.append(result)
+        if fold is not None:
+            consolidated_donates = {}
+            for result in results:
+                if not result["useremail"] in consolidated_donates:
+                    consolidated_donates[result["useremail"]] = 0
+                consolidated_donates[result["useremail"]]+=result["count"]
+            results = list(consolidated_donates.iteritems())
     return json_response(results)
 
 @app.route('/donate')
