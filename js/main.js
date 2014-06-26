@@ -31,6 +31,9 @@ WorldCupApp.getModule()
   $routeProvider.when('/home', {
     templateUrl: 'js/view/home.tpl.html',
     controller: 'HomeCtrl'
+  }).when('/date', {
+    templateUrl: 'js/view/date.tpl.html',
+    controller: 'DateCtrl'
   }).when('/my', {
     templateUrl: 'js/view/my.tpl.html',
     controller: 'MyCtrl'

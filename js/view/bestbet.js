@@ -46,11 +46,6 @@ WorldCupApp.getModule().controller('BestBetCtrl', ['$scope', '$cookies', '$locat
       });
     });
   }
-  
-  $scope.loginInfo = {
-    nickName:WorldCupApp.user_nickname, 
-    loginUrl:WorldCupApp.login_url
-  };
 
   updateAll();
 }]);

@@ -72,11 +72,6 @@ WorldCupApp.getModule().controller('MyCtrl', ['$scope', '$cookies', '$location',
       default:;
     }
     return ['editable-row'];
-  }
-  
-  $scope.loginInfo = {
-    nickName:WorldCupApp.user_nickname, 
-    loginUrl:WorldCupApp.login_url
   };
 
   updateAll();

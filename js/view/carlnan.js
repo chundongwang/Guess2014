@@ -46,11 +46,6 @@ WorldCupApp.getModule().controller('CarlNanCtrl', ['$scope', '$cookies', '$locat
   $scope.notnow = function(match) {
     $location.path('/home');
   };
-  
-  $scope.loginInfo = {
-    nickName:WorldCupApp.user_nickname, 
-    loginUrl:WorldCupApp.login_url
-  };
 
   $scope.$watch('donate.c', function(newVal, oldVal){
     $scope.disableSave = (newVal == 0);

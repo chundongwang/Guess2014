@@ -1,11 +1,9 @@
 'use strict';
 
-WorldCupApp.getModule().controller('HomeCtrl', ['$scope', '$cookies', '$location', 'Guesser', 'Miner', function($scope, $cookies, $location, Guesser, Miner) {
+WorldCupApp.getModule().controller('DateCtrl', ['$scope', '$cookies', '$location', 'Guesser', 'Miner', function($scope, $cookies, $location, Guesser, Miner) {
   
   $scope.known = angular.equals($cookies.gwKnown, 'true');
-  $scope.mode = $location.search().mode || 'default';
   $scope.loaded = false;
-
   $scope.loggedIn = !!WorldCupApp.user_nickname;
   
   $scope.showBetModal = function(match) {
@@ -63,11 +61,10 @@ WorldCupApp.getModule().controller('HomeCtrl', ['$scope', '$cookies', '$location
   }
 
   function updateAll() {
-    var listfunc = Guesser.listAll;
+    var listfunc = Guesser.listAllByDate;
     listfunc(function(groups) {
       $scope.loaded = true;
       $scope.groups = groups;
-      $scope.showEulaModal();
       
       // Retrieve bets if the user is logged in
       if ($scope.loggedIn) {
@@ -86,17 +83,6 @@ WorldCupApp.getModule().controller('HomeCtrl', ['$scope', '$cookies', '$location
         });
       }
     });
-  }
-
-  $scope.showEulaModal = function() {
-    // If alread accepted, no need to show Eula again
-    if (!Guesser.hasAcceptedEula()) {
-      if (angular.equals($cookies.gwEulaStatus, 'deny')) {
-        location.replace("http://apps.leg.wa.gov/rcw/default.aspx?cite=9.46.240");
-      } else {
-        $('#eulaModal').modal();
-      }
-    }
   }
 
   updateAll();
