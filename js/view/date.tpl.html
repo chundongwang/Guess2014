@@ -13,11 +13,17 @@
 
 <div class="container">
   <gw-notice></gw-notice>
+  <div class="date-picker">
+    <button ng-repeat="d in dates" ng-click="scrollTo(d.monthDay)" ng-class="'btn btn-default ' + d.className">{{d.monthDay}}</button>
+  </div>
   <gw-spinner gw-show="!loaded"></gw-spinner>
   <div ng-if="loaded" class="row">
     <div class="col-md-8 col-md-offset-2">
       <div class="list-group" ng-repeat="group in groups">
-        <p class="list-group-item list-group-item-header text-info"><strong>{{group[0].date | date:'yyyy年M月d日'}}</strong></p>
+        <p class="list-group-item list-group-item-header text-info">
+          <a href="" class="pull-right glyphicon glyphicon-chevron-up" ng-click="scrollUp()"></a>
+          <strong>{{group[0].date | date:'yyyy年M月d日'}}</strong>
+        </p>
         <div ng-class="getBetClass(m)" ng-repeat="m in group" href ng-click="showBetModal(m)">
           <gw-matchdiv gw-match="m" gw-shownationname="true" gw-showscore="true"></gw-matchdiv>
         </div>

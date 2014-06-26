@@ -221,3 +221,11 @@ a.roll-dice:hover {
 .red-heart {
   color:red;
 }
+
+.date-picker button {
+  margin:2px;
+  border-radius: 15px;
+}
+.date-picker {
+  margin-bottom:15px;
+}
