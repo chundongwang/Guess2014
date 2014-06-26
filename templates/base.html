@@ -21,7 +21,7 @@
 
 <body>
   {% block content %}
-  <div ng-view ng-app="WorldCupApp"></div>
+  <div ng-view ng-app="WorldCupApp" ng-controller="TopViewCtrl"></div>
   <div id="fb-root"></div>
   {% endblock %}
   {% block script %}
@@ -52,7 +52,9 @@
   <script src="js/directive/chartbetscoredist.js"></script>
   <script src="js/directive/chartbetmatchdist.js"></script>
   <script src="js/directive/charttopbet.js"></script>
+  <script src="js/view/topview.js"></script>
   <script src="js/view/home.js"></script>
+  <script src="js/view/date.js"></script>
   <script src="js/view/my.js"></script>
   <script src="js/view/betanalysis.js"></script>
   <script src="js/view/bestbet.js"></script>
