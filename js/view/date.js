@@ -25,7 +25,7 @@ WorldCupApp.getModule().controller('DateCtrl', ['$scope', '$location', '$anchorS
     $('div[ng-repeat="group in groups"]').toArray().some(function(e){
       var ele = $(e);
       if ($(e).find('strong').text() == date) {
-        $('body').animate({scrollTop: ele.offset().top - 60}, 800);
+        $('body,html').animate({scrollTop: ele.offset().top - 60}, 800);
         return true;
       }
       return false;
@@ -33,7 +33,7 @@ WorldCupApp.getModule().controller('DateCtrl', ['$scope', '$location', '$anchorS
   };
 
   $scope.scrollUp = function() {
-    $('body').animate({scrollTop: 0}, 500);
+    $('body,html').animate({scrollTop: 0}, 500);
   };
 
   function updateAll() {
